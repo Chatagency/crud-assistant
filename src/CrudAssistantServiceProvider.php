@@ -22,7 +22,7 @@ class CrudAssistantServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('crud-assistant.php'),
-            ], 'config');
+            ], 'crud-assistant');
 
             // Publishing the views.
             /*$this->publishes([
@@ -52,9 +52,5 @@ class CrudAssistantServiceProvider extends ServiceProvider
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'crud-assistant');
 
-        // Register the main class to use with the facade
-        $this->app->singleton('crud-assistant', function () {
-            return new CrudAssistant;
-        });
     }
 }
