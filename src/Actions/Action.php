@@ -1,6 +1,6 @@
 <?php
 
-namespace Chatagency\CrudAssistant;
+namespace Chatagency\CrudAssistant\Actions;
 
 /**
  * Crud Class

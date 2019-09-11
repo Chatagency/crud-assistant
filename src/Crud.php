@@ -8,5 +8,9 @@ namespace Chatagency\CrudAssistant;
 class Crud
 {
     
+    public function process()
+    {
+        
+    }
     
 }

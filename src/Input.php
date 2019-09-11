@@ -1,20 +1,26 @@
 <?php
 
 namespace Chatagency\CrudAssistant;
-use Chatagency\CrudAssistant\Validation;
-use Chatagency\CrudAssistant\Sanitation;
+use Chatagency\CrudAssistant\Contracts\ProcessInterface;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use InvalidArgumentException;
 
 /**
  * Input Base Class
  */
 abstract class Input
 {
-    
     /**
      * Name
      * @var string
      */
     protected $name;
+    
+    /**
+     * Label
+     * @var string
+     */
+    protected $label;
     
     /**
      * Version
@@ -27,13 +33,26 @@ abstract class Input
      * @var string
      */
     protected $id;
+
+    /**
+     * Input Processes
+     * @var array
+     */
+    protected $processes = [];
+    
+    /**
+     * Input Actions
+     * @var array
+     */
+    protected $actions = [];
+    
     
     /**
      * Class construct
      * @param [type] $name
      * @param [type] $version
      */
-    public function __construct(string $name = null, bool $version = null)
+    public function __construct(string $name = null, string $label = null, bool $version = null)
     {
         if($name){
             $this->name = $name;
@@ -54,6 +73,18 @@ abstract class Input
     public function setName(string $name)
     {
         $this->name = $name;
+        
+        return $this;
+    }
+    
+    /**
+     * Sets Input Name
+     * @param string $name
+     * @return self
+     */
+    public function setLabel(string $label)
+    {
+        $this->label = $label;
         
         return $this;
     }
@@ -83,27 +114,50 @@ abstract class Input
     }
     
     /**
-     * Sets validation object
-     * @param Validation $validation
+     * Sets Process
+     * @param ProcessInterface $process
+     * @param string $key
      * @return self
      */
-    public function setValidation(Validation $validation)
+    public function setProcess(ProcessInterface $process, string $key = null)
     {
-        $this->validation = $validation;
+        $key = $key ?? get_class($process);
+        
+        $this->processes[$key] = $process;
         
         return $this;
     }
     
     /**
-     * Sets sanitation object
-     * @param Sanitation $sanitation
+     * Returns process by ky
+     * @param  string $key
+     * @return ProcessInterface
+     * @throws
+     */
+    public function getProcess($key)
+    {
+        if(isset($this->processes[$key])){
+            return $this->processes[$key];
+        }
+        
+        throw new InvalidArgumentException("The ".$key." Process has not been registered or does not exist", 500);
+    }
+    
+    
+    /**
+     * Sets Action
+     * @param ProcessInterface $process
+     * @param string $key
      * @return self
      */
-    public function setSanitation(Sanitation $sanitation)
+    public function setAction(ProcessInterface $action, string $key = null)
     {
-        $this->sanitation = $sanitation;
+        $key = $key ?? get_class($action);
+        
+        $this->actions[$key] = $action;
         
         return $this;
     }
+    
     
 }
