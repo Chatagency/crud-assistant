@@ -9,6 +9,15 @@ use Chatagency\CrudAssistant\Contracts\ProcessInterface;
  */
 class Validation implements ProcessInterface
 {
+    protected $rule;
     
+    public function __construct(array $rule)
+    {
+        $this->rule = $rule;
+    }
     
+    public function process()
+    {
+        
+    }
 }

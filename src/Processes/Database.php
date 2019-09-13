@@ -7,7 +7,7 @@ use Chatagency\CrudAssistant\Contracts\ProcessInterface;
 /**
  * Crud Class
  */
-class Sanitation implements ProcessInterface
+class Database implements ProcessInterface
 {
     protected $rule;
     

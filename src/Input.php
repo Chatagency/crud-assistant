@@ -49,13 +49,18 @@ abstract class Input
     
     /**
      * Class construct
-     * @param [type] $name
-     * @param [type] $version
+     * @param string $name
+     * @param string $label
+     * @param int $version
      */
-    public function __construct(string $name = null, string $label = null, bool $version = null)
+    public function __construct(string $name = null, string $label = null, int $version = 1)
     {
         if($name){
             $this->name = $name;
+        }
+        
+        if($label){
+            $this->label = $label;
         }
         
         if($version){
