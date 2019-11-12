@@ -8,7 +8,7 @@ namespace Chatagency\CrudAssistant\Contracts;
 interface ActionInterface
 {
     /**
-     * Handle the process
+     * Handle the action
      *
      * @return [type] [description]
      */

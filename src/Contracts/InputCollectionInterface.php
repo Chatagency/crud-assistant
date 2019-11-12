@@ -1,7 +1,8 @@
 <?php
 
 namespace Chatagency\CrudAssistant\Contracts;
-use Chatagency\CrudAssistant\Input;
+
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
  * Input Collection Interface
@@ -21,7 +22,7 @@ interface InputCollectionInterface
      * @param string $key
      * @return self
      */
-    public function add(Input $input, string $key = null);
+    public function add(InputInterface $input, string $key = null);
     
     /**
      * Removes input from the array if exists
@@ -38,14 +39,15 @@ interface InputCollectionInterface
     
     /**
      * Returns inputs array
+     * @param string $key
+     * @return InputInterface
+     */
+    public function getInput(string $key);
+    
+    /**
+     * Returns inputs array
      * @return array
      */
     public function getInputs();
-    
-    /**
-     * Processes all inputs
-     * @return [type] [description]
-     */
-    public function process();
     
 }

@@ -9,5 +9,6 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
  */
 class TextInput extends Input implements InputInterface
 {
+    protected $type = 'text';
     
 }

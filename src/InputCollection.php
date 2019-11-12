@@ -3,7 +3,7 @@
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
-use Chatagency\CrudAssistant\Input;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Exception;
 
 /**
@@ -31,13 +31,13 @@ class InputCollection implements InputCollectionInterface
     
     /**
      * Adds input to the array
-     * @param Input $input
+     * @param InputInterface $input
      * @param string $key
      * @return self
      */
-    public function add(Input $input, string $key = null)
+    public function add(InputInterface $input, string $key = null)
     {
-        $key = $key ?? spl_object_id($input);
+        $key = $key ?? $input->getName();
         
         $this->inputsArray[$key] = $input;
         
@@ -67,16 +67,30 @@ class InputCollection implements InputCollectionInterface
     
     /**
      * Returns inputs array
+     * @param string $key
+     * @return InputInterface
+     */
+    public function getInput(string $key)
+    {
+        if(isset($this->inputsArray[$key])){
+            return $this->inputsArray[$key];
+        }
+        
+        throw new InvalidArgumentException("The ".$key." Input has not been registered or does not exist", 500);
+    }
+    
+    /**
+     * Returns inputs array
      * @return array
      */
     public function getInputs()
     {
-        return $this->$inputsArray;
+        return $this->inputsArray;
     }
     
     /**
      * Processes all inputs
-     * @return bool
+     * @return array
      * @throws Exception
      */
     public function process()

@@ -53,25 +53,17 @@ abstract class Input
      * @param string $label
      * @param int $version
      */
-    public function __construct(string $name = null, string $label = null, int $version = 1)
+    public function __construct(string $name, string $label = null, int $version = 1)
     {
-        if($name){
-            $this->name = $name;
-        }
-        
-        if($label){
-            $this->label = $label;
-        }
-        
-        if($version){
-            $this->version = $version;
-        }
+        $this->name = $name;
+        $this->label = $label ? $label : $name;
+        $this->version = $version ? $version : 1;
         
         return$this;
     }
     
     /**
-     * Sets Input Name
+     * Sets Input name
      * @param string $name
      * @return self
      */
@@ -83,7 +75,7 @@ abstract class Input
     }
     
     /**
-     * Sets Input Name
+     * Sets Input label
      * @param string $name
      * @return self
      */
@@ -95,7 +87,7 @@ abstract class Input
     }
     
     /**
-     * Sets Input Version
+     * Sets Input version
      * @param string $version
      * @return self
      */
@@ -107,7 +99,7 @@ abstract class Input
     }
     
     /**
-     * Sets Input Id
+     * Sets Input id
      * @param string $id
      * @return self
      */
@@ -116,6 +108,42 @@ abstract class Input
         $this->id = $id;
         
         return $this;
+    }
+    
+    /**
+     * Returns input name
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * Returns input label
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+    
+    /**
+     * Returns input version
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+    
+    /**
+     * Returns input id
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id ? $this->id : $this->name;
     }
     
     /**
@@ -134,12 +162,12 @@ abstract class Input
     }
     
     /**
-     * Returns process by ky
-     * @param  string $key
+     * Returns process by key
+     * @param string $key
      * @return ProcessInterface
      * @throws
      */
-    public function getProcess($key)
+    public function getProcess(string $key)
     {
         if(isset($this->processes[$key])){
             return $this->processes[$key];
@@ -151,17 +179,32 @@ abstract class Input
     
     /**
      * Sets Action
-     * @param ProcessInterface $process
+     * @param ActionInterface $process
      * @param string $key
      * @return self
      */
-    public function setAction(ProcessInterface $action, string $key = null)
+    public function setAction(ActionInterface $action, string $key = null)
     {
         $key = $key ?? get_class($action);
         
         $this->actions[$key] = $action;
         
         return $this;
+    }
+    
+    /**
+     * Returns process by key
+     * @param string $key
+     * @return ActionInterface
+     * @throws
+     */
+    public function getAction($key)
+    {
+        if(isset($this->actions[$key])){
+            return $this->actions[$key];
+        }
+        
+        throw new InvalidArgumentException("The ".$key." Action has not been registered or does not exist", 500);
     }
     
     
