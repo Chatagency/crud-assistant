@@ -4,6 +4,7 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\ActionFactory;
 use Exception;
 
@@ -97,9 +98,14 @@ class InputCollection implements InputCollectionInterface
         return $this->inputsArray;
     }
     
+    /**
+     * Returns action type instance
+     * @param  string $type
+     * @return ActionInterface
+     */
     public function getActionInstace(string $type)
     {
-        
+        return $this->actionFactory->getInstanse($type);
     }
     
 }
