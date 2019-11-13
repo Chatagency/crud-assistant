@@ -4,6 +4,7 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\ActionFactory;
 use Exception;
 
 /**
@@ -18,13 +19,20 @@ class InputCollection implements InputCollectionInterface
     protected $inputsArray = [];
     
     /**
+     * Action Factory
+     * @var ActionFactory
+     */
+    protected $actionFactory;
+    
+    /**
      * Constructor
      * @param array $inputsArray
      * @return self
      */
-    public function __construct(array $inputsArray = [])
+    public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
     {
         $this->inputsArray = array_merge($this->inputsArray, $inputsArray);
+        $this->actionFactory = $actionFactory ?? new ActionFactory();
         
         return $this;
     }
@@ -45,7 +53,7 @@ class InputCollection implements InputCollectionInterface
     }
     /**
      * Removes input from the array if exists
-     * @param  string $key [description]
+     * @param string $key [description]
      * @return self
      */
     public function remove(string $key)
@@ -69,6 +77,7 @@ class InputCollection implements InputCollectionInterface
      * Returns inputs array
      * @param string $key
      * @return InputInterface
+     * @throws InvalidArgumentException
      */
     public function getInput(string $key)
     {
@@ -88,12 +97,7 @@ class InputCollection implements InputCollectionInterface
         return $this->inputsArray;
     }
     
-    /**
-     * Processes all inputs
-     * @return array
-     * @throws Exception
-     */
-    public function process()
+    public function getActionInstace(string $type)
     {
         
     }

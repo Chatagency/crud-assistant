@@ -3,9 +3,9 @@
 namespace Chatagency\CrudAssistant\Contracts;
 
 /**
- * Input Collection Interface
+ * Data DataContainer Interface
  */
-interface InputCollectionInterface
+interface DataContainerInterface
 {
     
 }

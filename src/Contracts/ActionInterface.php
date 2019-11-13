@@ -3,15 +3,9 @@
 namespace Chatagency\CrudAssistant\Contracts;
 
 /**
- * Process Interface
+ * Action Interface
  */
 interface ActionInterface
 {
-    /**
-     * Handle the action
-     *
-     * @return [type] [description]
-     */
-    public function execute();
     
 }

@@ -1,8 +1,7 @@
 <?php
 
 namespace Chatagency\CrudAssistant;
-use Chatagency\CrudAssistant\Contracts\ProcessInterface;
-use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use InvalidArgumentException;
 
 /**
@@ -35,17 +34,10 @@ abstract class Input
     protected $id;
 
     /**
-     * Input Processes
-     * @var array
-     */
-    protected $processes = [];
-    
-    /**
      * Input Actions
      * @var array
      */
     protected $actions = [];
-    
     
     /**
      * Class construct
@@ -147,45 +139,14 @@ abstract class Input
     }
     
     /**
-     * Sets Process
-     * @param ProcessInterface $process
-     * @param string $key
-     * @return self
-     */
-    public function setProcess(ProcessInterface $process, string $key = null)
-    {
-        $key = $key ?? get_class($process);
-        
-        $this->processes[$key] = $process;
-        
-        return $this;
-    }
-    
-    /**
-     * Returns process by key
-     * @param string $key
-     * @return ProcessInterface
-     * @throws
-     */
-    public function getProcess(string $key)
-    {
-        if(isset($this->processes[$key])){
-            return $this->processes[$key];
-        }
-        
-        throw new InvalidArgumentException("The ".$key." Process has not been registered or does not exist", 500);
-    }
-    
-    
-    /**
      * Sets Action
-     * @param ActionInterface $process
+     * @param DataContainerInterface $action
      * @param string $key
      * @return self
      */
-    public function setAction(ActionInterface $action, string $key = null)
+    public function setAction(DataContainerInterface $action, string $key = null)
     {
-        $key = $key ?? get_class($action);
+        $key = $key ?? $action->key;
         
         $this->actions[$key] = $action;
         
@@ -193,9 +154,9 @@ abstract class Input
     }
     
     /**
-     * Returns process by key
+     * Returns action by key
      * @param string $key
-     * @return ActionInterface
+     * @return DataContainerInterface
      * @throws
      */
     public function getAction($key)
@@ -206,6 +167,5 @@ abstract class Input
         
         throw new InvalidArgumentException("The ".$key." Action has not been registered or does not exist", 500);
     }
-    
-    
+
 }
