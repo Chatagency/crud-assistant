@@ -16,7 +16,6 @@ class InputTest extends TestCase
         
         $this->assertEquals('email', $input->getName());
         $this->assertEquals('email', $input->getLabel());
-        $this->assertEquals('email', $input->getId());
         $this->assertEquals(1, $input->getVersion());
         
     }
@@ -24,11 +23,10 @@ class InputTest extends TestCase
     /** @test */
     public function an_input_can_be_created_with_name_label_and_version()
     {
-        $input = new TextInput('email', 'Email', 2);
+        $input = new TextInput('email', 'Add your email', 2);
         
         $this->assertEquals('email', $input->getName());
-        $this->assertEquals('Email', $input->getLabel());
-        $this->assertEquals('email', $input->getId());
+        $this->assertEquals('Add your email', $input->getLabel());
         $this->assertEquals(2, $input->getVersion());
     }
     
@@ -45,6 +43,31 @@ class InputTest extends TestCase
         
         $this->assertEquals($input->getAction('validation')->value, $validationValue);
         
+    }
+    
+    /** @test */
+    public function the_label_and_version_can_be_set()
+    {
+        $input = new TextInput('email');
+        $input->setLabel('Add your email');
+        $input->setVersion(2);
+        
+        $this->assertEquals('Add your email', $input->getLabel());
+        $this->assertEquals(2, $input->getVersion());
+        
+    }
+    
+    /** @test */
+    public function an_arbitrary_attribute_can_be_set()
+    {
+        $input = new TextInput('email');
+        
+        $this->assertNull($input->getAttribute('id'));
+        
+        $input->setAttribute('id', 'FormEmail');
+        
+        $this->assertEquals('FormEmail', $input->getAttribute('id'));
+        $this->assertCount(1, $input->getAttributes());
     }
     
 }

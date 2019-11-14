@@ -2,6 +2,7 @@
 
 namespace Chatagency\CrudAssistant;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Closure;
 use InvalidArgumentException;
 
 /**
@@ -28,11 +29,11 @@ abstract class Input
     protected $version;
     
     /**
-     * Id
-     * @var string
+     * Input attributes
+     * @var array
      */
-    protected $id;
-
+    protected $attributes = [];
+    
     /**
      * Input Actions
      * @var array
@@ -55,19 +56,7 @@ abstract class Input
     }
     
     /**
-     * Sets Input name
-     * @param string $name
-     * @return self
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
-        
-        return $this;
-    }
-    
-    /**
-     * Sets Input label
+     * Sets input label
      * @param string $name
      * @return self
      */
@@ -79,25 +68,25 @@ abstract class Input
     }
     
     /**
-     * Sets Input version
+     * Sets input attributes
+     * @param string $name
+     * @param string|Closure $value
+     */
+    public function setAttribute(string $name, $value)
+    {
+        $this->attributes[$name] = $value;
+        
+        return $this;
+    }
+    
+    /**
+     * Sets input version
      * @param string $version
      * @return self
      */
     public function setVersion(bool $version)
     {
         $this->version = $version;
-        
-        return $this;
-    }
-    
-    /**
-     * Sets Input id
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id)
-    {
-        $this->id = $id;
         
         return $this;
     }
@@ -130,12 +119,25 @@ abstract class Input
     }
     
     /**
-     * Returns input id
-     * @return int
+     * Returns Input attributes
+     * @return array
      */
-    public function getId()
+    public function getAttributes()
     {
-        return $this->id ? $this->id : $this->name;
+        return $this->attributes;
+    }
+    
+    /**
+     * Returns Input attributes
+     * @return string|Closure
+     */
+    public function getAttribute(string $name)
+    {
+        if(isset($this->attributes[$name])){
+            return $this->attributes[$name];
+        }
+        
+        return null;
     }
     
     /**

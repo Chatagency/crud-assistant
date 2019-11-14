@@ -6,7 +6,7 @@ use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\ActionFactory;
-use Exception;
+use InvalidArgumentException;
 
 /**
  * Input Collection Class

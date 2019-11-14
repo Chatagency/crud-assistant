@@ -37,6 +37,37 @@ class InputCollectionTest extends TestCase
     }
     
     /** @test */
+    public function the_inputs_are_still_accessible()
+    {
+        $form = $this->getCollection();
+        
+        $form->add(new TextInput('name', 'Name'));
+        $name = $form->getInput('name');
+        $this->assertEquals('name', $name->getName());
+        $this->assertCount(1, $form->getInputs());
+    }
+    
+    /** @test */
+    public function an_exception_is_thrown_if_a_non_existing_input_is_accessed()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $form = $this->getCollection();
+        $name = $form->getInput('name');
+    }
+    
+    /** @test */
+    public function an_input_can_be_removed_from_the_collection()
+    {
+        $form = $this->getCollection();
+        
+        $form->add(new TextInput('name', 'Name'));
+        $this->assertEquals(1, $form->count());
+        
+        $form->remove('name');
+        $this->assertEquals(0, $form->count());
+    }
+    
+    /** @test */
     public function an_action_can_be_executed_from_the_collection()
     {
         $name = new TextInput('name', 'Name');
@@ -58,27 +89,9 @@ class InputCollectionTest extends TestCase
     }
     
     /** @test */
-    public function an_exeption_is_thrown_if_the_action_has_not_been_registed_or_does_not_exist()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        
-        $validationValue = [
-            'required',
-            'email'
-        ];
-        
-        $input = new TextInput('email', 'Email', 1);
-        $input->setAction(new DataContainer('validation', $validationValue));
-        
-        $form = $this->getCollection([$input]);
-        $form->execute('unknow');
-    }
-    
-    /** @test */
     public function a_collection_can_contain_inputs_with_or_without_actions()
     {
         $name = new TextInput('name', 'Name');
-        
         $email = new TextInput('email', 'Email');
         $email->setAction(new DataContainer('validation', [
             'required',
