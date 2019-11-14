@@ -141,31 +141,30 @@ abstract class Input
     /**
      * Sets Action
      * @param DataContainerInterface $action
-     * @param string $key
+     * @param string $type
      * @return self
      */
-    public function setAction(DataContainerInterface $action, string $key = null)
+    public function setAction(DataContainerInterface $container, string $type = null)
     {
-        $key = $key ?? $action->key;
+        $type = $type ?? $container->key;
         
-        $this->actions[$key] = $action;
+        $this->actions[$type] = $container;
         
         return $this;
     }
     
     /**
-     * Returns action by key
-     * @param string $key
-     * @return DataContainerInterface
-     * @throws
+     * Returns action by type
+     * @param string $type
+     * @return DataContainerInterface|null
      */
-    public function getAction($key)
+    public function getAction($type)
     {
-        if(isset($this->actions[$key])){
-            return $this->actions[$key];
+        if(isset($this->actions[$type])){
+            return $this->actions[$type];
         }
         
-        throw new InvalidArgumentException("The ".$key." Action has not been registered or does not exist", 500);
+        return null;
     }
 
 }

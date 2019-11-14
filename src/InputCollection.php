@@ -99,11 +99,20 @@ class InputCollection implements InputCollectionInterface
     }
     
     /**
+     * Execute actions
+     * @param string $type
+     */
+    public function execute(string $type = null)
+    {
+        return $this->getActionInstace($type)->execute($this->inputsArray);
+    }
+    
+    /**
      * Returns action type instance
      * @param  string $type
      * @return ActionInterface
      */
-    public function getActionInstace(string $type)
+    private function getActionInstace(string $type)
     {
         return $this->actionFactory->getInstanse($type);
     }

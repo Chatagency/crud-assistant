@@ -37,8 +37,7 @@ class InputTest extends TestCase
     {
         $validationValue = [
             'required',
-            'phone',
-            'max:250'
+            'email'
         ];
         
         $input = new TextInput('email', 'Email', 1);
