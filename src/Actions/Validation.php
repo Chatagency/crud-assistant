@@ -40,9 +40,6 @@ class Validation implements ActionInterface
                     $rules[$name] = $fieldValidation;
                 }
             }
-            else {
-                $rules[$name] = [];
-            }
         }
         
         return $rules;
