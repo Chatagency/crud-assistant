@@ -25,4 +25,13 @@ class SelectInput extends Input implements InputInterface
         return $this;
     }
     
+    /**
+     * Returns optons array
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+    
 }
