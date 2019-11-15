@@ -34,7 +34,7 @@ class Validation implements ActionInterface
             
             if($fieldValidation) {
                 if(is_callable($fieldValidation)){
-                    $rules[$name] = $fieldValidation();
+                    $rules[$name] = $fieldValidation($input);
                 }
                 else {
                     $rules[$name] = $fieldValidation;

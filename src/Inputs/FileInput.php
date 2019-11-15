@@ -5,13 +5,13 @@ use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
- * Text Input Class
+ * File Input Class
  */
-class TextInput extends Input implements InputInterface
+class FileInput extends Input implements InputInterface
 {
     /**
      * Input Type
      */
-    protected $type = 'text';
+    protected $type = 'file';
     
 }

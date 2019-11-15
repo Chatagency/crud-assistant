@@ -9,5 +9,18 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
  */
 class Database implements ActionInterface
 {
+    /**
+     * Action type
+     * @var string
+     */
+    protected $type = 'database';
     
+    /**
+     * Executes action
+     * @param  array $inputs
+     */
+    public function execute(array $inputs){
+        
+        
+    }
 }

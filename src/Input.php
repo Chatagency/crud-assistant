@@ -35,6 +35,17 @@ abstract class Input
     protected $attributes = [];
     
     /**
+     * Input Sub Elements
+     * @var [type]
+     */
+    protected $subElements = [];
+    
+    /**
+     * Input Type
+     */
+    protected $type = null;
+    
+    /**
      * Input Actions
      * @var array
      */
@@ -80,6 +91,17 @@ abstract class Input
     }
     
     /**
+     * Sets input sub elements
+     * @param array $subElements
+     */
+    public function setSubElements(array $subElements)
+    {
+        $this->subElements = $subElements;
+        
+        return $this;
+    }
+    
+    /**
      * Sets input version
      * @param string $version
      * @return self
@@ -89,6 +111,15 @@ abstract class Input
         $this->version = $version;
         
         return $this;
+    }
+    
+    /**
+     * Sets input type
+     * @param string $type
+     */
+    public function setType(string $type)
+    {
+        $this->type = $type;
     }
     
     /**
@@ -120,15 +151,6 @@ abstract class Input
     
     /**
      * Returns Input attributes
-     * @return array
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-    
-    /**
-     * Returns Input attributes
      * @return string|Closure
      */
     public function getAttribute(string $name)
@@ -138,6 +160,24 @@ abstract class Input
         }
         
         return null;
+    }
+    
+    /**
+     * Returns Input attributes
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+    
+    /**
+     * Returns input sub elements
+     * @return array
+     */
+    public function getSubElements()
+    {
+        return $this->subElements;
     }
     
     /**

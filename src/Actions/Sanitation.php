@@ -10,4 +10,19 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 class Sanitation implements ActionInterface
 {
     
+    /**
+     * Action type
+     * @var string
+     */
+    protected $type = 'sanitation';
+    
+    /**
+     * Executes action
+     * @param  array $inputs
+     */
+    public function execute(array $inputs){
+        
+        
+    }
+    
 }
