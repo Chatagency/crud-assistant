@@ -10,18 +10,6 @@ use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 class DataContainer implements DataContainerInterface
 {
     /**
-     * Key
-     * @var string
-     */
-    public $key;
-    
-    /**
-     * Value
-     * @var mixed
-     */
-    public $value;
-    
-    /**
      * Arbitrary data
      * @var array
      */
@@ -41,69 +29,58 @@ class DataContainer implements DataContainerInterface
         return $this;
     }
     
-    /**
-     * Sets Key
-     * @param string $key
-     * @return self
-     */
-    public function setKey(string $key)
+    public function all()
     {
-        $this->key = $key;
-        
-        return $this;
+        return $this->data;
     }
     
     /**
-     * Sets value
-     * @param mixed $value
-     * @return self
+     * Magic set method
+     * @param string $name
      */
-    public function setValue($value)
+    public function __get(string $name)
     {
-        $this->value = $value;
-        
-        return $this;
-    }
-    
-    public function __get($name)
-    {
-        if(isset($this->data[$name])){
-            return $this->data[$name];
+        if(!isset($this->data[$name])){
+            $trace = debug_backtrace();
+            trigger_error(
+                'Undefined property via __get(): ' . $name .
+                ' in ' . $trace[0]['file'] .
+                ' on line ' . $trace[0]['line'],
+                E_USER_NOTICE
+            );
         }
         
-        $trace = debug_backtrace();
-        trigger_error(
-            'Undefined property via __get(): ' . $name .
-            ' in ' . $trace[0]['file'] .
-            ' on line ' . $trace[0]['line'],
-            E_USER_NOTICE
-        );
+        return $this->data[$name];
         
-        return null;
     }
     
-    public function __set($name, $value)
+    /**
+     * Magic set method
+     * @param string $name
+     * @param $value
+     */
+    public function __set(string $name, $value)
     {
         $this->data[$name] = $value;
     }
     
+    /**
+     * Magic isset method
+     * @param string $name
+     * @return boolean
+     */
     public function __isset($name)
     {
-        return isset($this->data[$value]);
+        return isset($this->data[$name]);
     }
     
-    public function __unset($name)
+    /**
+     * Magic unset method
+     * @param string $name
+     */
+    public function __unset(string $name)
     {
         unset($this->data[$name]);
-    }
-    
-    public function __toString()
-    {
-        $data = $this->data;
-        $data['key'] = $this->key;
-        $data['value'] = $this->value;
-        
-        return json_encode($data, JSON_FORCE_OBJECT);
     }
     
 }
