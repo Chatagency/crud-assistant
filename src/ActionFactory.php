@@ -14,39 +14,39 @@ use InvalidArgumentException;
 class ActionFactory
 {
     /**
-     * Actions array map
+     * Actions array actions
      * @var array
      */
-    protected $map = [];
+    protected $actions = [];
     
     /**
      * Construct for dependency injection
-     * @param array $map
+     * @param array $actions
      * @return self
      */
-    public function __construct(array $map = null)
+    public function __construct(array $actions = null)
     {
-        $this->map = $map ?? config('crud-assistant.actions');
+        $this->actions = $actions ?? config('crud-assistant.actions');
         
         return $this;
     }
     
     /**
-     * Adds/replaces action path to the map
+     * Adds/replaces action path to the actions
      * @param string $type
      * @param string $path
      * @return self
      */
     public function registerAction(string $type, string $path)
     {
-        $this->map[$type] = $path;
+        $this->actions[$type] = $path;
         
         return $this;
     }
     
     public function getActions()
     {
-        return $this->map;
+        return $this->actions;
     }
     
     /**
@@ -62,7 +62,7 @@ class ActionFactory
             throw new InvalidArgumentException("The ".$type." Action has not been registered or does not exist", 500);
         }
         
-        return $this->map[$type];
+        return $this->actions[$type];
     }
     
     /**
@@ -72,7 +72,7 @@ class ActionFactory
      */
     public function issetAction(string $type)
     {
-        return isset($this->map[$type]);
+        return isset($this->actions[$type]);
     }
     
     /**
