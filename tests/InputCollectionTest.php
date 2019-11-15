@@ -4,7 +4,7 @@ namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\InputCollection;
-use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Inputs\GenericInput;
 use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\DataContainer;
 use InvalidArgumentException;
@@ -29,10 +29,10 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
         
-        $form->add(new TextInput('name', 'Name'));
+        $form->add(new GenericInput('name', 'Name'));
         $this->assertEquals($form->count(), 1);
         
-        $form->add(new TextInput('email', 'Email'));
+        $form->add(new GenericInput('email', 'Email'));
         $this->assertEquals($form->count(), 2);
     }
     
@@ -41,7 +41,7 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
         
-        $form->add(new TextInput('name', 'Name'));
+        $form->add(new GenericInput('name', 'Name'));
         $name = $form->getInput('name');
         $this->assertEquals('name', $name->getName());
         $this->assertCount(1, $form->getInputs());
@@ -60,7 +60,7 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
         
-        $form->add(new TextInput('name', 'Name'));
+        $form->add(new GenericInput('name', 'Name'));
         $this->assertEquals(1, $form->count());
         
         $form->remove('name');
@@ -70,13 +70,13 @@ class InputCollectionTest extends TestCase
     /** @test */
     public function an_action_can_be_executed_from_the_collection()
     {
-        $name = new TextInput('name', 'Name');
+        $name = new GenericInput('name', 'Name');
         $name->setAction(new DataContainer('validation', [
             'required',
             'max:250'
         ]));
         
-        $email = new TextInput('email', 'Email');
+        $email = new GenericInput('email', 'Email');
         $email->setAction(new DataContainer('validation', [
             'required',
             'email'
@@ -91,8 +91,8 @@ class InputCollectionTest extends TestCase
     /** @test */
     public function a_collection_can_contain_inputs_with_or_without_actions()
     {
-        $name = new TextInput('name', 'Name');
-        $email = new TextInput('email', 'Email');
+        $name = new GenericInput('name', 'Name');
+        $email = new GenericInput('email', 'Email');
         $email->setAction(new DataContainer('validation', [
             'required',
             'email'

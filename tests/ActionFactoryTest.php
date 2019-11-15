@@ -20,7 +20,7 @@ class ActionFactoryTest extends TestCase
     }
     
     /** @test */
-    public function the_factory_can_be_instantiated_with_an_array_of_actions()
+    public function the_factory_can_be_creted_with_an_array_of_actions()
     {
         $config = $this->getConfig();
         $factory = new ActionFactory($config);
