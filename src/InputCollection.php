@@ -99,12 +99,28 @@ class InputCollection implements InputCollectionInterface
     }
     
     /**
+     * Returns Input Names
+     * @return array
+     */
+    public function getInputNames()
+    {
+        $names = [];
+        
+        foreach($this->getInputs() as $key => $input){
+            $names[] = $input->getName();
+        }
+        
+        return $names;
+    }
+    
+    /**
      * Execute actions
      * @param string $type
+     * @param $params
      */
-    public function execute(string $type = null)
+    public function execute(string $type, $params = null)
     {
-        return $this->getActionInstace($type)->execute($this->inputsArray);
+        return $this->getActionInstace($type)->execute($this->inputsArray, $params);
     }
     
     /**

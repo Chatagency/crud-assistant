@@ -37,9 +37,9 @@ class ActionFactoryTest extends TestCase
             "sanitaion" => Chatagency\CrudAssistant\Actions\Sanitation::class,
         ]);
         
-        $this->assertFalse($factory->issetAction('validation'));
-        $factory->registerAction('validation', Chatagency\CrudAssistant\Actions\Validation::class);
-        $this->assertTrue($factory->issetAction('validation'));
+        $this->assertFalse($factory->issetAction('laravel-validation'));
+        $factory->registerAction('laravel-validation', Chatagency\CrudAssistant\Actions\LaravelValidation::class);
+        $this->assertTrue($factory->issetAction('laravel-validation'));
         
     }
     

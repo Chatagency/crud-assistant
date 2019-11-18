@@ -7,29 +7,29 @@ use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\DataContainer;
-use Chatagency\CrudAssistant\Actions\Validation;
+use Chatagency\CrudAssistant\Actions\LaravelValidation;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 
-class ValidationTest extends TestCase
+class LaravelValidationTest extends TestCase
 {
     
     /** @test */
     public function a_valition_action_can_receive_multiple_inputs()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer('validation', [
+        $name->setAction(new DataContainer('laravel-validation', [
             'required',
             'max:250'
         ]));
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('validation', [
+        $email->setAction(new DataContainer('laravel-validation', [
             'required',
             'email'
         ]));
         
-        $validation = new Validation();
+        $validation = new LaravelValidation();
         $result = $validation->execute([$name, $email]);
         
         $this->assertCount(2, $result);
@@ -42,7 +42,7 @@ class ValidationTest extends TestCase
     {
         $name = new SelectInput('hobbies', 'Your Hobby');
         $name->setSubElements(['run', 'play pokemon go', 'drink wine']);
-        $name->setAction(new DataContainer('validation', function($input) {
+        $name->setAction(new DataContainer('laravel-validation', function($input) {
             $hobbies = $input->getSubElements();
             return [
                 'required',
@@ -50,7 +50,7 @@ class ValidationTest extends TestCase
             ];
         }));
         
-        $validation = new Validation();
+        $validation = new LaravelValidation();
         $result = $validation->execute([$name]);
         
         $this->assertCount(1, $result);

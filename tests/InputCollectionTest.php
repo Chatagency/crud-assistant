@@ -71,19 +71,19 @@ class InputCollectionTest extends TestCase
     public function an_action_can_be_executed_from_the_collection()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer('validation', [
+        $name->setAction(new DataContainer('laravel-validation', [
             'required',
             'max:250'
         ]));
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('validation', [
+        $email->setAction(new DataContainer('laravel-validation', [
             'required',
             'email'
         ]));
         
         $form = $this->getCollection([$name, $email]);
-        $validation = $form->execute('validation');
+        $validation = $form->execute('laravel-validation');
         
         $this->assertNotNull($validation);
     }
@@ -93,15 +93,29 @@ class InputCollectionTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('validation', [
+        $email->setAction(new DataContainer('laravel-validation', [
             'required',
             'email'
         ]));
         
         $form = $this->getCollection([$name, $email]);
-        $validation = $form->execute('validation');
+        $validation = $form->execute('laravel-validation');
         
         $this->assertNotNull($validation);
+    }
+    
+    /** @test */
+    public function a_collection_can_return_an_array_of_the_input_names()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        
+        $form = $this->getCollection([$name, $email]);
+        $names = $form->getInputNames();
+        
+        $this->assertCount(2, $names);
+        $this->assertEquals($name->getName(), $names[0]);
+        
     }
     
 }

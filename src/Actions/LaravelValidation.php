@@ -8,19 +8,21 @@ use Chatagency\CrudAssistant\DataContainer;
 /**
  * Crud Class
  */
-class Validation implements ActionInterface
+class LaravelValidation implements ActionInterface
 {
     /**
      * Action type
      * @var string
      */
-    protected $type = 'validation';
+    protected $type = 'laravel-validation';
     
     /**
      * Executes action
      * @param  array $inputs
+     * @param DataContainer $params
      */
-    public function execute(array $inputs){
+    public function execute(array $inputs, DataContainer $params = null)
+    {
         
         $rules = [];
         

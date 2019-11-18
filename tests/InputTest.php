@@ -43,9 +43,9 @@ class InputTest extends TestCase
         
         $input = new TextInput('email', 'Email', 1);
         $input->setType('email');
-        $input->setAction(new DataContainer('validation', $validationValue));
+        $input->setAction(new DataContainer('laravel-validation', $validationValue));
         
-        $this->assertEquals($input->getAction('validation')->value, $validationValue);
+        $this->assertEquals($input->getAction('laravel-validation')->value, $validationValue);
         
     }
     

@@ -2,9 +2,10 @@
 
 return [
     "actions" => [
-        "database" => Chatagency\CrudAssistant\Actions\Database::class,
-        "migration" => Chatagency\CrudAssistant\Actions\Migration::class,
-        "sanitaion" => Chatagency\CrudAssistant\Actions\Sanitation::class,
-        "validation" => Chatagency\CrudAssistant\Actions\Validation::class,
+        "sanitation" => Chatagency\CrudAssistant\Actions\Sanitation::class,
+        "laravel-database" => Chatagency\CrudAssistant\Actions\LaravelDatabase::class,
+        "laravel-migration" => Chatagency\CrudAssistant\Actions\LaravelMigration::class,
+        "laravel-model" => Chatagency\CrudAssistant\Actions\LaravelModel::class,
+        "laravel-validation" => Chatagency\CrudAssistant\Actions\LaravelValidation::class,
     ]
 ];
