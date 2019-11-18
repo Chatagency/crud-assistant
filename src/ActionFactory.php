@@ -21,9 +21,9 @@ class ActionFactory
      * @param array $actions
      * @return self
      */
-    public function __construct(array $actions = null)
+    public function __construct(array $actions)
     {
-        $this->actions = $actions ?? config('crud-assistant.actions');
+        $this->actions = $actions;
         
         return $this;
     }

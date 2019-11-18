@@ -3,7 +3,7 @@
 namespace Chatagency\CrudAssistant;
 
 /**
- * Main Crud Assistant class
+ * Crud Assistant Manager
  */
 class CrudAssistant
 {
