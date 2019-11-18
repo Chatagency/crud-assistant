@@ -83,5 +83,29 @@ class SanitationTest extends TestCase
         
     }
     
+    /** @test */
+    public function if_one_of_the_values_of_the_request_is_an_array_the_filter_is_applied_to_all_values()
+    {
+        $name = new TextInput('name', 'Name');
+        $name->setAction(new DataContainer('sanitation', FILTER_SANITIZE_SPECIAL_CHARS));
+        
+        $inputs = [$name];
+        
+        $container = new DataContainer();
+        $container->requestArray = [
+            'name' => [
+                "Victor O'Reilly",
+                "Another G'uy"
+            ],
+            'title' => 'Supervisor'
+        ];
+        
+        $sanitation = new Sanitation();
+        $rules = $sanitation->execute($inputs, $container);
+        
+        $this->assertNotEquals($container->requestArray['name'][0], $rules['name'][0]);
+        $this->assertEquals($container->requestArray['name'][0], $rules['name_raw'][0]);
+    }
+    
     
 }

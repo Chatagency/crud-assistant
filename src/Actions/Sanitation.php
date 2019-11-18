@@ -31,10 +31,10 @@ class Sanitation implements ActionInterface
             if (isset($requestArray[$input])) {
                 if (is_array($rule) && isset($rule['rules']) && is_array($rule['rules'])) {
                     $options = isset($rule['options']) && is_array($rule['options']) ? $rule['options'] : [];
-                    $requestArray[$input.'_raw'] = $requestArray[$input];
                     foreach ($rule['rules'] as $val) {
-                        $requestArray[$input] = filter_var($requestArray[$input], $val, $options);
+                        $requestArray = $this->applyFilter($input, $val, $requestArray, $options);
                     }
+                    $requestArray[$input.'_raw'] = $requestArray[$input];
                 } else {
                     $requestArray = $this->applyFilter($input, $rule, $requestArray);
                 }
@@ -69,12 +69,20 @@ class Sanitation implements ActionInterface
         return $rules;
     }
     
-    public function applyFilter($input, $rule, $requestArray, $options = [])
+    /**
+     * Applies Filter
+     * @param  string $input
+     * @param  string $rule
+     * @param  array  $requestArray
+     * @param  array  $options
+     * @return array
+     */
+    public function applyFilter(string $input, string $rule, array $requestArray, array $options = [])
     {
         if (is_array($requestArray[$input])) {
-            foreach ($requestArray[$input] as $key => $single_input) {
-                $requestArray[$input.'_raw'][$key] = $single_input;
-                $requestArray[$input][$key] = filter_var($single_input, $rule, $options);
+            foreach ($requestArray[$input] as $key => $singleInput) {
+                $requestArray[$input.'_raw'][$key] = $singleInput;
+                $requestArray[$input][$key] = filter_var($singleInput, $rule, $options);
             }
         } else {
             $requestArray[$input.'_raw'] = $requestArray[$input];
