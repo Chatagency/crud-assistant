@@ -18,13 +18,13 @@ class LaravelValidationTest extends TestCase
     public function a_valition_action_can_receive_multiple_inputs()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer('laravel-validation', [
+        $name->setAction(new DataContainer(LaravelValidation::class, [
             'required',
             'max:250'
         ]));
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('laravel-validation', [
+        $email->setAction(new DataContainer(LaravelValidation::class, [
             'required',
             'email'
         ]));
@@ -42,7 +42,7 @@ class LaravelValidationTest extends TestCase
     {
         $name = new SelectInput('hobbies', 'Your Hobby');
         $name->setSubElements(['run', 'play pokemon go', 'drink wine']);
-        $name->setAction(new DataContainer('laravel-validation', function($input) {
+        $name->setAction(new DataContainer(LaravelValidation::class, function($input) {
             $hobbies = $input->getSubElements();
             return [
                 'required',

@@ -7,6 +7,7 @@ use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Actions\LaravelValidation;
 use InvalidArgumentException;
 
 class InputCollectionTest extends TestCase
@@ -71,19 +72,19 @@ class InputCollectionTest extends TestCase
     public function an_action_can_be_executed_from_the_collection()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer('laravel-validation', [
+        $name->setAction(new DataContainer(LaravelValidation::class, [
             'required',
             'max:250'
         ]));
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('laravel-validation', [
+        $email->setAction(new DataContainer(LaravelValidation::class, [
             'required',
             'email'
         ]));
         
         $form = $this->getCollection([$name, $email]);
-        $validation = $form->execute('laravel-validation');
+        $validation = $form->execute(LaravelValidation::class);
         
         $this->assertNotNull($validation);
     }
@@ -93,13 +94,13 @@ class InputCollectionTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('laravel-validation', [
+        $email->setAction(new DataContainer(LaravelValidation::class, [
             'required',
             'email'
         ]));
         
         $form = $this->getCollection([$name, $email]);
-        $validation = $form->execute('laravel-validation');
+        $validation = $form->execute(LaravelValidation::class);
         
         $this->assertNotNull($validation);
     }

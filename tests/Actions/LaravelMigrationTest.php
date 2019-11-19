@@ -19,17 +19,17 @@ class LaravelMigrationTest extends TestCase
         $migration = new LaravelMigration();
         
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer('laravel-migration', [
+        $name->setAction(new DataContainer(LaravelMigration::class, [
             'type' => 'text'
         ]));
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('laravel-migration', [
+        $email->setAction(new DataContainer(LaravelMigration::class, [
             'nullable' => true
         ]));
         
         $description = new TextInput('description', 'Description');
-        $description->setAction(new DataContainer('laravel-migration', [
+        $description->setAction(new DataContainer(LaravelMigration::class, [
             'type' => 'longText'
         ]));
         
@@ -53,12 +53,12 @@ class LaravelMigrationTest extends TestCase
         $migration = new LaravelMigration();
         
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer('laravel-migration', [
+        $name->setAction(new DataContainer(LaravelMigration::class, [
             'type' => 'text'
         ]));
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('laravel-migration', [
+        $email->setAction(new DataContainer(LaravelMigration::class, [
             'nullable' => true
         ]));
         
@@ -72,7 +72,7 @@ class LaravelMigrationTest extends TestCase
         
         $blueprint = new Blueprint('contacts', function(Blueprint $table) use ($collection, $container) {
             $container->table = $table;
-            $collection->execute('laravel-migration', $container);
+            $collection->execute(LaravelMigration::class, $container);
         });
         
         $this->assertCount(2, $blueprint->getColumns());
@@ -107,12 +107,12 @@ class LaravelMigrationTest extends TestCase
         $migration = new LaravelMigration();
         
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer('laravel-migration', [
+        $name->setAction(new DataContainer(LaravelMigration::class, [
             'type' => 'string'
         ]));
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer('laravel-migration', [
+        $email->setAction(new DataContainer(LaravelMigration::class, [
             'type' => function($table, $input){
                 return $table->text($input->getName())->nullable();
             }
@@ -138,7 +138,7 @@ class LaravelMigrationTest extends TestCase
         $migration = new LaravelMigration();
         
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer('laravel-migration', function($table, $input){
+        $name->setAction(new DataContainer(LaravelMigration::class, function($table, $input){
             return $table->string($input->getName())->nullable();
         }));
         
