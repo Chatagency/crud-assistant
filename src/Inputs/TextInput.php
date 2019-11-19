@@ -5,12 +5,12 @@ use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
- * Text Input Class
+ * Text input class
  */
 class TextInput extends Input implements InputInterface
 {
     /**
-     * Input Type
+     * Input type
      */
     protected $type = 'text';
     
