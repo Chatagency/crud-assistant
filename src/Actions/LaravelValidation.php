@@ -25,7 +25,6 @@ class LaravelValidation implements ActionInterface
             $name = $input->getName();
             $fieldValidation = $input
                     ->getAction(static::class)
-                    ->value
                 ?? null;
             
             if($fieldValidation) {

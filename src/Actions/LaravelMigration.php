@@ -27,7 +27,6 @@ class LaravelMigration implements ActionInterface
                 $tableField = null;
                 $migration = $input
                         ->getAction(static::class)
-                        ->value
                     ?? null;
                 $name = $input->getName();
                 

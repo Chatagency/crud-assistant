@@ -182,15 +182,13 @@ abstract class Input
     
     /**
      * Sets Action
-     * @param DataContainerInterface $action
      * @param string $type
+     * @param $value
      * @return self
      */
-    public function setAction(DataContainerInterface $container, string $type = null)
+    public function setAction(string $type, $value)
     {
-        $type = $type ?? $container->key;
-        
-        $this->actions[$type] = $container;
+        $this->actions[$type] = $value;
         
         return $this;
     }
@@ -198,7 +196,6 @@ abstract class Input
     /**
      * Returns action by type
      * @param string $type
-     * @return DataContainerInterface|null
      */
     public function getAction($type)
     {

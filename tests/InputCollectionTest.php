@@ -72,16 +72,16 @@ class InputCollectionTest extends TestCase
     public function an_action_can_be_executed_from_the_collection()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer(LaravelValidation::class, [
+        $name->setAction(LaravelValidation::class, [
             'required',
             'max:250'
-        ]));
+        ]);
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer(LaravelValidation::class, [
+        $email->setAction(LaravelValidation::class, [
             'required',
             'email'
-        ]));
+        ]);
         
         $form = $this->getCollection([$name, $email]);
         $validation = $form->execute(LaravelValidation::class);
@@ -94,10 +94,10 @@ class InputCollectionTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer(LaravelValidation::class, [
+        $email->setAction(LaravelValidation::class, [
             'required',
             'email'
-        ]));
+        ]);
         
         $form = $this->getCollection([$name, $email]);
         $validation = $form->execute(LaravelValidation::class);

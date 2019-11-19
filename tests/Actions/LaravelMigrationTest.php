@@ -19,19 +19,19 @@ class LaravelMigrationTest extends TestCase
         $migration = new LaravelMigration();
         
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer(LaravelMigration::class, [
+        $name->setAction(LaravelMigration::class, [
             'type' => 'text'
-        ]));
+        ]);
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer(LaravelMigration::class, [
+        $email->setAction(LaravelMigration::class, [
             'nullable' => true
-        ]));
+        ]);
         
         $description = new TextInput('description', 'Description');
-        $description->setAction(new DataContainer(LaravelMigration::class, [
+        $description->setAction(LaravelMigration::class, [
             'type' => 'longText'
-        ]));
+        ]);
         
         $inputs = [$name, $email, $description];
         
@@ -53,14 +53,14 @@ class LaravelMigrationTest extends TestCase
         $migration = new LaravelMigration();
         
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer(LaravelMigration::class, [
+        $name->setAction(LaravelMigration::class, [
             'type' => 'text'
-        ]));
+        ]);
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer(LaravelMigration::class, [
+        $email->setAction(LaravelMigration::class, [
             'nullable' => true
-        ]));
+        ]);
         
         $inputs = [$name, $email];
         
@@ -107,16 +107,16 @@ class LaravelMigrationTest extends TestCase
         $migration = new LaravelMigration();
         
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer(LaravelMigration::class, [
+        $name->setAction(LaravelMigration::class, [
             'type' => 'string'
-        ]));
+        ]);
         
         $email = new TextInput('email', 'Email');
-        $email->setAction(new DataContainer(LaravelMigration::class, [
+        $email->setAction(LaravelMigration::class, [
             'type' => function($table, $input){
                 return $table->text($input->getName())->nullable();
             }
-        ]));
+        ]);
         
         $inputs = [$name, $email];
         
@@ -138,9 +138,9 @@ class LaravelMigrationTest extends TestCase
         $migration = new LaravelMigration();
         
         $name = new TextInput('name', 'Name');
-        $name->setAction(new DataContainer(LaravelMigration::class, function($table, $input){
+        $name->setAction(LaravelMigration::class, function($table, $input){
             return $table->string($input->getName())->nullable();
-        }));
+        });
         
         $inputs = [$name];
         

@@ -50,7 +50,6 @@ class Sanitation implements ActionInterface
             
             $sanitation = $input
                     ->getAction(static::class)
-                    ->value
                 ?? null;
             $name = $input->getName();
             
