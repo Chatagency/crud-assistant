@@ -16,20 +16,6 @@ class DataContainer implements DataContainerInterface
     protected $data = [];
     
     /**
-     * Constructor for data injection
-     * @param $key
-     * @param $value
-     * @return self
-     */
-    public function __construct($key = null, $value = null)
-    {
-        $this->key = $key;
-        $this->value = $value;
-        
-        return $this;
-    }
-    
-    /**
      * Returns the data array
      * @return array
      */

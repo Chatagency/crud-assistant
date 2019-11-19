@@ -9,24 +9,6 @@ use PHPUnit\Framework\Error\Notice;
 class DataContainerTest extends TestCase
 {
     /** @test */
-    public function both_key_and_value_have_public_access()
-    {
-        $container = new DataContainer('key1', 'This is the value 1');
-        $this->assertEquals('key1', $container->key);
-        $this->assertEquals('This is the value 1', $container->value);
-    }
-    
-    /** @test */
-    public function both_key_and_value_can_be_set_after_the_container_has_been_instantiated()
-    {
-        $container = new DataContainer();
-        $container->key = 'key2';
-        $container->value = 'This is the value 2';
-        $this->assertEquals('key2', $container->key);
-        $this->assertEquals('This is the value 2', $container->value);
-    }
-    
-    /** @test */
     public function an_arbitrary_key_and_value_pair_can_be_set()
     {
         $container = new DataContainer();
@@ -67,12 +49,12 @@ class DataContainerTest extends TestCase
     /** @test */
     public function all_values_can_be_access_using_the_all_method()
     {
-        $container = new DataContainer('key1', 'This is the value 1');
+        $container = new DataContainer();
         $container->dollars = '$10.00';
         $container->new = 'look';
         $container->hobbies = ['run', 'play pokemon go', 'drink wine'];
         
-        $this->assertCount(5, $container->all());
+        $this->assertCount(3, $container->all());
         
     }
     
