@@ -29,6 +29,10 @@ class DataContainer implements DataContainerInterface
         return $this;
     }
     
+    /**
+     * Returns the data array
+     * @return array
+     */
     public function all()
     {
         return $this->data;
