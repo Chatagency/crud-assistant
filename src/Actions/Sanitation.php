@@ -6,7 +6,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Crud Class
+ * Sanitation class
  */
 class Sanitation implements ActionInterface
 {
