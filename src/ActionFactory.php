@@ -34,9 +34,9 @@ class ActionFactory
      * @param string $path
      * @return self
      */
-    public function registerAction(string $type, string $path)
+    public function registerAction(string $type)
     {
-        $this->actions[$type] = $path;
+        $this->actions[] = $type;
         
         return $this;
     }
@@ -53,13 +53,13 @@ class ActionFactory
      */
     public function getAction(string $type)
     {
-        $type = strtolower($type);
+        $key = array_search($type, $this->actions);
         
-        if(!$this->issetAction($type)){
+        if($key === false){
             throw new InvalidArgumentException("The ".$type." Action has not been registered or does not exist", 500);
         }
         
-        return $this->actions[$type];
+        return $this->actions[$key];
     }
     
     /**
@@ -69,7 +69,7 @@ class ActionFactory
      */
     public function issetAction(string $type)
     {
-        return isset($this->actions[$type]);
+        return array_search($type, $this->actions) !== false ;
     }
     
     /**

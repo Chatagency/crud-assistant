@@ -4,6 +4,7 @@ namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ActionFactory;
+use hatagency\CrudAssistant\Actions\LaravelValidation;
 use InvalidArgumentException;
 
 class ActionFactoryTest extends TestCase
@@ -32,14 +33,14 @@ class ActionFactoryTest extends TestCase
     public function an_action_can_be_registered_after_the_factory_has_been_instantiated()
     {
         $factory = new ActionFactory([
-            "database" => Chatagency\CrudAssistant\Actions\Database::class,
-            "migration" => Chatagency\CrudAssistant\Actions\Migration::class,
-            "sanitaion" => Chatagency\CrudAssistant\Actions\Sanitation::class,
+            Chatagency\CrudAssistant\Actions\Database::class,
+            Chatagency\CrudAssistant\Actions\Migration::class,
+            Chatagency\CrudAssistant\Actions\Sanitation::class,
         ]);
         
-        $this->assertFalse($factory->issetAction('laravel-validation'));
-        $factory->registerAction('laravel-validation', Chatagency\CrudAssistant\Actions\LaravelValidation::class);
-        $this->assertTrue($factory->issetAction('laravel-validation'));
+        $this->assertFalse($factory->issetAction(LaravelValidation::class));
+        $factory->registerAction(LaravelValidation::class);
+        $this->assertTrue($factory->issetAction(LaravelValidation::class));
         
     }
     
