@@ -150,6 +150,15 @@ abstract class Input
     }
     
     /**
+     * Returns input version
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    /**
      * Returns Input attributes
      * @return string|Closure
      */

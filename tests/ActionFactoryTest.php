@@ -4,7 +4,7 @@ namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ActionFactory;
-use hatagency\CrudAssistant\Actions\LaravelValidation;
+use hatagency\CrudAssistant\Actions\LaravelValidationRules;
 use InvalidArgumentException;
 
 class ActionFactoryTest extends TestCase
@@ -38,9 +38,9 @@ class ActionFactoryTest extends TestCase
             Chatagency\CrudAssistant\Actions\Sanitation::class,
         ]);
         
-        $this->assertFalse($factory->issetAction(LaravelValidation::class));
-        $factory->registerAction(LaravelValidation::class);
-        $this->assertTrue($factory->issetAction(LaravelValidation::class));
+        $this->assertFalse($factory->issetAction(LaravelValidationRules::class));
+        $factory->registerAction(LaravelValidationRules::class);
+        $this->assertTrue($factory->issetAction(LaravelValidationRules::class));
         
     }
     

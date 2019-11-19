@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 
 class InputTest extends TestCase
 {
@@ -43,9 +44,9 @@ class InputTest extends TestCase
         
         $input = new TextInput('email', 'Email', 1);
         $input->setType('email');
-        $input->setAction(LaravelValidation::class, $validationValue);
+        $input->setAction(LaravelValidationRules::class, $validationValue);
         
-        $this->assertEquals($input->getAction(LaravelValidation::class), $validationValue);
+        $this->assertEquals($input->getAction(LaravelValidationRules::class), $validationValue);
         
     }
     

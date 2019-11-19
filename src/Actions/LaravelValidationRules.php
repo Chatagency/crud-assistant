@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 /**
  * Crud Class
  */
-class LaravelValidation implements ActionInterface
+class LaravelValidationRules implements ActionInterface
 {
     /**
      * Executes action
