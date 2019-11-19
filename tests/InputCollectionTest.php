@@ -86,7 +86,8 @@ class InputCollectionTest extends TestCase
         $form = $this->getCollection([$name, $email]);
         $validation = $form->execute(LaravelValidationRules::class);
         
-        $this->assertNotNull($validation);
+        $this->assertCount(2, $validation);
+        $this->assertNotFalse($validation);
     }
     
     /** @test */
@@ -102,7 +103,8 @@ class InputCollectionTest extends TestCase
         $form = $this->getCollection([$name, $email]);
         $validation = $form->execute(LaravelValidationRules::class);
         
-        $this->assertNotNull($validation);
+        $this->assertCount(1, $validation);
+        $this->assertNotFalse($validation);
     }
     
     /** @test */
