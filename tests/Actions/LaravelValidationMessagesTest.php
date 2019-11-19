@@ -36,7 +36,7 @@ class LaravelValidationMessagesTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
         $name->setAction(LaravelValidationMessages::class, function($messages, $input) {
-            $messages['name.required'] = 'The name is required';
+            $messages['name.required'] = 'The '.$input->getLabel().' is required';
             return $messages;
         });
         

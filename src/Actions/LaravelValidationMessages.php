@@ -29,7 +29,7 @@ class LaravelValidationMessages implements ActionInterface
             
             if($inputMessages) {
                 if(is_callable($inputMessages)){
-                    $messages = $inputMessages($messages, $inputMessages, $input);
+                    $messages = $inputMessages($messages, $input);
                 }
                 else {
                     $messages = $this->createArray($messages, $inputMessages);
