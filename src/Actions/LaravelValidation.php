@@ -3,7 +3,7 @@
 namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
-use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
  * Crud Class
@@ -13,9 +13,9 @@ class LaravelValidation implements ActionInterface
     /**
      * Executes action
      * @param  array $inputs
-     * @param DataContainer $params
+     * @param DataContainerInterface $params
      */
-    public function execute(array $inputs, DataContainer $params = null)
+    public function execute(array $inputs, DataContainerInterface $params = null)
     {
         
         $rules = [];

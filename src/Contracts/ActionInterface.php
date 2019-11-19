@@ -2,7 +2,7 @@
 
 namespace Chatagency\CrudAssistant\Contracts;
 
-use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
  * Action Interface
@@ -12,7 +12,7 @@ interface ActionInterface
     /**
      * Executes action
      * @param  array $inputs
-     * @param DataContainer $params
+     * @param DataContainerInterface $params
      */
-    public function execute(array $inputs, DataContainer $params = null);
+    public function execute(array $inputs, DataContainerInterface $params = null);
 }
