@@ -11,12 +11,6 @@ use Chatagency\CrudAssistant\DataContainer;
 class LaravelValidation implements ActionInterface
 {
     /**
-     * Action type
-     * @var string
-     */
-    protected $type = 'laravel-validation';
-    
-    /**
      * Executes action
      * @param  array $inputs
      * @param DataContainer $params
@@ -30,7 +24,7 @@ class LaravelValidation implements ActionInterface
             
             $name = $input->getName();
             $fieldValidation = $input
-                    ->getAction($this->type)
+                    ->getAction(static::class)
                     ->value
                 ?? null;
             

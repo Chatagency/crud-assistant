@@ -10,13 +10,6 @@ use Chatagency\CrudAssistant\DataContainer;
  */
 class Sanitation implements ActionInterface
 {
-    
-    /**
-     * Action type
-     * @var string
-     */
-    protected $type = 'sanitation';
-    
     /**
      * Executes action
      * @param  array $inputs
@@ -56,7 +49,7 @@ class Sanitation implements ActionInterface
         foreach ($inputs as $key => $input) {
             
             $sanitation = $input
-                    ->getAction($this->type)
+                    ->getAction(static::class)
                     ->value
                 ?? null;
             $name = $input->getName();

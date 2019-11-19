@@ -41,25 +41,13 @@ class ActionFactory
         return $this;
     }
     
+    /**
+     * Returns actions array
+     * @return array
+     */
     public function getActions()
     {
         return $this->actions;
-    }
-    
-    /**
-     * Returns a specific action class name
-     * @param string $type
-     * @return string
-     */
-    public function getAction(string $type)
-    {
-        $key = array_search($type, $this->actions);
-        
-        if($key === false){
-            throw new InvalidArgumentException("The ".$type." Action has not been registered or does not exist", 500);
-        }
-        
-        return $this->actions[$key];
     }
     
     /**
@@ -83,6 +71,22 @@ class ActionFactory
         $action = $this->getAction($type);
         return new $action;
         
+    }
+    
+    /**
+     * Returns a specific action class name
+     * @param string $type
+     * @return string
+     */
+    public function getAction(string $type)
+    {
+        $key = array_search($type, $this->actions);
+        
+        if($key === false){
+            throw new InvalidArgumentException("The ".$type." Action has not been registered or does not exist", 500);
+        }
+        
+        return $this->actions[$key];
     }
     
     

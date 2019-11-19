@@ -11,12 +11,6 @@ use Chatagency\CrudAssistant\DataContainer;
 class LaravelMigration implements ActionInterface
 {
     /**
-     * Action type
-     * @var string
-     */
-    protected $type = 'laravel-migration';
-    
-    /**
      * Executes action
      * @param  array $inputs
      * @param DataContainer $params
@@ -32,7 +26,7 @@ class LaravelMigration implements ActionInterface
                 
                 $tableField = null;
                 $migration = $input
-                        ->getAction($this->type)
+                        ->getAction(static::class)
                         ->value
                     ?? null;
                 $name = $input->getName();
