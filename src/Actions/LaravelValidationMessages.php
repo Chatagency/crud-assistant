@@ -32,18 +32,11 @@ class LaravelValidationMessages implements ActionInterface
                     $messages = $inputMessages($messages, $input);
                 }
                 else {
-                    $messages = $this->createArray($messages, $inputMessages);
+                    foreach ($inputMessages as $keyMessage => $message) {
+                        $messages[$keyMessage] = $message;
+                    }
                 }
             }
-        }
-        
-        return $messages;
-    }
-    
-    public function createArray($messages, $inputMessages)
-    {
-        foreach ($inputMessages as $keyMessage => $message) {
-            $messages[$keyMessage] = $message;
         }
         return $messages;
     }
