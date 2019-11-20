@@ -59,7 +59,7 @@ class DataContainer implements DataContainerInterface
      * @param string $name
      * @return boolean
      */
-    public function __isset($name)
+    public function __isset(string $name)
     {
         return isset($this->data[$name]);
     }
