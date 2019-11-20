@@ -28,17 +28,12 @@ class LaravelValidationLabels implements ActionInterface
                 ?? null;
             
             if($inputLabels) {
-                $lables = [];
-                foreach ($inputLabels as $key => $input) {
-                    if(is_callable($inputLabels)){
-                        $labels = $inputLabels($labels, $inputLabels, $input);
-                    }
-                    else {
-                        $lables[$key] = $input;
-                    }
+                if(is_callable($inputLabels)){
+                    $labels = $inputLabels($labels, $input);
                 }
-                
-                return $lables;
+                else {
+                    $labels[$name] = $inputLabels;
+                }
             }
         }
         
