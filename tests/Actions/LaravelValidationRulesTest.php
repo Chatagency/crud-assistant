@@ -38,7 +38,7 @@ class LaravelValidationRulesTest extends TestCase
     }
     
     /** @test */
-    public function a_closure_can_be_passed_as_a_value_instead_of_an_array()
+    public function a_closure_can_be_passed_as_a_value_instead_of_an_array_to_the_validation_rules()
     {
         $name = new SelectInput('hobbies', 'Your Hobby');
         $name->setSubElements(['run', 'play pokemon go', 'drink wine']);

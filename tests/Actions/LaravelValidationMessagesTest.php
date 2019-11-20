@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Actions\LaravelValidationMessages;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\DataContainer;
 
 class LaravelValidationMessagesTest extends TestCase
@@ -32,7 +31,7 @@ class LaravelValidationMessagesTest extends TestCase
     }
     
     /** @test */
-    public function a_closure_can_be_passed_as_a_value_instead_of_an_array()
+    public function a_closure_can_be_passed_as_a_value_instead_of_an_array_to_the_validation_messages()
     {
         $name = new TextInput('name', 'Name');
         $name->setAction(LaravelValidationMessages::class, function($messages, $input) {
