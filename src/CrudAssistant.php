@@ -2,7 +2,13 @@
 
 namespace Chatagency\CrudAssistant;
 
+/**
+ * Crud Assistant Manager
+ */
 class CrudAssistant
 {
-    // Build your next great package.
+    public function __constructor()
+    {
+        
+    }
 }
