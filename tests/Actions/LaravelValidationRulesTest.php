@@ -15,7 +15,7 @@ class LaravelValidationRulesTest extends TestCase
 {
     
     /** @test */
-    public function a_validation_rules_action_can_applied_to_multiple_inputs()
+    public function a_validation_rules_action_can_be_executed_using_an_array_of_inputs()
     {
         $name = new TextInput('name', 'Name');
         $name->setAction(LaravelValidationRules::class, [

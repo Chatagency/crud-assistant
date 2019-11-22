@@ -21,7 +21,7 @@ class ActionFactoryTest extends TestCase
     }
     
     /** @test */
-    public function the_factory_can_be_creted_with_an_array_of_actions()
+    public function the_factory_must_be_created_with_an_array_of_actions()
     {
         $config = $this->getConfig();
         $factory = new ActionFactory($config);
@@ -45,7 +45,7 @@ class ActionFactoryTest extends TestCase
     }
     
     /** @test */
-    public function an_exeption_is_thrown_if_the_action_has_not_been_registed_or_does_not_exist()
+    public function an_exception_is_thrown_if_the_action_does_not_exist_when_get_action_is_called()
     {
         $this->expectException(InvalidArgumentException::class);
         $config = $this->getConfig();

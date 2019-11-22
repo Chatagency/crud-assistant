@@ -38,7 +38,7 @@ class InputCollectionTest extends TestCase
     }
     
     /** @test */
-    public function the_inputs_are_still_accessible()
+    public function inputs_can_be_accessed_using_get_input()
     {
         $form = $this->getCollection();
         
@@ -69,7 +69,7 @@ class InputCollectionTest extends TestCase
     }
     
     /** @test */
-    public function an_action_can_be_executed_from_the_collection()
+    public function an_action_can_be_executed_from_a_collection()
     {
         $name = new TextInput('name', 'Name');
         $name->setAction(LaravelValidationRules::class, [

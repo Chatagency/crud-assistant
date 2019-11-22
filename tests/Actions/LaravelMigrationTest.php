@@ -13,7 +13,7 @@ use Illuminate\Database\Schema\Blueprint;
 class LaravelMigrationTest extends TestCase
 {
     /** @test */
-    public function migrations_can_be_created_from_inputs()
+    public function a_migration_action_can_be_executed_using_an_array_of_inputs()
     {
         
         $migration = new LaravelMigration();
@@ -48,7 +48,7 @@ class LaravelMigrationTest extends TestCase
     }
     
     /** @test */
-    public function migrations_can_be_created_from_a_collection()
+    public function a_migration_action_can_be_created_using_a_collection()
     {
         $migration = new LaravelMigration();
         
