@@ -1,6 +1,7 @@
 <?php
 
 namespace Chatagency\CrudAssistant\Contracts;
+use Chatagency\CrudAssistant\ActionFactory;
 
 /**
  * Input Collection Interface
