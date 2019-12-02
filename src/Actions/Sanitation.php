@@ -6,7 +6,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Sanitation class
+ * Sanitation action class
  */
 class Sanitation implements ActionInterface
 {
@@ -42,7 +42,7 @@ class Sanitation implements ActionInterface
      * @param  array  $inputs
      * @return array
      */
-    public function rules(array $inputs){
+    protected function rules(array $inputs){
         
         $rules = [];
         
@@ -69,7 +69,7 @@ class Sanitation implements ActionInterface
      * @param  array  $options
      * @return array
      */
-    public function applyFilter(string $input, string $rule, array $requestArray, array $options = [])
+    protected function applyFilter(string $input, string $rule, array $requestArray, array $options = [])
     {
         if (is_array($requestArray[$input])) {
             foreach ($requestArray[$input] as $key => $singleInput) {
