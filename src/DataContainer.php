@@ -16,6 +16,15 @@ class DataContainer implements DataContainerInterface
     protected $data = [];
     
     /**
+     * Construct can receive a data array
+     * @param array $data
+     */
+    public function __construct(array $data = [])
+    {
+        $this->data = $data;
+    }
+    
+    /**
      * Returns the data array
      * @return array
      */
