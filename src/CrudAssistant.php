@@ -11,12 +11,17 @@ class CrudAssistant
 {
     protected $collections = [];
     
+    public function __construct()
+    {
+        return $this;
+    }
+    
     public static function make()
     {
         return new static();
     }
     
-    public function createColletion($name, array $inputs = [])
+    public function createCollection($name, array $inputs = [])
     {
         $this->collections[$name] = new InputCollection($inputs, new ActionFactory($this->getActionsConfig()));
         
