@@ -6,7 +6,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Laravel validation rules class
+ * Laravel validation rules action class
  */
 class LaravelValidationRules implements ActionInterface
 {

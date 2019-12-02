@@ -6,7 +6,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Laravel migration class
+ * Laravel migration action class
  */
 class LaravelMigration implements ActionInterface
 {
