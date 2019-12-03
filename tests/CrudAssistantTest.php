@@ -45,7 +45,7 @@ class CrudAssistantTest extends TestCase
     public function a_collection_can_be_created_using_the_crud_assistant_manager()
     {
         $manager = new CrudAssistant();
-        $manager->createColletion('contactForm');
+        $manager->createCollection('contactForm');
         
         $this->assertInstanceOf(InputCollectionInterface::class, $manager->contactForm);
         
@@ -55,7 +55,7 @@ class CrudAssistantTest extends TestCase
     public function the_collection_can_be_accessed_directly_using_the_name_assigned_to_it()
     {
         $manager = new CrudAssistant();
-        $manager->createColletion('contactForm');
+        $manager->createCollection('contactForm');
         $manager->contactForm->add(new TextInput('email'));
         
         $this->assertInstanceOf(InputInterface::class, $manager->contactForm->getInput('email'));
