@@ -23,6 +23,7 @@ class LaravelValidationLabels implements ActionInterface
         foreach ($inputs as $input) {
             
             $name = $input->getName();
+            $label = $input->getLabel();
             $inputLabels = $input
                     ->getAction(static::class)
                 ?? null;
@@ -34,6 +35,8 @@ class LaravelValidationLabels implements ActionInterface
                 else {
                     $labels[$name] = $inputLabels;
                 }
+            } else {
+                $labels[$name] = $label;
             }
         }
         

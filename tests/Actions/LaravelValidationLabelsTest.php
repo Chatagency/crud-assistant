@@ -40,4 +40,16 @@ class LaravelValidationLabelsTest extends TestCase
         
         $this->assertCount(1, $result);
     }
+    
+    /** @test */
+    public function when_an_input_has_no_action_the_input_label_is_used()
+    {
+        $name = new TextInput('name', 'Name');
+
+        $validation = new LaravelValidationLabels();
+        $result = $validation->execute([$name]);
+        $this->assertCount(1, $result);
+        $this->assertEquals('Name', $result['name']);
+        
+    }
 }
