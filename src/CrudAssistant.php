@@ -1,53 +1,95 @@
 <?php
 
 namespace Chatagency\CrudAssistant;
+use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\ActionFactory;
+use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
+use BadMethodCallException;
 
 /**
  * Crud Assistant Manager
  */
 class CrudAssistant
 {
-    protected $collections = [];
+    /**
+     * Action factory
+     * @var ActionFactory
+     */
+    protected $actionFactory;
     
-    public function __construct()
+    /**
+     * Input collection
+     * @var InputCollection
+     */
+    protected $collection;
+    
+    public function __construct(array $inputs = [])
     {
-        return $this;
+        $this->actionFactory = new ActionFactory($this->getActionsConfig());
+        $this->collection = new InputCollection($inputs, $this->actionFactory);
     }
     
-    public static function make()
+    public static function make(array $inputs = [])
     {
-        return new static();
+        return new static($inputs);
     }
     
-    public function createCollection($name, array $inputs = [])
+    public function addInput(Input $input)
     {
-        $this->collections[$name] = new InputCollection($inputs, new ActionFactory($this->getActionsConfig()));
-        
-        return $this;
+        $this->collection->add($input);
     }
     
-    public function __get(string $name)
+    public function getCollection()
     {
-        if(!isset($this->collections[$name])){
-            $trace = debug_backtrace();
-            trigger_error(
-                'Undefined property via __get(): ' . $name .
-                ' in ' . $trace[0]['file'] .
-                ' on line ' . $trace[0]['line'],
-                E_USER_NOTICE
-            );
+        return $this->collection;
+    }
+    
+    public function __call($name, $arguments)
+    {
+        /**
+         * Check if is action
+         */
+        $action = $this->getActionBase($name);
+        if($action) {
+            
+            if(!$arguments instanceof DataContainer){
+                $arguments = new DataContainer($arguments[0]);
+            }
+            
+            return $this->collection->execute($action, $arguments);
         }
         
-        return $this->collections[$name];
+        /**
+         * Check if is a collection method
+         */
+        if(method_exists($this->collection, $name)) {
+            
+            $object_array = [$this->collection, $name];
+            return call_user_func_array($object_array, $arguments);
+        }
         
+        throw new BadMethodCallException('Method ' . $name . ' not exists in '. __CLASS__);
+        
+    }
+    
+    protected function getActionBase(string $action)
+    {
+        $actions = $this->actionFactory->getActions();
+        
+        foreach ($actions as $key => $value) {
+            $base = substr(strrchr($value, "\\"), 1);
+            if($base == ucfirst($action)){
+                return $value;
+            }
+        }
+        
+        return null;
     }
     
     protected function getActionsConfig()
     {
         return config('crud-assistant.actions');
     }
-
     
 }

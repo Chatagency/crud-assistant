@@ -7,7 +7,10 @@ use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\Actions\Sanitation;
+use Chatagency\CrudAssistant\Actions\LaravelValidationLabels;
 use PHPUnit\Framework\Error\Notice;
+use BadMethodCallException;
 
 class CrudAssistantTest extends TestCase
 {
@@ -42,41 +45,72 @@ class CrudAssistantTest extends TestCase
     }
     
     /** @test */
-    public function a_collection_can_be_created_using_the_crud_assistant_manager()
-    {
-        $manager = new CrudAssistant();
-        $manager->createCollection('contactForm');
-        
-        $this->assertInstanceOf(InputCollectionInterface::class, $manager->contactForm);
-        
-    }
-    
-    /** @test */
-    public function the_collection_can_be_accessed_directly_using_the_name_assigned_to_it()
-    {
-        $manager = new CrudAssistant();
-        $manager->createCollection('contactForm');
-        $manager->contactForm->add(new TextInput('email'));
-        
-        $this->assertInstanceOf(InputInterface::class, $manager->contactForm->getInput('email'));
-        
-    }
-    
-    /** @test */
-    public function if_a_non_existing_collection_is_accessed_a_php_notice_is_triggered()
-    {
-        $manager = new CrudAssistant();
-        
-        $this->expectException(Notice::class);
-        $manager->contactForm;
-    }
-    
-    /** @test */
-    public function an_crud_assistant_instance_can_be_created_statically()
+    public function a_crud_assistant_instance_can_be_created_statically()
     {
         $manager = CrudAssistant::make();
         
         $this->assertInstanceOf(CrudAssistant::class, $manager);
+    }
+    
+    /** @test */
+    public function an_array_of_inputs_instances_can_be_passed_to_the_constructor()
+    {
+        $inputs = [
+            new TextInput('name'),
+            new TextInput('email'),
+        ];
+        
+        $manager = new CrudAssistant($inputs);
+        
+        $this->assertEquals(2, $manager->getCollection()->count());
+    }
+    
+    /** @test */
+    public function an_input_can_be_added_after_the_manager_is_created()
+    {
+        $manager = new CrudAssistant();
+        $manager->addInput(new TextInput('name'));
+        
+        $this->assertEquals(1, $manager->getCollection()->count());
+    }
+    
+    /** @test */
+    public function actions_can_be_excecuted_using_the_action_class_base_name()
+    {
+        $name = new TextInput('name');
+        $name->setAction(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        
+        $manager = new CrudAssistant([$name]);
+        $labels = $manager->sanitation([
+            'requestArray' => [
+                'name' => "John Smith"
+            ]
+        ]);
+        
+        $this->assertEquals("John Smith", $labels['name']);
+    }
+    
+    /** @test */
+    public function a_method_from_the_collection_can_also_be_called_directly_on_the_manager()
+    {
+        $manager = new CrudAssistant([
+            new TextInput('name')
+        ]);
+        
+        $this->assertCount(1, $manager->getInputs());
+    }
+    
+    /** @test */
+    public function if_an_action_or_method_does_not_exists_an_exception_is_thrown()
+    {
+        $manager = new CrudAssistant([
+            new TextInput('name')
+        ]);
+        
+        $this->expectException(BadMethodCallException::class);
+        
+        $manager->randomMetod();
+        
     }
     
 }
