@@ -66,15 +66,6 @@ class CrudAssistantTest extends TestCase
     }
     
     /** @test */
-    public function an_input_can_be_added_after_the_manager_is_created()
-    {
-        $manager = new CrudAssistant();
-        $manager->addInput(new TextInput('name'));
-        
-        $this->assertEquals(1, $manager->getCollection()->count());
-    }
-    
-    /** @test */
     public function actions_can_be_excecuted_using_the_action_class_base_name()
     {
         $name = new TextInput('name');
@@ -98,6 +89,7 @@ class CrudAssistantTest extends TestCase
         ]);
         
         $this->assertCount(1, $manager->getInputs());
+        $this->assertEquals(1, $manager->count());
     }
     
     /** @test */

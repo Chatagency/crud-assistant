@@ -1,6 +1,7 @@
 <?php
 
 namespace Chatagency\CrudAssistant;
+
 use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\DataContainer;
@@ -24,27 +25,45 @@ class CrudAssistant
      */
     protected $collection;
     
+    /**
+     * Construct
+     * @param array $inputs
+     * @return self
+     */
     public function __construct(array $inputs = [])
     {
         $this->actionFactory = new ActionFactory($this->getActionsConfig());
         $this->collection = new InputCollection($inputs, $this->actionFactory);
+        
+        return $this;
     }
     
+    /**
+     * Creates new instance of this class
+     * @param  array  $inputs [description]
+     * @return self
+     */
     public static function make(array $inputs = [])
     {
         return new static($inputs);
     }
     
-    public function addInput(Input $input)
-    {
-        $this->collection->add($input);
-    }
-    
+    /**
+     * Returns input collection
+     * @return InputCollection
+     */
     public function getCollection()
     {
         return $this->collection;
     }
     
+    /**
+     * Magic call method to tide class to collection and actions
+     * @param $name
+     * @param $arguments [description]
+     * @return mixed
+     * @throws BadMethodCallException
+     */
     public function __call($name, $arguments)
     {
         /**
@@ -73,6 +92,11 @@ class CrudAssistant
         
     }
     
+    /**
+     * Returns action class name without path
+     * @param string $action
+     * @return string|null
+     */
     protected function getActionBase(string $action)
     {
         $actions = $this->actionFactory->getActions();
@@ -87,6 +111,10 @@ class CrudAssistant
         return null;
     }
     
+    /**
+     * Returns config array
+     * @return array
+     */
     protected function getActionsConfig()
     {
         return config('crud-assistant.actions');
