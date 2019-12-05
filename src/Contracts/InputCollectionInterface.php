@@ -12,8 +12,6 @@ interface InputCollectionInterface
     /**
      * Constructor.
      *
-     * @param array  $inputsArray
-     *
      * @param ActionFactory $actionFactory
      *
      * @return self
@@ -23,8 +21,6 @@ interface InputCollectionInterface
     /**
      * Adds input to the array.
      *
-     * @param InputInterface $input
-     *
      * @param string $key
      *
      * @return self
@@ -33,8 +29,6 @@ interface InputCollectionInterface
 
     /**
      * Removes input from the array if exists.
-     *
-     * @param string $key
      *
      * @return self
      */
@@ -49,8 +43,6 @@ interface InputCollectionInterface
 
     /**
      * Returns inputs array.
-     *
-     * @param string $key
      *
      * @return InputInterface
      *
@@ -75,12 +67,9 @@ interface InputCollectionInterface
     /**
      * Execute actions.
      *
-     * @param string $type
-     *
      * @param $params
      *
      * @return mixed
      */
     public function execute(string $type, $params = null);
-
 }

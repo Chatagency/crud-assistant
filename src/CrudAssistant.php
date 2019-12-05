@@ -26,8 +26,6 @@ class CrudAssistant
     /**
      * Construct.
      *
-     * @param array $inputs
-     *
      * @return self
      */
     public function __construct(array $inputs = [])
@@ -40,8 +38,6 @@ class CrudAssistant
 
     /**
      * Creates new instance of this class.
-     *
-     * @param array $inputs
      *
      * @return self
      */
@@ -65,7 +61,6 @@ class CrudAssistant
      * to collection and actions.
      *
      * @param $name
-     *
      * @param $arguments
      *
      * @return mixed
@@ -108,8 +103,6 @@ class CrudAssistant
 
     /**
      * Returns action class name without path.
-     *
-     * @param string $action
      *
      * @return string|null
      */

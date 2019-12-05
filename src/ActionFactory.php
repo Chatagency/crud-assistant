@@ -2,8 +2,8 @@
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterace;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use InvalidArgumentException;
 
 /**
@@ -21,8 +21,6 @@ class ActionFactory implements ActionFactoryInterace
     /**
      * Construct for dependency injection.
      *
-     * @param array $actions
-     *
      * @return self
      */
     public function __construct(array $actions)
@@ -34,8 +32,6 @@ class ActionFactory implements ActionFactoryInterace
 
     /**
      * Adds/replaces action path to the actions.
-     *
-     * @param string $type
      *
      * @return self
      */
@@ -59,8 +55,6 @@ class ActionFactory implements ActionFactoryInterace
     /**
      * Checks if an action has been registered.
      *
-     * @param string $type
-     *
      * @return bool
      */
     public function issetAction(string $type)
@@ -70,8 +64,6 @@ class ActionFactory implements ActionFactoryInterace
 
     /**
      * Returns action instance.
-     *
-     * @param string $type
      *
      * @return ActionInterface
      *
@@ -86,8 +78,6 @@ class ActionFactory implements ActionFactoryInterace
 
     /**
      * Returns a specific action class name.
-     *
-     * @param string $type
      *
      * @return string
      */

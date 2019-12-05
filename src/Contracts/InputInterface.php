@@ -11,10 +11,7 @@ interface InputInterface
      * Class construct.
      *
      * @param string $label
-     *
      * @param string $label
-     *
-     * @param int $version
      *
      * @return self
      */
@@ -23,16 +20,12 @@ interface InputInterface
     /**
      * Sets input label.
      *
-     * @param string $label
-     *
      * @return self
      */
     public function setLabel(string $label);
 
     /**
      * Sets input attributes.
-     *
-     * @param string $name
      *
      * @param string $value
      */
@@ -41,8 +34,6 @@ interface InputInterface
     /**
      * Sets input sub elements.
      *
-     * @param array $subElements
-     *
      * @return self
      */
     public function setSubElements(array $subElements);
@@ -50,16 +41,12 @@ interface InputInterface
     /**
      * Sets input version.
      *
-     * @param int $version
-     *
      * @return self
      */
     public function setVersion(int $version);
 
     /**
      * Sets input type.
-     *
-     * @param string $type
      *
      * @return self
      */

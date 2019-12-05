@@ -8,8 +8,8 @@ use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Illuminate\Database\Schema\Blueprint;
-use PHPUnit\Framework\TestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 class LaravelMigrationTest extends TestCase
 {
@@ -150,7 +150,7 @@ class LaravelMigrationTest extends TestCase
 
         $this->assertCount(1, $blueprint->getColumns());
     }
-    
+
     /** @test */
     public function if_a_param_is_missing_an_exception_is_thrown()
     {
@@ -164,16 +164,15 @@ class LaravelMigrationTest extends TestCase
 
         $container = new DataContainer();
         $container->version = 1;
-        
+
         $this->expectException(InvalidArgumentException::class);
 
         $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration, $container) {
-            /**
+            /*
              * Table is not passed
              */
             // $container->table = $table;
             $migration->execute($inputs, $container);
         });
     }
-    
 }

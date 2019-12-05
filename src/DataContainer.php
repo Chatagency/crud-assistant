@@ -18,8 +18,6 @@ class DataContainer implements DataContainerInterface
 
     /**
      * Construct can receive a data array.
-     *
-     * @param array $data
      */
     public function __construct(array $data = [])
     {
@@ -38,8 +36,6 @@ class DataContainer implements DataContainerInterface
 
     /**
      * Magic set method.
-     *
-     * @param string $name
      */
     public function __get(string $name)
     {
@@ -58,8 +54,6 @@ class DataContainer implements DataContainerInterface
 
     /**
      * Magic set method.
-     *
-     * @param string $name
      *
      * @param $value
      */
@@ -80,8 +74,6 @@ class DataContainer implements DataContainerInterface
 
     /**
      * Magic unset method.
-     *
-     * @param string $name
      */
     public function __unset(string $name)
     {

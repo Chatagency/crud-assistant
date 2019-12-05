@@ -9,8 +9,6 @@ interface DataContainerInterface
 {
     /**
      * Construct can receive a data array.
-     *
-     * @param array $data
      */
     public function __construct(array $data = []);
 
@@ -23,15 +21,11 @@ interface DataContainerInterface
 
     /**
      * Magic set method.
-     *
-     * @param string $name
      */
     public function __get(string $name);
 
     /**
      * Magic set method.
-     *
-     * @param string $name
      *
      * @param $value
      */
@@ -46,9 +40,6 @@ interface DataContainerInterface
 
     /**
      * Magic unset method.
-     *
-     * @param string $name
      */
     public function __unset(string $name);
-    
 }
