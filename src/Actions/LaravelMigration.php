@@ -18,7 +18,7 @@ class LaravelMigration extends Action implements ActionInterface
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
-        $this->paramsExist($params, ['table', 'version']);
+        $this->checkParams($params, ['table', 'version']);
 
         $table = $params->table;
         $version = $params->version;
