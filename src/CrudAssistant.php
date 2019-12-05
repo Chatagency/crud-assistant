@@ -40,7 +40,7 @@ class CrudAssistant
     
     /**
      * Creates new instance of this class
-     * @param  array  $inputs [description]
+     * @param  array  $inputs
      * @return self
      */
     public static function make(array $inputs = [])
@@ -58,29 +58,38 @@ class CrudAssistant
     }
     
     /**
-     * Magic call method to tide class to collection and actions
+     * Magic call method class tied
+     * to collection and actions
      * @param $name
-     * @param $arguments [description]
+     * @param $arguments
      * @return mixed
      * @throws BadMethodCallException
      */
     public function __call($name, $arguments)
     {
         /**
-         * Check if is action
+         * Check if action
          */
         $action = $this->getActionBase($name);
+        
         if($action) {
             
-            if(!$arguments instanceof DataContainer){
-                $arguments = new DataContainer($arguments[0]);
+            $params = !empty($arguments) ? $arguments[0] : [];
+            
+            /**
+             * A data container must be passed
+             * as the second param to the
+             * execute method
+             */
+            if(!$params instanceof DataContainer){
+                $params = new DataContainer($params);
             }
             
-            return $this->collection->execute($action, $arguments);
+            return $this->collection->execute($action, $params);
         }
         
         /**
-         * Check if is a collection method
+         * Check if ollection method
          */
         if(method_exists($this->collection, $name)) {
             
