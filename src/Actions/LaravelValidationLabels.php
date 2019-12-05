@@ -2,13 +2,14 @@
 
 namespace Chatagency\CrudAssistant\Actions;
 
+use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
  * Laravel validation labels action class.
  */
-class LaravelValidationLabels implements ActionInterface
+class LaravelValidationLabels extends Action implements ActionInterface
 {
     /**
      * Executes action.

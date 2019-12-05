@@ -2,8 +2,6 @@
 
 namespace Chatagency\CrudAssistant;
 
-use Closure;
-
 /**
  * Input Base Class.
  */
@@ -60,10 +58,7 @@ abstract class Input
      * Class construct.
      *
      * @param string $label
-     *
      * @param string $label
-     *
-     * @param int $version
      *
      * @return self
      */
@@ -79,8 +74,6 @@ abstract class Input
     /**
      * Sets input label.
      *
-     * @param string $label
-     *
      * @return self
      */
     public function setLabel(string $label)
@@ -92,8 +85,6 @@ abstract class Input
 
     /**
      * Sets input attributes.
-     *
-     * @param string $name
      *
      * @param string $value
      */
@@ -107,8 +98,6 @@ abstract class Input
     /**
      * Sets input sub elements.
      *
-     * @param array $subElements
-     *
      * @return self
      */
     public function setSubElements(array $subElements)
@@ -120,8 +109,6 @@ abstract class Input
 
     /**
      * Sets input version.
-     *
-     * @param int $version
      *
      * @return self
      */
@@ -135,14 +122,12 @@ abstract class Input
     /**
      * Sets input type.
      *
-     * @param string $type
-     *
      * @return self
      */
     public function setType(string $type)
     {
         $this->type = $type;
-        
+
         return $this;
     }
 

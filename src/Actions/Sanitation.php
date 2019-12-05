@@ -2,13 +2,14 @@
 
 namespace Chatagency\CrudAssistant\Actions;
 
+use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
  * Sanitation action class.
  */
-class Sanitation implements ActionInterface
+class Sanitation extends Action implements ActionInterface
 {
     /**
      * Executes action.

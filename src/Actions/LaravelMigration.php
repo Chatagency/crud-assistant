@@ -2,13 +2,14 @@
 
 namespace Chatagency\CrudAssistant\Actions;
 
+use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
  * Laravel migration action class.
  */
-class LaravelMigration implements ActionInterface
+class LaravelMigration extends Action implements ActionInterface
 {
     /**
      * Executes action.
@@ -17,6 +18,8 @@ class LaravelMigration implements ActionInterface
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
+        $this->paramsExist($params, ['table', 'version']);
+
         $table = $params->table;
         $version = $params->version;
 
