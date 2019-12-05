@@ -101,7 +101,6 @@ class CrudAssistantTest extends TestCase
         ]);
         
         $this->expectException(BadMethodCallException::class);
-        
         $manager->randomMetod();
         
     }
