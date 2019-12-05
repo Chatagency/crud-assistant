@@ -18,6 +18,8 @@ class Sanitation extends Action implements ActionInterface
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
+        $this->checkParams($params, ['requestArray']);
+        
         $rules = $this->rules($inputs);
         $requestArray = $params->requestArray;
 
