@@ -60,6 +60,12 @@ abstract class Input
      * Class construct.
      *
      * @param string $label
+     *
+     * @param string $label
+     *
+     * @param int $version
+     *
+     * @return self
      */
     public function __construct(string $name, string $label = null, int $version = 1)
     {
@@ -73,7 +79,7 @@ abstract class Input
     /**
      * Sets input label.
      *
-     * @param string $name
+     * @param string $label
      *
      * @return self
      */
@@ -87,7 +93,9 @@ abstract class Input
     /**
      * Sets input attributes.
      *
-     * @param string|Closure $value
+     * @param string $name
+     *
+     * @param string $value
      */
     public function setAttribute(string $name, $value)
     {
@@ -98,6 +106,10 @@ abstract class Input
 
     /**
      * Sets input sub elements.
+     *
+     * @param array $subElements
+     *
+     * @return self
      */
     public function setSubElements(array $subElements)
     {
@@ -109,11 +121,11 @@ abstract class Input
     /**
      * Sets input version.
      *
-     * @param string $version
+     * @param int $version
      *
      * @return self
      */
-    public function setVersion(bool $version)
+    public function setVersion(int $version)
     {
         $this->version = $version;
 
@@ -122,10 +134,16 @@ abstract class Input
 
     /**
      * Sets input type.
+     *
+     * @param string $type
+     *
+     * @return self
      */
     public function setType(string $type)
     {
         $this->type = $type;
+        
+        return $this;
     }
 
     /**
@@ -161,7 +179,7 @@ abstract class Input
     /**
      * Returns Input attributes.
      *
-     * @return string|Closure
+     * @return string|null
      */
     public function getAttribute(string $name)
     {
@@ -210,6 +228,8 @@ abstract class Input
      * Returns action by type.
      *
      * @param string $type
+     *
+     * @return string|null
      */
     public function getAction($type)
     {

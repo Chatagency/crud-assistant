@@ -29,6 +29,10 @@ class InputCollection implements InputCollectionInterface
     /**
      * Constructor.
      *
+     * @param array  $inputsArray
+     *
+     * @param ActionFactory $actionFactory
+     *
      * @return self
      */
     public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
@@ -41,6 +45,8 @@ class InputCollection implements InputCollectionInterface
 
     /**
      * Adds input to the array.
+     *
+     * @param InputInterface $input
      *
      * @param string $key
      *
@@ -57,6 +63,8 @@ class InputCollection implements InputCollectionInterface
 
     /**
      * Removes input from the array if exists.
+     *
+     * @param string $key
      *
      * @return self
      */
@@ -81,6 +89,8 @@ class InputCollection implements InputCollectionInterface
 
     /**
      * Returns inputs array.
+     *
+     * @param string $key
      *
      * @return InputInterface
      *
@@ -124,7 +134,11 @@ class InputCollection implements InputCollectionInterface
     /**
      * Execute actions.
      *
+     * @param string $type
+     *
      * @param $params
+     *
+     * @return mixed
      */
     public function execute(string $type, $params = null)
     {
@@ -134,9 +148,11 @@ class InputCollection implements InputCollectionInterface
     /**
      * Returns action type instance.
      *
+     * @param string $type
+     *
      * @return ActionInterface
      */
-    private function getActionInstace(string $type)
+    protected function getActionInstace(string $type)
     {
         return $this->actionFactory->getInstanse($type);
     }
