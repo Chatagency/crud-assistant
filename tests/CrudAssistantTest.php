@@ -72,13 +72,14 @@ class CrudAssistantTest extends TestCase
         $name->setAction(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
         
         $manager = new CrudAssistant([$name]);
-        $labels = $manager->sanitation([
+        $sanitation = $manager->sanitation([
             'requestArray' => [
                 'name' => "John Smith"
             ]
         ]);
         
-        $this->assertEquals("John Smith", $labels['name']);
+        $this->assertEquals("John Smith", $sanitation['name']);
+        $this->assertCount(2, $sanitation);
     }
     
     /** @test */
@@ -100,7 +101,6 @@ class CrudAssistantTest extends TestCase
         ]);
         
         $this->expectException(BadMethodCallException::class);
-        
         $manager->randomMetod();
         
     }

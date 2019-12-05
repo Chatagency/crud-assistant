@@ -54,7 +54,7 @@ class InputCollection implements InputCollectionInterface
     }
     /**
      * Removes input from the array if exists
-     * @param string $key [description]
+     * @param string $key
      * @return self
      */
     public function remove(string $key)
