@@ -6,57 +6,49 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Laravel migration action class
+ * Laravel migration action class.
  */
 class LaravelMigration implements ActionInterface
 {
     /**
-     * Executes action
-     * @param  array $inputs
+     * Executes action.
+     *
      * @param DataContainerInterface $params
      */
-    public function execute(array $inputs, DataContainerInterface $params = null){
-        
+    public function execute(array $inputs, DataContainerInterface $params = null)
+    {
         $table = $params->table;
         $version = $params->version;
-        
+
         foreach ($inputs as $input) {
-            
-            if($input->getVersion() == $version){
-                
+            if ($input->getVersion() == $version) {
                 $tableField = null;
                 $migration = $input
                         ->getAction(static::class)
                     ?? null;
                 $name = $input->getName();
-                
-                if(isset($migration) && is_array($migration)){
+
+                if (isset($migration) && is_array($migration)) {
                     $type = isset($migration['type']) ? $migration['type'] : null;
-                    if(is_callable($type)) {
+                    if (is_callable($type)) {
                         $tableField = $type($table, $input);
-                    }
-                    elseif($type){
+                    } elseif ($type) {
                         $tableField = $table->$type($name);
-                    }
-                    else {
+                    } else {
                         $tableField = $table->string($name);
                     }
-                }
-                elseif(is_callable($migration)){
+                } elseif (is_callable($migration)) {
                     $tableField = $migration($table, $input);
-                }
-                else {
+                } else {
                     $tableField = $table->string($name);
                 }
-                
-                if($tableField && is_array($migration) && isset($migration['nullable']) && $migration['nullable']){
+
+                if ($tableField && is_array($migration) && isset($migration['nullable']) && $migration['nullable']) {
                     $tableField->nullable();
                 }
             }
         }
-        
+
         return $table;
-        
     }
-    
 }

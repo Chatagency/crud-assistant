@@ -3,98 +3,125 @@
 namespace Chatagency\CrudAssistant\Contracts;
 
 /**
- * Input Collection Interface
+ * Input Collection Interface.
  */
 interface InputInterface
 {
     /**
-     * Class construct
-     * @param string $name
+     * Class construct.
+     *
      * @param string $label
+     *
+     * @param string $label
+     *
      * @param int $version
+     *
+     * @return self
      */
     public function __construct(string $name, string $label = null, int $version = 1);
-    
+
     /**
-     * Sets input label
-     * @param string $name
+     * Sets input label.
+     *
+     * @param string $label
+     *
      * @return self
      */
     public function setLabel(string $label);
-    
+
     /**
-     * Sets input attributes
+     * Sets input attributes.
+     *
      * @param string $name
-     * @param string|Closure $value
+     *
+     * @param string $value
      */
     public function setAttribute(string $name, $value);
-    
+
     /**
-     * Sets input sub elements
+     * Sets input sub elements.
+     *
      * @param array $subElements
-     */
-    public function setSubElements(array $subElements);
-    
-    /**
-     * Sets input version
-     * @param string $version
+     *
      * @return self
      */
-    public function setVersion(bool $version);
-    
+    public function setSubElements(array $subElements);
+
     /**
-     * Sets input type
+     * Sets input version.
+     *
+     * @param int $version
+     *
+     * @return self
+     */
+    public function setVersion(int $version);
+
+    /**
+     * Sets input type.
+     *
      * @param string $type
+     *
+     * @return self
      */
     public function setType(string $type);
-    
+
     /**
-     * Returns input name
+     * Returns input name.
+     *
      * @return string
      */
     public function getName();
-    
+
     /**
-     * Returns input label
+     * Returns input label.
+     *
      * @return string
      */
     public function getLabel();
-    
+
     /**
-     * Returns input version
+     * Returns input version.
+     *
      * @return int
      */
     public function getVersion();
-    
+
     /**
-     * Returns Input attributes
-     * @return string|Closure
+     * Returns Input attributes.
+     *
+     * @return string|null
      */
     public function getAttribute(string $name);
-    
+
     /**
-     * Returns Input attributes
+     * Returns Input attributes.
+     *
      * @return array
      */
     public function getAttributes();
-    
+
     /**
-     * Returns input sub elements
+     * Returns input sub elements.
+     *
      * @return array
      */
     public function getSubElements();
-    
+
     /**
-     * Sets Action
-     * @param string $type
+     * Sets Action.
+     *
      * @param $value
+     *
      * @return self
      */
     public function setAction(string $type, $value);
-    
+
     /**
-     * Returns action by type
+     * Returns action by type.
+     *
      * @param string $type
+     *
+     * @return string|null
      */
     public function getAction($type);
 }

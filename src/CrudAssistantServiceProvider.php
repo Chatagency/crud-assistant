@@ -14,7 +14,6 @@ class CrudAssistantServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/config.php' => config_path('crud-assistant.php'),
         ], 'crud-assistant');
-        
     }
 
     /**
@@ -22,8 +21,6 @@ class CrudAssistantServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'crud-assistant');
-
     }
 }
