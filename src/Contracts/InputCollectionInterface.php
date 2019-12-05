@@ -1,66 +1,71 @@
 <?php
 
 namespace Chatagency\CrudAssistant\Contracts;
+
 use Chatagency\CrudAssistant\ActionFactory;
 
 /**
- * Input Collection Interface
+ * Input Collection Interface.
  */
 interface InputCollectionInterface
 {
     /**
-     * Constructor
-     * @param array $inputsArray
+     * Constructor.
+     *
      * @return self
      */
     public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null);
-    
+
     /**
-     * Adds input to the array
-     * @param InputInterface $input
+     * Adds input to the array.
+     *
      * @param string $key
+     *
      * @return self
      */
     public function add(InputInterface $input, string $key = null);
-    
+
     /**
-     * Removes input from the array if exists
-     * @param string $key
+     * Removes input from the array if exists.
+     *
      * @return self
      */
     public function remove(string $key);
-    
+
     /**
-     * Retruns inputs array count
+     * Retruns inputs array count.
+     *
      * @return int
      */
     public function count();
-    
+
     /**
-     * Returns inputs array
-     * @param string $key
+     * Returns inputs array.
+     *
      * @return InputInterface
+     *
      * @throws InvalidArgumentException
      */
     public function getInput(string $key);
-    
+
     /**
-     * Returns inputs array
+     * Returns inputs array.
+     *
      * @return array
      */
     public function getInputs();
-    
+
     /**
-     * Returns Input Names
+     * Returns Input Names.
+     *
      * @return array
      */
     public function getInputNames();
-    
+
     /**
-     * Execute actions
-     * @param string $type
+     * Execute actions.
+     *
      * @param $params
      */
     public function execute(string $type, $params = null);
-    
 }

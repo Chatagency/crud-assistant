@@ -1,17 +1,17 @@
 <?php
 
 namespace Chatagency\CrudAssistant\Inputs;
-use Chatagency\CrudAssistant\Input;
+
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\Input;
 
 /**
- * Radio button input Class
+ * Radio button input Class.
  */
 class RadioInput extends Input implements InputInterface
 {
     /**
-     * Input type
+     * Input type.
      */
     protected $type = 'radio';
-    
 }
