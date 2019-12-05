@@ -16,7 +16,7 @@ class Action
      *
      * @throws InvalidArgumentException
      */
-    protected function paramsExist(DataContainer $data, array $checks)
+    protected function checkParams(DataContainer $data, array $checks)
     {
         foreach ($checks as $check) {
             if (!isset($data->$check)) {
