@@ -79,6 +79,7 @@ class CrudAssistantTest extends TestCase
         ]);
         
         $this->assertEquals("John Smith", $sanitation['name']);
+        $this->assertCount(2, $sanitation);
     }
     
     /** @test */
