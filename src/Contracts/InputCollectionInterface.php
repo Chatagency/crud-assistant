@@ -25,14 +25,14 @@ interface InputCollectionInterface
      *
      * @return self
      */
-    public function add(InputInterface $input, string $key = null);
+    public function addInput(InputInterface $input, string $key = null);
 
     /**
      * Removes input from the array if exists.
      *
      * @return self
      */
-    public function remove(string $key);
+    public function removeInput(string $key);
 
     /**
      * Retruns inputs array count.

@@ -29,10 +29,10 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
 
-        $form->add(new TextInput('name', 'Name'));
+        $form->addInput(new TextInput('name', 'Name'));
         $this->assertEquals($form->count(), 1);
 
-        $form->add(new TextInput('email', 'Email'));
+        $form->addInput(new TextInput('email', 'Email'));
         $this->assertEquals($form->count(), 2);
     }
 
@@ -41,7 +41,7 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
 
-        $form->add(new TextInput('name', 'Name'));
+        $form->addInput(new TextInput('name', 'Name'));
         $name = $form->getInput('name');
         $this->assertEquals('name', $name->getName());
         $this->assertCount(1, $form->getInputs());
@@ -60,10 +60,10 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
 
-        $form->add(new TextInput('name', 'Name'));
+        $form->addInput(new TextInput('name', 'Name'));
         $this->assertEquals(1, $form->count());
 
-        $form->remove('name');
+        $form->removeInput('name');
         $this->assertEquals(0, $form->count());
     }
 
