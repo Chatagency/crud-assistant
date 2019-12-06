@@ -12,10 +12,10 @@ class LaravelValidationLabelsTest extends TestCase
     public function a_validation_labels_action_can_be_executed_using_an_array_of_inputs()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(LaravelValidationLabels::class, 'Your Name');
+        $name->setRecipe(LaravelValidationLabels::class, 'Your Name');
 
         $email = new TextInput('email', 'Email');
-        $email->setAction(LaravelValidationLabels::class, 'Your Email');
+        $email->setRecipe(LaravelValidationLabels::class, 'Your Email');
 
         $validation = new LaravelValidationLabels();
         $result = $validation->execute([$name, $email]);
@@ -27,7 +27,7 @@ class LaravelValidationLabelsTest extends TestCase
     public function a_closure_can_be_passed_as_a_value_instead_of_an_array_to_the_validation_labels_action()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(LaravelValidationLabels::class, function ($labels, $input) {
+        $name->setRecipe(LaravelValidationLabels::class, function ($labels, $input) {
             $labels[$input->getName()] = 'Your '.$input->getLabel();
 
             return $labels;

@@ -12,13 +12,13 @@ class LaravelValidationMessagesTest extends TestCase
     public function a_validation_messages_action_can_be_executed_using_an_array_of_inputs()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(LaravelValidationMessages::class, [
+        $name->setRecipe(LaravelValidationMessages::class, [
             'name.required' => 'The name is required',
             'name.max' => 'The name cannot be longer than 1000 characters',
         ]);
 
         $email = new TextInput('email', 'Email');
-        $email->setAction(LaravelValidationMessages::class, [
+        $email->setRecipe(LaravelValidationMessages::class, [
             'email.required' => 'The email is required',
         ]);
 
@@ -32,7 +32,7 @@ class LaravelValidationMessagesTest extends TestCase
     public function a_closure_can_be_passed_as_a_value_instead_of_an_array_to_the_validation_messages()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(LaravelValidationMessages::class, function ($messages, $input) {
+        $name->setRecipe(LaravelValidationMessages::class, function ($messages, $input) {
             $messages['name.required'] = 'The '.$input->getLabel().' is required';
 
             return $messages;

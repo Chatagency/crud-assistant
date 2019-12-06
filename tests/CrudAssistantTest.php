@@ -64,7 +64,7 @@ class CrudAssistantTest extends TestCase
     public function actions_can_be_excecuted_using_the_action_class_base_name()
     {
         $name = new TextInput('name');
-        $name->setAction(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
 
         $manager = new CrudAssistant([$name]);
         $sanitation = $manager->sanitation([

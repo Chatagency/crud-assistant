@@ -13,10 +13,10 @@ class SanitationTest extends TestCase
     public function the_sanitation_action_is_used_to_sanitize_the_request()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
 
         $email = new TextInput('email', 'Email');
-        $email->setAction(Sanitation::class, FILTER_SANITIZE_EMAIL);
+        $email->setRecipe(Sanitation::class, FILTER_SANITIZE_EMAIL);
 
         $inputs = [$name, $email];
 
@@ -39,7 +39,7 @@ class SanitationTest extends TestCase
     public function the_raw_values_can_be_accessed_with_the_sufix_underscore_raw()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
 
         $inputs = [$name];
 
@@ -60,7 +60,7 @@ class SanitationTest extends TestCase
     public function an_array_can_be_passed_as_a_value_to_the_action_with_multiple_rules()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(Sanitation::class, [
+        $name->setRecipe(Sanitation::class, [
             'rules' => [
                 FILTER_SANITIZE_SPECIAL_CHARS,
                 FILTER_SANITIZE_MAGIC_QUOTES,
@@ -85,7 +85,7 @@ class SanitationTest extends TestCase
     public function if_one_of_the_values_of_the_request_is_an_array_the_filter_is_applied_to_all_values()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
 
         $inputs = [$name];
 

@@ -15,13 +15,13 @@ class LaravelValidationRulesTest extends TestCase
     public function a_validation_rules_action_can_be_executed_using_an_array_of_inputs()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(LaravelValidationRules::class, [
+        $name->setRecipe(LaravelValidationRules::class, [
             'required',
             'max:250',
         ]);
 
         $email = new TextInput('email', 'Email');
-        $email->setAction(LaravelValidationRules::class, [
+        $email->setRecipe(LaravelValidationRules::class, [
             'required',
             'email',
         ]);
@@ -37,7 +37,7 @@ class LaravelValidationRulesTest extends TestCase
     {
         $name = new SelectInput('hobbies', 'Your Hobby');
         $name->setSubElements(['run', 'play pokemon go', 'drink wine']);
-        $name->setAction(LaravelValidationRules::class, function ($input) {
+        $name->setRecipe(LaravelValidationRules::class, function ($input) {
             $hobbies = $input->getSubElements();
 
             return [
