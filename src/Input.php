@@ -196,13 +196,27 @@ abstract class Input
     }
 
     /**
-     * Sets Action.
+     * Sets Action (Set recipe alias).
      *
      * @param $value
      *
      * @return self
      */
     public function setAction(string $type, $value)
+    {
+        return $this->setRecipe($type, $value);
+    }
+    
+    /**
+     * Sets Recipe.
+     *
+     * @param string $type
+     *
+     * @param $value
+     *
+     * @return self
+     */
+    public function setRecipe(string $type, $value)
     {
         $this->actions[$type] = $value;
 

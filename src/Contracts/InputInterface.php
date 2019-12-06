@@ -97,12 +97,25 @@ interface InputInterface
     /**
      * Sets Action.
      *
+     * @param string $type
+     *
      * @param $value
      *
      * @return self
      */
     public function setAction(string $type, $value);
-
+    
+    /**
+     * Sets Recipe.
+     *
+     * @param string $type
+     *
+     * @param $value
+     *
+     * @return self
+     */
+    public function setRecipe(string $type, $value);
+    
     /**
      * Returns action by type.
      *
