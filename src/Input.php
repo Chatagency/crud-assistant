@@ -48,11 +48,11 @@ abstract class Input
     protected $type = null;
 
     /**
-     * Input Actions.
+     * Input Recipes.
      *
      * @var array
      */
-    protected $actions = [];
+    protected $recipes = [];
 
     /**
      * Class construct.
@@ -196,7 +196,7 @@ abstract class Input
     }
 
     /**
-     * Sets Action (Set recipe alias).
+     * Set recipe alias.
      *
      * @param $value
      *
@@ -218,13 +218,29 @@ abstract class Input
      */
     public function setRecipe(string $type, $value)
     {
-        $this->actions[$type] = $value;
+        $this->recipes[$type] = $value;
 
         return $this;
     }
-
+    
     /**
-     * Returns action by type.
+     * Returns recipe by type.
+     *
+     * @param string $type
+     *
+     * @return string|null
+     */
+    public function getRecipe($type)
+    {
+        if (isset($this->recipes[$type])) {
+            return $this->recipes[$type];
+        }
+
+        return null;
+    }
+    
+    /**
+     * Get recipe alizas.
      *
      * @param string $type
      *
@@ -232,10 +248,6 @@ abstract class Input
      */
     public function getAction($type)
     {
-        if (isset($this->actions[$type])) {
-            return $this->actions[$type];
-        }
-
-        return null;
+        return $this->getRecipe($type);
     }
 }

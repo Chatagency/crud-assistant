@@ -77,7 +77,11 @@ class InputCollectionTest extends TestCase
         ]);
 
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(LaravelValidationRules::class, [
+        /**
+         * setAction() is an alias of
+         * setRecipe
+         */
+        $email->setAction(LaravelValidationRules::class, [
             'required',
             'email',
         ]);
