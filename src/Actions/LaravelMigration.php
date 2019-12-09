@@ -27,7 +27,7 @@ class LaravelMigration extends Action implements ActionInterface
             if ($input->getVersion() == $version) {
                 $tableField = null;
                 $migration = $input
-                        ->getAction(static::class)
+                        ->getRecipe(static::class)
                     ?? null;
                 $name = $input->getName();
 

@@ -24,7 +24,7 @@ class LaravelValidationLabels extends Action implements ActionInterface
             $name = $input->getName();
             $label = $input->getLabel();
             $inputLabels = $input
-                    ->getAction(static::class)
+                    ->getRecipe(static::class)
                 ?? null;
 
             if ($inputLabels) {

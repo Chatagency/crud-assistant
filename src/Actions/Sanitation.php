@@ -51,7 +51,7 @@ class Sanitation extends Action implements ActionInterface
 
         foreach ($inputs as $key => $input) {
             $sanitation = $input
-                    ->getAction(static::class)
+                    ->getRecipe(static::class)
                 ?? null;
             $name = $input->getName();
 
