@@ -160,9 +160,10 @@ abstract class Input
     {
         return $this->version;
     }
-    
+
     /**
-     * Returns input type
+     * Returns input type.
+     *
      * @return string
      */
     public function getType()
@@ -215,11 +216,9 @@ abstract class Input
     {
         return $this->setRecipe($type, $value);
     }
-    
+
     /**
      * Sets Recipe.
-     *
-     * @param string $type
      *
      * @param $value
      *
@@ -231,7 +230,7 @@ abstract class Input
 
         return $this;
     }
-    
+
     /**
      * Returns recipe by type.
      *
@@ -247,7 +246,7 @@ abstract class Input
 
         return null;
     }
-    
+
     /**
      * Get recipe alizas.
      *

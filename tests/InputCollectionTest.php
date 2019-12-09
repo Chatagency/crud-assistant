@@ -77,7 +77,7 @@ class InputCollectionTest extends TestCase
         ]);
 
         $email = new TextInput('email', 'Email');
-        /**
+        /*
          * setAction() is an alias of
          * setRecipe
          */
