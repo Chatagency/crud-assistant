@@ -72,7 +72,13 @@ interface InputInterface
      * @return int
      */
     public function getVersion();
-
+    
+    /**
+     * Returns input type
+     * @return string
+     */
+    public function gettype();
+    
     /**
      * Returns Input attributes.
      *

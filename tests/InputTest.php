@@ -21,7 +21,7 @@ class InputTest extends TestCase
     }
 
     /** @test */
-    public function an_input_can_be_created_with_name_label_and_version()
+    public function an_input_can_be_created_with_name_label_version_and_type()
     {
         $input = new TextInput('email', 'Add your email', 2);
         $input->setType('email');
@@ -29,6 +29,7 @@ class InputTest extends TestCase
         $this->assertEquals('email', $input->getName());
         $this->assertEquals('Add your email', $input->getLabel());
         $this->assertEquals(2, $input->getVersion());
+        $this->assertEquals('email', $input->getType());
     }
 
     /** @test */
