@@ -70,7 +70,7 @@ class CrudAssistant
     public function __call($name, $arguments)
     {
         /**
-         * Check if action.
+         * Check if the method called is an action.
          */
         $action = $this->getActionBase($name);
 
@@ -80,7 +80,7 @@ class CrudAssistant
             /*
              * A data container must be passed
              * as the second param to the
-             * execute method
+             * execute method.
              */
             if (!$params instanceof DataContainer) {
                 $params = new DataContainer($params);
@@ -90,7 +90,7 @@ class CrudAssistant
         }
 
         /*
-         * Check if ollection method
+         * Check if the method called is a collection method.
          */
         if (method_exists($this->collection, $name)) {
             $object_array = [$this->collection, $name];
