@@ -29,10 +29,10 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
 
-        $form->add(new TextInput('name', 'Name'));
+        $form->addInput(new TextInput('name', 'Name'));
         $this->assertEquals($form->count(), 1);
 
-        $form->add(new TextInput('email', 'Email'));
+        $form->addInput(new TextInput('email', 'Email'));
         $this->assertEquals($form->count(), 2);
     }
 
@@ -41,7 +41,7 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
 
-        $form->add(new TextInput('name', 'Name'));
+        $form->addInput(new TextInput('name', 'Name'));
         $name = $form->getInput('name');
         $this->assertEquals('name', $name->getName());
         $this->assertCount(1, $form->getInputs());
@@ -60,10 +60,10 @@ class InputCollectionTest extends TestCase
     {
         $form = $this->getCollection();
 
-        $form->add(new TextInput('name', 'Name'));
+        $form->addInput(new TextInput('name', 'Name'));
         $this->assertEquals(1, $form->count());
 
-        $form->remove('name');
+        $form->removeInput('name');
         $this->assertEquals(0, $form->count());
     }
 
@@ -71,12 +71,16 @@ class InputCollectionTest extends TestCase
     public function an_action_can_be_executed_from_a_collection()
     {
         $name = new TextInput('name', 'Name');
-        $name->setAction(LaravelValidationRules::class, [
+        $name->setRecipe(LaravelValidationRules::class, [
             'required',
             'max:250',
         ]);
 
         $email = new TextInput('email', 'Email');
+        /*
+         * setAction() is an alias of
+         * setRecipe
+         */
         $email->setAction(LaravelValidationRules::class, [
             'required',
             'email',
@@ -94,7 +98,7 @@ class InputCollectionTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
-        $email->setAction(LaravelValidationRules::class, [
+        $email->setRecipe(LaravelValidationRules::class, [
             'required',
             'email',
         ]);

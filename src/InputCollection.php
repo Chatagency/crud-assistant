@@ -48,7 +48,7 @@ class InputCollection implements InputCollectionInterface
      *
      * @return self
      */
-    public function add(InputInterface $input, string $key = null)
+    public function addInput(InputInterface $input, string $key = null)
     {
         $key = $key ?? $input->getName();
 
@@ -62,7 +62,7 @@ class InputCollection implements InputCollectionInterface
      *
      * @return self
      */
-    public function remove(string $key)
+    public function removeInput(string $key)
     {
         if (isset($this->inputsArray[$key])) {
             unset($this->inputsArray[$key]);

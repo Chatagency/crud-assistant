@@ -18,7 +18,7 @@ class LaravelMigration extends Action implements ActionInterface
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
-        $this->checkParams($params, ['table', 'version']);
+        $this->checkRequiredParams($params, ['table', 'version']);
 
         $table = $params->table;
         $version = $params->version;
@@ -27,7 +27,7 @@ class LaravelMigration extends Action implements ActionInterface
             if ($input->getVersion() == $version) {
                 $tableField = null;
                 $migration = $input
-                        ->getAction(static::class)
+                        ->getRecipe(static::class)
                     ?? null;
                 $name = $input->getName();
 

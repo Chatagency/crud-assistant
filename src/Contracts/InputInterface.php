@@ -74,6 +74,13 @@ interface InputInterface
     public function getVersion();
 
     /**
+     * Returns input type.
+     *
+     * @return string
+     */
+    public function gettype();
+
+    /**
      * Returns Input attributes.
      *
      * @return string|null
@@ -102,6 +109,15 @@ interface InputInterface
      * @return self
      */
     public function setAction(string $type, $value);
+
+    /**
+     * Sets Recipe.
+     *
+     * @param $value
+     *
+     * @return self
+     */
+    public function setRecipe(string $type, $value);
 
     /**
      * Returns action by type.
