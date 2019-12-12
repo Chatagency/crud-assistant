@@ -4,6 +4,9 @@ namespace Chatagency\CrudAssistant;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CrudAssistantServiceProvider extends ServiceProvider
 {
     /**
