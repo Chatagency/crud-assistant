@@ -23,9 +23,7 @@ class LaravelValidationLabels extends Action implements ActionInterface
         foreach ($inputs as $input) {
             $name = $input->getName();
             $label = $input->getLabel();
-            $inputLabels = $input
-                    ->getRecipe(static::class)
-                ?? null;
+            $inputLabels = $input->getRecipe(static::class) ?? null;
 
             if ($inputLabels) {
                 if (is_callable($inputLabels)) {
