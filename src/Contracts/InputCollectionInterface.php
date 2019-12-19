@@ -68,8 +68,6 @@ interface InputCollectionInterface
     /**
      * Execute actions.
      *
-     * @param string $type
-     *
      * @param DataContainer $params
      *
      * @return mixed

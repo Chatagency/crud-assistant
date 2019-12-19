@@ -5,7 +5,7 @@ namespace Chatagency\CrudAssistant;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\DataContainer;
+
 use InvalidArgumentException;
 
 /**
@@ -126,8 +126,6 @@ class InputCollection implements InputCollectionInterface
 
     /**
      * Execute actions.
-     *
-     * @param string $type
      *
      * @param DataContainer $params
      *
