@@ -5,6 +5,7 @@ namespace Chatagency\CrudAssistant;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\DataContainer;
 use InvalidArgumentException;
 
 /**
@@ -126,11 +127,13 @@ class InputCollection implements InputCollectionInterface
     /**
      * Execute actions.
      *
-     * @param $params
+     * @param string $type
+     *
+     * @param DataContainer $params
      *
      * @return mixed
      */
-    public function execute(string $type, $params = null)
+    public function execute(string $type, DataContainer $params = null)
     {
         return $this->getActionInstace($type)->execute($this->inputsArray, $params);
     }

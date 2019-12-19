@@ -3,6 +3,7 @@
 namespace Chatagency\CrudAssistant\Contracts;
 
 use Chatagency\CrudAssistant\ActionFactory;
+use Chatagency\CrudAssistant\DataContainer;
 
 /**
  * Input Collection Interface.
@@ -67,9 +68,11 @@ interface InputCollectionInterface
     /**
      * Execute actions.
      *
-     * @param $params
+     * @param string $type
+     *
+     * @param DataContainer $params
      *
      * @return mixed
      */
-    public function execute(string $type, $params = null);
+    public function execute(string $type, DataContainer $params = null);
 }
