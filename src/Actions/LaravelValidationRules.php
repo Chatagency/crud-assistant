@@ -22,9 +22,7 @@ class LaravelValidationRules extends Action implements ActionInterface
 
         foreach ($inputs as $input) {
             $name = $input->getName();
-            $fieldValidation = $input
-                    ->getRecipe(static::class)
-                ?? null;
+            $fieldValidation = $input->getRecipe(static::class) ?? null;
 
             if ($fieldValidation) {
                 if (is_callable($fieldValidation)) {

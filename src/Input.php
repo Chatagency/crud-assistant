@@ -248,7 +248,7 @@ abstract class Input
     }
 
     /**
-     * Get recipe alizas.
+     * Get recipe alias.
      *
      * @param string $type
      *
