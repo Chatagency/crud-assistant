@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterace;
@@ -33,8 +35,6 @@ class ActionFactory implements ActionFactoryInterace
     /**
      * Adds/replaces action path to the actions.
      *
-     * @param string $type
-     *
      * @return self
      */
     public function registerAction(string $type)
@@ -57,8 +57,6 @@ class ActionFactory implements ActionFactoryInterace
     /**
      * Checks if an action has been registered.
      *
-     * @param string $type
-     *
      * @return bool
      */
     public function issetAction(string $type)
@@ -68,8 +66,6 @@ class ActionFactory implements ActionFactoryInterace
 
     /**
      * Returns action instance.
-     *
-     * @param string $type
      *
      * @return ActionInterface
      */
@@ -83,11 +79,9 @@ class ActionFactory implements ActionFactoryInterace
     /**
      * Returns a specific action class name.
      *
-     * @param string $type
+     * @throws InvalidArgumentException
      *
      * @return string
-     *
-     * @throws InvalidArgumentException
      */
     public function getAction(string $type)
     {

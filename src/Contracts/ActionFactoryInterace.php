@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Contracts;
 
 use InvalidArgumentException;
@@ -19,8 +21,6 @@ interface ActionFactoryInterace
     /**
      * Adds/replaces action path to the actions.
      *
-     * @param string $type
-     *
      * @return self
      */
     public function registerAction(string $type);
@@ -35,16 +35,12 @@ interface ActionFactoryInterace
     /**
      * Checks if an action has been registered.
      *
-     * @param string $type
-     *
      * @return bool
      */
     public function issetAction(string $type);
 
     /**
      * Returns action instance.
-     *
-     * @param string $type
      *
      * @return ActionInterface
      */
@@ -53,11 +49,9 @@ interface ActionFactoryInterace
     /**
      * Returns a specific action class name.
      *
-     * @param string $type
+     * @throws InvalidArgumentException
      *
      * @return string
-     *
-     * @throws InvalidArgumentException
      */
     public function getAction(string $type);
 }

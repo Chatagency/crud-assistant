@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Action;
@@ -14,7 +16,6 @@ class LaravelValidationMessages extends Action implements ActionInterface
     /**
      * Executes action.
      *
-     * @param array $inputs
      * @param DataContainerInterface $params
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
@@ -26,7 +27,7 @@ class LaravelValidationMessages extends Action implements ActionInterface
             $inputMessages = $input->getRecipe(static::class) ?? null;
 
             if ($inputMessages) {
-                if (is_callable($inputMessages)) {
+                if (\is_callable($inputMessages)) {
                     $messages = $inputMessages($messages, $input);
                 } else {
                     foreach ($inputMessages as $keyMessage => $message) {

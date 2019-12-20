@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Contracts;
 
 use Chatagency\CrudAssistant\ActionFactory;
@@ -13,17 +15,13 @@ interface InputCollectionInterface
     /**
      * Constructor.
      *
-     * @param array $inputsArray
-     * @param ActionFactory $actionFactory
-     *
      * @return self
      */
-    public function __construct(array $inputsArray = [], ActionFactory $actionFactory);
+    public function __construct(array $inputsArray, ActionFactory $actionFactory);
 
     /**
      * Adds input to the array.
      *
-     * @param InputInterface $input
      * @param string $key
      *
      * @return self
@@ -32,8 +30,6 @@ interface InputCollectionInterface
 
     /**
      * Removes input from the array if exists.
-     *
-     * @param string $key
      *
      * @return self
      */
@@ -49,11 +45,9 @@ interface InputCollectionInterface
     /**
      * Returns inputs array.
      *
-     * @param string $key
+     * @throws InvalidArgumentException
      *
      * @return InputInterface
-     *
-     * @throws InvalidArgumentException
      */
     public function getInput(string $key);
 
@@ -74,7 +68,6 @@ interface InputCollectionInterface
     /**
      * Execute actions.
      *
-     * @param string $type
      * @param DataContainer $params
      *
      * @return mixed

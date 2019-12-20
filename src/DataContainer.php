@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
@@ -19,32 +21,17 @@ class DataContainer implements DataContainerInterface
     /**
      * Construct can receive a data array.
      *
-     * @param array $data
-     *
      * @return self
      */
     public function __construct(array $data = [])
     {
         $this->data = $data;
-        
+
         return $this;
     }
 
     /**
-     * Returns the data array.
-     *
-     * @return array
-     */
-    public function all()
-    {
-        return $this->data;
-    }
-
-    /**
      * Magic set method.
-     *
-     * @param string $name
-     *
      */
     public function __get(string $name)
     {
@@ -64,7 +51,6 @@ class DataContainer implements DataContainerInterface
     /**
      * Magic set method.
      *
-     * @param string $name
      * @param $value
      */
     public function __set(string $name, $value)
@@ -74,8 +60,6 @@ class DataContainer implements DataContainerInterface
 
     /**
      * Magic isset method.
-     *
-     * @param string $name
      *
      * @return bool
      */
@@ -87,13 +71,20 @@ class DataContainer implements DataContainerInterface
     /**
      * Magic unset method.
      *
-     * @param string $name
-     *
      * @return null
-     *
      */
     public function __unset(string $name)
     {
         unset($this->data[$name]);
+    }
+
+    /**
+     * Returns the data array.
+     *
+     * @return array
+     */
+    public function all()
+    {
+        return $this->data;
     }
 }

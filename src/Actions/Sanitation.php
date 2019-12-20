@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Action;
@@ -14,7 +16,6 @@ class Sanitation extends Action implements ActionInterface
     /**
      * Executes action.
      *
-     * @param array $inputs
      * @param DataContainerInterface $params
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
@@ -26,8 +27,8 @@ class Sanitation extends Action implements ActionInterface
 
         foreach ($rules as $input => $rule) {
             if (isset($requestArray[$input])) {
-                if (is_array($rule) && isset($rule['rules']) && is_array($rule['rules'])) {
-                    $options = isset($rule['options']) && is_array($rule['options']) ? $rule['options'] : [];
+                if (\is_array($rule) && isset($rule['rules']) && \is_array($rule['rules'])) {
+                    $options = isset($rule['options']) && \is_array($rule['options']) ? $rule['options'] : [];
                     foreach ($rule['rules'] as $val) {
                         $requestArray = $this->applyFilter($input, $val, $requestArray, $options);
                     }
@@ -43,8 +44,6 @@ class Sanitation extends Action implements ActionInterface
 
     /**
      * Returns rules array.
-     *
-     * @param array $inputs
      *
      * @return array
      */
@@ -67,17 +66,13 @@ class Sanitation extends Action implements ActionInterface
     /**
      * Applies Filter.
      *
-     * @param string $input
-     * @param string $rule
-     * @param array  $requestArray
-     * @param array  $options
      * @param
      *
      * @return array
      */
     protected function applyFilter(string $input, string $rule, array $requestArray, array $options = [])
     {
-        if (is_array($requestArray[$input])) {
+        if (\is_array($requestArray[$input])) {
             foreach ($requestArray[$input] as $key => $singleInput) {
                 $requestArray[$input.'_raw'][$key] = $singleInput;
                 $requestArray[$input][$key] = filter_var($singleInput, $rule, $options);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant;
 
 use BadMethodCallException;
@@ -26,8 +28,6 @@ class CrudAssistant
     /**
      * Construct.
      *
-     * @param array $inputs
-     *
      * @return self
      */
     public function __construct(array $inputs = [])
@@ -39,37 +39,15 @@ class CrudAssistant
     }
 
     /**
-     * Creates new instance of this class.
-     *
-     * @param array $inputs
-     *
-     * @return self
-     */
-    public static function make(array $inputs = [])
-    {
-        return new static($inputs);
-    }
-
-    /**
-     * Returns input collection.
-     *
-     * @return InputCollection
-     */
-    public function getCollection()
-    {
-        return $this->collection;
-    }
-
-    /**
      * Magic call method class tied
      * to collection and actions.
      *
      * @param $name
      * @param $arguments
      *
-     * @return mixed
-     *
      * @throws BadMethodCallException
+     *
+     * @return mixed
      */
     public function __call($name, $arguments)
     {
@@ -93,22 +71,38 @@ class CrudAssistant
             return $this->collection->execute($action, $params);
         }
 
-        /*
-         * Check if the method called is a collection method.
-         */
+        // Check if the method called is a collection method.
         if (method_exists($this->collection, $name)) {
             $object_array = [$this->collection, $name];
 
-            return call_user_func_array($object_array, $arguments);
+            return \call_user_func_array($object_array, $arguments);
         }
 
         throw new BadMethodCallException('Method '.$name.' not exists in '.__CLASS__);
     }
 
     /**
-     * Returns action class name without path.
+     * Creates new instance of this class.
      *
-     * @param string $action
+     * @return self
+     */
+    public static function make(array $inputs = [])
+    {
+        return new static($inputs);
+    }
+
+    /**
+     * Returns input collection.
+     *
+     * @return InputCollection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+
+    /**
+     * Returns action class name without path.
      *
      * @return string|null
      */

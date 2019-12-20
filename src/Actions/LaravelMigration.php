@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Action;
@@ -14,7 +16,6 @@ class LaravelMigration extends Action implements ActionInterface
     /**
      * Executes action.
      *
-     * @param array $inputs
      * @param DataContainerInterface $params
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
@@ -30,22 +31,22 @@ class LaravelMigration extends Action implements ActionInterface
                 $migration = $input->getRecipe(static::class) ?? null;
                 $name = $input->getName();
 
-                if (isset($migration) && is_array($migration)) {
-                    $type = isset($migration['type']) ? $migration['type'] : null;
-                    if (is_callable($type)) {
+                if (isset($migration) && \is_array($migration)) {
+                    $type = $migration['type'] ?? null;
+                    if (\is_callable($type)) {
                         $tableField = $type($table, $input);
                     } elseif ($type) {
                         $tableField = $table->$type($name);
                     } else {
                         $tableField = $table->string($name);
                     }
-                } elseif (is_callable($migration)) {
+                } elseif (\is_callable($migration)) {
                     $tableField = $migration($table, $input);
                 } else {
                     $tableField = $table->string($name);
                 }
 
-                if ($tableField && is_array($migration) && isset($migration['nullable']) && $migration['nullable']) {
+                if ($tableField && \is_array($migration) && isset($migration['nullable']) && $migration['nullable']) {
                     $tableField->nullable();
                 }
             }

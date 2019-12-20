@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Action;
@@ -14,7 +16,6 @@ class LaravelValidationLabels extends Action implements ActionInterface
     /**
      * Executes action.
      *
-     * @param array $inputs
      * @param DataContainerInterface $params
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
@@ -27,7 +28,7 @@ class LaravelValidationLabels extends Action implements ActionInterface
             $inputLabels = $input->getRecipe(static::class) ?? null;
 
             if ($inputLabels) {
-                if (is_callable($inputLabels)) {
+                if (\is_callable($inputLabels)) {
                     $labels = $inputLabels($labels, $input);
                 } else {
                     $labels[$name] = $inputLabels;
