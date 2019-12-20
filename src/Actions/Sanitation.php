@@ -66,11 +66,9 @@ class Sanitation extends Action implements ActionInterface
     /**
      * Applies Filter.
      *
-     * @param
-     *
      * @return array
      */
-    protected function applyFilter(string $input, string $rule, array $requestArray, array $options = [])
+    protected function applyFilter(string $input, int $rule, array $requestArray, array $options = [])
     {
         if (\is_array($requestArray[$input])) {
             foreach ($requestArray[$input] as $key => $singleInput) {
