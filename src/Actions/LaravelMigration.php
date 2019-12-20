@@ -46,8 +46,13 @@ class LaravelMigration extends Action implements ActionInterface
                     $tableField = $table->string($name);
                 }
 
-                if ($tableField && \is_array($migration) && isset($migration['nullable']) && $migration['nullable']) {
-                    $tableField->nullable();
+                if ($tableField && \is_array($migration)) {
+                    if(isset($migration['nullable']) && $migration['nullable']){
+                        $tableField->nullable();
+                    }
+                    if(isset($migration['unique']) && $migration['unique']) {
+                        $tableField->unique();
+                    }
                 }
             }
         }
