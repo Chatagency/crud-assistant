@@ -19,6 +19,8 @@ interface ActionFactoryInterace
     /**
      * Adds/replaces action path to the actions.
      *
+     * @param string $type
+     *
      * @return self
      */
     public function registerAction(string $type);
@@ -33,6 +35,8 @@ interface ActionFactoryInterace
     /**
      * Checks if an action has been registered.
      *
+     * @param string $type
+     *
      * @return bool
      */
     public function issetAction(string $type);
@@ -40,16 +44,20 @@ interface ActionFactoryInterace
     /**
      * Returns action instance.
      *
-     * @return ActionInterface
+     * @param string $type
      *
-     * @throws InvalidArgumentException
+     * @return ActionInterface
      */
     public function getInstanse(string $type);
 
     /**
      * Returns a specific action class name.
      *
+     * @param string $type
+     *
      * @return string
+     *
+     * @throws InvalidArgumentException
      */
     public function getAction(string $type);
 }

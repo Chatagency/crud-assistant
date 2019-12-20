@@ -20,6 +20,8 @@ interface InputInterface
     /**
      * Sets input label.
      *
+     * @param string $label
+     *
      * @return self
      */
     public function setLabel(string $label);
@@ -27,12 +29,15 @@ interface InputInterface
     /**
      * Sets input attributes.
      *
+     * @param string $name
      * @param string $value
      */
     public function setAttribute(string $name, $value);
 
     /**
      * Sets input sub elements.
+     *
+     * @param array $subElements
      *
      * @return self
      */
@@ -41,12 +46,16 @@ interface InputInterface
     /**
      * Sets input version.
      *
+     * @param int $version
+     *
      * @return self
      */
     public function setVersion(int $version);
 
     /**
      * Sets input type.
+     *
+     * @param string $type
      *
      * @return self
      */
@@ -78,10 +87,12 @@ interface InputInterface
      *
      * @return string
      */
-    public function gettype();
+    public function getType();
 
     /**
      * Returns Input attributes.
+     *
+     * @param string $name
      *
      * @return string|null
      */
@@ -102,8 +113,9 @@ interface InputInterface
     public function getSubElements();
 
     /**
-     * Sets Action.
+     * Set recipe alias.
      *
+     * @param string $type
      * @param $value
      *
      * @return self
@@ -113,6 +125,7 @@ interface InputInterface
     /**
      * Sets Recipe.
      *
+     * @param string $type
      * @param $value
      *
      * @return self
@@ -120,11 +133,20 @@ interface InputInterface
     public function setRecipe(string $type, $value);
 
     /**
-     * Returns action by type.
+     * Returns recipe by type.
      *
      * @param string $type
      *
      * @return string|null
      */
-    public function getAction($type);
+    public function getRecipe(string $type);
+
+    /**
+     * Get recipe alias.
+     *
+     * @param string $type
+     *
+     * @return string|null
+     */
+    public function getAction(string $type);
 }
