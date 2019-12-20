@@ -14,6 +14,7 @@ class Sanitation extends Action implements ActionInterface
     /**
      * Executes action.
      *
+     * @param array $inputs
      * @param DataContainerInterface $params
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
@@ -43,6 +44,8 @@ class Sanitation extends Action implements ActionInterface
     /**
      * Returns rules array.
      *
+     * @param array $inputs
+     *
      * @return array
      */
     protected function rules(array $inputs)
@@ -63,6 +66,12 @@ class Sanitation extends Action implements ActionInterface
 
     /**
      * Applies Filter.
+     *
+     * @param string $input
+     * @param string $rule
+     * @param array  $requestArray
+     * @param array  $options
+     * @param
      *
      * @return array
      */
