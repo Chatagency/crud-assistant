@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterace;
@@ -66,8 +68,6 @@ class ActionFactory implements ActionFactoryInterace
      * Returns action instance.
      *
      * @return ActionInterface
-     *
-     * @throws InvalidArgumentException
      */
     public function getInstanse(string $type)
     {
@@ -78,6 +78,8 @@ class ActionFactory implements ActionFactoryInterace
 
     /**
      * Returns a specific action class name.
+     *
+     * @throws InvalidArgumentException
      *
      * @return string
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant;
 
 /**
@@ -234,11 +236,9 @@ abstract class Input
     /**
      * Returns recipe by type.
      *
-     * @param string $type
-     *
      * @return string|null
      */
-    public function getRecipe($type)
+    public function getRecipe(string $type)
     {
         if (isset($this->recipes[$type])) {
             return $this->recipes[$type];
@@ -250,11 +250,9 @@ abstract class Input
     /**
      * Get recipe alias.
      *
-     * @param string $type
-     *
      * @return string|null
      */
-    public function getAction($type)
+    public function getAction(string $type)
     {
         return $this->getRecipe($type);
     }

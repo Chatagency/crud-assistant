@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Inputs;
 
 use Chatagency\CrudAssistant\Contracts\InputInterface;

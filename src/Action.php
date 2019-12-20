@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant;
 
 use InvalidArgumentException;
@@ -12,9 +14,9 @@ class Action
     /**
      * Checks params integrity.
      *
-     * @return bool
-     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     protected function checkRequiredParams(DataContainer $data, array $checks)
     {

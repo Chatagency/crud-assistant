@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Contracts;
 
 use InvalidArgumentException;
@@ -41,13 +43,13 @@ interface ActionFactoryInterace
      * Returns action instance.
      *
      * @return ActionInterface
-     *
-     * @throws InvalidArgumentException
      */
     public function getInstanse(string $type);
 
     /**
      * Returns a specific action class name.
+     *
+     * @throws InvalidArgumentException
      *
      * @return string
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Contracts;
 
 /**
@@ -9,15 +11,10 @@ interface DataContainerInterface
 {
     /**
      * Construct can receive a data array.
+     *
+     * @return self
      */
     public function __construct(array $data = []);
-
-    /**
-     * Returns the data array.
-     *
-     * @return array
-     */
-    public function all();
 
     /**
      * Magic set method.
@@ -40,6 +37,15 @@ interface DataContainerInterface
 
     /**
      * Magic unset method.
+     *
+     * @return null
      */
     public function __unset(string $name);
+
+    /**
+     * Returns the data array.
+     *
+     * @return array
+     */
+    public function all();
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Contracts;
 
 /**
@@ -78,7 +80,7 @@ interface InputInterface
      *
      * @return string
      */
-    public function gettype();
+    public function getType();
 
     /**
      * Returns Input attributes.
@@ -102,7 +104,7 @@ interface InputInterface
     public function getSubElements();
 
     /**
-     * Sets Action.
+     * Set recipe alias.
      *
      * @param $value
      *
@@ -120,11 +122,16 @@ interface InputInterface
     public function setRecipe(string $type, $value);
 
     /**
-     * Returns action by type.
-     *
-     * @param string $type
+     * Returns recipe by type.
      *
      * @return string|null
      */
-    public function getAction($type);
+    public function getRecipe(string $type);
+
+    /**
+     * Get recipe alias.
+     *
+     * @return string|null
+     */
+    public function getAction(string $type);
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Action;
@@ -25,7 +27,7 @@ class LaravelValidationRules extends Action implements ActionInterface
             $fieldValidation = $input->getRecipe(static::class) ?? null;
 
             if ($fieldValidation) {
-                if (is_callable($fieldValidation)) {
+                if (\is_callable($fieldValidation)) {
                     $rules[$name] = $fieldValidation($input);
                 } else {
                     $rules[$name] = $fieldValidation;
