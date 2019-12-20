@@ -74,6 +74,8 @@ abstract class Input
     /**
      * Sets input label.
      *
+     * @param string $label
+     *
      * @return self
      */
     public function setLabel(string $label)
@@ -86,6 +88,7 @@ abstract class Input
     /**
      * Sets input attributes.
      *
+     * @param string $name
      * @param string $value
      */
     public function setAttribute(string $name, $value)
@@ -97,6 +100,8 @@ abstract class Input
 
     /**
      * Sets input sub elements.
+     *
+     * @param array $subElements
      *
      * @return self
      */
@@ -110,6 +115,8 @@ abstract class Input
     /**
      * Sets input version.
      *
+     * @param int $version
+     *
      * @return self
      */
     public function setVersion(int $version)
@@ -121,6 +128,8 @@ abstract class Input
 
     /**
      * Sets input type.
+     *
+     * @param string $type
      *
      * @return self
      */
@@ -174,6 +183,8 @@ abstract class Input
     /**
      * Returns Input attributes.
      *
+     * @param string $name
+     *
      * @return string|null
      */
     public function getAttribute(string $name)
@@ -208,6 +219,7 @@ abstract class Input
     /**
      * Set recipe alias.
      *
+     * @param string $type
      * @param $value
      *
      * @return self
@@ -220,6 +232,7 @@ abstract class Input
     /**
      * Sets Recipe.
      *
+     * @param string $type
      * @param $value
      *
      * @return self
@@ -238,7 +251,7 @@ abstract class Input
      *
      * @return string|null
      */
-    public function getRecipe($type)
+    public function getRecipe(string $type)
     {
         if (isset($this->recipes[$type])) {
             return $this->recipes[$type];
@@ -254,7 +267,7 @@ abstract class Input
      *
      * @return string|null
      */
-    public function getAction($type)
+    public function getAction(string $type)
     {
         return $this->getRecipe($type);
     }

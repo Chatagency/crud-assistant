@@ -12,6 +12,9 @@ class Action
     /**
      * Checks params integrity.
      *
+     * @param DataContainer $data
+     * @param array $checks
+     *
      * @return bool
      *
      * @throws InvalidArgumentException
