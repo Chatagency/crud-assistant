@@ -26,6 +26,7 @@ class LaravelMigrationTest extends TestCase
         $email = new TextInput('email', 'Email');
         $email->setRecipe(LaravelMigration::class, [
             'nullable' => true,
+            'unique' => true,
         ]);
 
         $description = new TextInput('description', 'Description');
