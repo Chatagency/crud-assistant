@@ -32,8 +32,6 @@ class CrudAssistant
      */
     public function __construct(array $inputs = [], $actionFactory = null)
     {
-        dd($actionFactory);
-        
         $this->actionFactory = $actionFactory ?? new ActionFactory($this->getActionsConfig());
         $this->collection = new InputCollection($inputs, $this->actionFactory);
 
