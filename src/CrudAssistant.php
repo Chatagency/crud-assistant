@@ -30,9 +30,11 @@ class CrudAssistant
      *
      * @return self
      */
-    public function __construct(array $inputs = [])
+    public function __construct(array $inputs = [], $actionFactory = null)
     {
-        $this->actionFactory = new ActionFactory($this->getActionsConfig());
+        dd($actionFactory);
+        
+        $this->actionFactory = $actionFactory ?? new ActionFactory($this->getActionsConfig());
         $this->collection = new InputCollection($inputs, $this->actionFactory);
 
         return $this;
@@ -86,9 +88,9 @@ class CrudAssistant
      *
      * @return self
      */
-    public static function make(array $inputs = [])
+    public static function make(array $inputs = [], $actionFactory = null)
     {
-        return new static($inputs);
+        return new static($inputs, $actionFactory);
     }
 
     /**
