@@ -16,9 +16,11 @@ class CrudAssistantServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('crud-assistant.php'),
-        ], 'crud-assistant');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/config.php' => config_path('crud-assistant.php'),
+            ], 'crud-assistant');
+        }
     }
 
     /**
