@@ -91,6 +91,10 @@ class ActionFactory implements ActionFactoryInterace
             throw new InvalidArgumentException('The '.$type.' Action has not been registered or does not exist', 500);
         }
 
-        return $this->actions[$key];
+        $class = $this->actions[$key];
+
+        if (!class_exists($class)) {
+            throw new InvalidArgumentException('The '.$type.' Action has not been registered or the namespace is wrong', 500);
+        }
     }
 }
