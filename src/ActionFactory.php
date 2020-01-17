@@ -96,5 +96,7 @@ class ActionFactory implements ActionFactoryInterace
         if (!class_exists($class)) {
             throw new InvalidArgumentException('The '.$type.' Action has not been registered or the namespace is wrong', 500);
         }
+
+        return $class;
     }
 }
