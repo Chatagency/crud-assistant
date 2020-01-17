@@ -30,12 +30,22 @@ class CrudAssistant
      *
      * @return self
      */
-    public function __construct(array $inputs = [], $actionFactory = null)
+    public function __construct(array $inputs = [], ActionFactory $actionFactory = null)
     {
         $this->actionFactory = $actionFactory ?? new ActionFactory($this->getActionsConfig());
         $this->collection = new InputCollection($inputs, $this->actionFactory);
 
         return $this;
+    }
+
+    /**
+     * Creates new instance of this class.
+     *
+     * @return self
+     */
+    public static function make(array $inputs = [], ActionFactory $actionFactory = null)
+    {
+        return new static($inputs, $actionFactory);
     }
 
     /**
@@ -79,16 +89,6 @@ class CrudAssistant
         }
 
         throw new BadMethodCallException('Method '.$name.' not exists in '.__CLASS__);
-    }
-
-    /**
-     * Creates new instance of this class.
-     *
-     * @return self
-     */
-    public static function make(array $inputs = [], $actionFactory = null)
-    {
-        return new static($inputs, $actionFactory);
     }
 
     /**
