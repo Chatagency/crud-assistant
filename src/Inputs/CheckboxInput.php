@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Input;
 
 /**
- * Checkbox input Class.
+ * Checkbox input class.
  */
 class CheckboxInput extends Input implements InputInterface
 {
