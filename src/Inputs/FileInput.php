@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Input;
 
 /**
- * File cnput class.
+ * File input class.
  */
 class FileInput extends Input implements InputInterface
 {

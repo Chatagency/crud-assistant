@@ -2,47 +2,36 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
+use PHPUnit\Framework\TestCase;
 use BadMethodCallException;
+use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Actions\Sanitation;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Orchestra\Testbench\TestCase;
 
 class CrudAssistantTest extends TestCase
 {
     /**
-     * Setup the test environment.
+     * Returns instance of ActionFactory
+     * @return ActionFactory
      */
-    protected function setUp(): void
+    public function getActionFactory()
     {
-        parent::setUp();
-
-        $config = require __DIR__.'/../config/config.php';
-        $this->app->config->set('crud-assistant.actions', $config['actions']);
-    }
-
-    /**
-     * Creates the application.
-     *
-     * Needs to be implemented by subclasses.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    public function createApplication()
-    {
-        $app = $this->resolveApplication();
-        /*
-         * Just the config resolver is needed
+        /**
+         * Laravel config() is not available
+         * inside the package.
+         *
+         * @var array
          */
-        $this->resolveApplicationConfiguration($app);
+        $config = require __DIR__.'/../config/config.php';
 
-        return $app;
+        return new ActionFactory($config['actions']);
     }
-
+    
     /** @test */
     public function a_crud_assistant_instance_can_be_created_statically()
     {
-        $manager = CrudAssistant::make();
+        $manager = CrudAssistant::make([], $this->getActionFactory());
 
         $this->assertInstanceOf(CrudAssistant::class, $manager);
     }
@@ -55,7 +44,7 @@ class CrudAssistantTest extends TestCase
             new TextInput('email'),
         ];
 
-        $manager = new CrudAssistant($inputs);
+        $manager = new CrudAssistant($inputs, $this->getActionFactory());
 
         $this->assertEquals(2, $manager->getCollection()->count());
     }
@@ -66,7 +55,7 @@ class CrudAssistantTest extends TestCase
         $name = new TextInput('name');
         $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $manager = new CrudAssistant([$name]);
+        $manager = new CrudAssistant([$name], $this->getActionFactory());
         $sanitation = $manager->sanitation([
             'requestArray' => [
                 'name' => 'John Smith',
@@ -82,7 +71,7 @@ class CrudAssistantTest extends TestCase
     {
         $manager = new CrudAssistant([
             new TextInput('name'),
-        ]);
+        ], $this->getActionFactory());
 
         $this->assertCount(1, $manager->getInputs());
         $this->assertEquals(1, $manager->count());
@@ -93,7 +82,7 @@ class CrudAssistantTest extends TestCase
     {
         $manager = new CrudAssistant([
             new TextInput('name'),
-        ]);
+        ], $this->getActionFactory());
 
         $this->expectException(BadMethodCallException::class);
         $manager->randomMetod();
