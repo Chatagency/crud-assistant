@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Input;
 
 /**
- * Radio button input Class.
+ * Radio button input class.
  */
 class RadioInput extends Input implements InputInterface
 {

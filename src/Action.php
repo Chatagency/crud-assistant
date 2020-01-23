@@ -22,7 +22,7 @@ class Action
     {
         foreach ($checks as $check) {
             if (!isset($data->$check)) {
-                throw new InvalidArgumentException('The argument '.$check.' is missing from the DataContainer class');
+                throw new InvalidArgumentException('The argument '.$check.' is missing from the DataContainer class', 500);
             }
         }
 

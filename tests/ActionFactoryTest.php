@@ -50,4 +50,15 @@ class ActionFactoryTest extends TestCase
         $factory = new ActionFactory($config);
         $factory->getAction('unknow');
     }
+    
+    /** @test */
+    public function an_exception_is_thrown_if_the_action_exists_in_the_the_factory_but_does_not_exist()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $config = $this->getConfig();
+        $config[] = 'This\Class\Does\Not\Exist';
+        $factory = new ActionFactory($config);
+        $yo = $factory->getAction('This\Class\Does\Not\Exist');
+        
+    }
 }

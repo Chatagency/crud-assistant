@@ -32,7 +32,7 @@ class CrudAssistant
      */
     public function __construct(array $inputs = [], ActionFactory $actionFactory = null)
     {
-        $this->actionFactory = $actionFactory ?? new ActionFactory($this->getActionsConfig());
+        $this->actionFactory = $actionFactory ?? new ActionFactory(config('crud-assistant.actions'));
         $this->collection = new InputCollection($inputs, $this->actionFactory);
 
         return $this;
@@ -120,13 +120,4 @@ class CrudAssistant
         return null;
     }
 
-    /**
-     * Returns config array.
-     *
-     * @return array
-     */
-    protected function getActionsConfig()
-    {
-        return config('crud-assistant.actions');
-    }
 }
