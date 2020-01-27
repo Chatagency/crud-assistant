@@ -88,7 +88,7 @@ class CrudAssistant
             return \call_user_func_array($object_array, $arguments);
         }
 
-        throw new BadMethodCallException('Method '.$name.' not exists in '.__CLASS__);
+        throw new BadMethodCallException('Method '.$name.' not exists in '.__CLASS__, 500);
     }
 
     /**
