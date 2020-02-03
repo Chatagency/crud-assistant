@@ -44,6 +44,29 @@ class DataContainerTest extends TestCase
         unset($container->new);
         $this->assertFalse(isset($container->new));
     }
+    
+    /** @test */
+    public function the_contains_method_can_be_used_to_verify_if_multiple_keys_have_been_set()
+    {
+        $values = ['new' => 'look', 'old' => 'story'];
+        $container = new DataContainer($values);
+        
+        $this->assertTrue($container->contains(array_keys($values)));
+        unset($container->new);
+        $this->assertFalse($container->contains(array_keys($values)));
+    }
+    
+    /** @test */
+    public function the_missing_method_can_be_used_to_verfify_if_multiple_keys_have_not_been_set()
+    {
+        $values = ['new' => 'look', 'old' => 'story'];
+        $container = new DataContainer($values);
+        
+        $this->assertFalse($container->missing(array_keys($values)));
+        unset($container->new);
+        $this->assertEquals('new', $container->missing(array_keys($values)));
+        
+    }
 
     /** @test */
     public function all_values_can_be_access_using_the_all_method()

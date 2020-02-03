@@ -77,6 +77,46 @@ class DataContainer implements DataContainerInterface
     {
         unset($this->data[$name]);
     }
+    
+    /**
+     * Verifies that all keys in an
+     * array are set
+     *
+     * @param  array  $keys
+     *
+     * @return bool
+     */
+    public function contains(array $keys)
+    {
+        foreach($keys as $key) {
+            if(!isset($this->$key)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Verifies if any of the keys
+     * in an array is missing in
+     * the container. Returns
+     * first key missing
+     *
+     * @param  array  $keys
+     *
+     * @return string|boolean
+     */
+    public function missing(array $keys)
+    {
+        foreach($keys as $key) {
+            if(!isset($this->$key)) {
+                return $key;
+            }
+        }
+        
+        return false;
+    }
 
     /**
      * Returns the data array.
