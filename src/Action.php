@@ -20,12 +20,10 @@ class Action
      */
     protected function checkRequiredParams(DataContainer $data, array $checks)
     {
-        foreach ($checks as $check) {
-            if (!isset($data->$check)) {
-                throw new InvalidArgumentException('The argument '.$check.' is missing from the DataContainer class', 500);
-            }
+        if($missing = $data->missing($checks)){
+            throw new InvalidArgumentException('The argument '.$missing.' is missing from the DataContainer class', 500);
         }
-
+        
         return true;
     }
 }
