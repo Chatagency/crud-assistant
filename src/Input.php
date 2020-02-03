@@ -208,18 +208,6 @@ abstract class Input
     }
 
     /**
-     * Set recipe alias.
-     *
-     * @param $value
-     *
-     * @return self
-     */
-    public function setAction(string $type, $value)
-    {
-        return $this->setRecipe($type, $value);
-    }
-
-    /**
      * Sets Recipe.
      *
      * @param $value
@@ -231,6 +219,22 @@ abstract class Input
         $this->recipes[$type] = $value;
 
         return $this;
+    }
+    
+    /**
+     * Set recipe alias.
+     *
+     * @param $value
+     *
+     * @return self
+     *
+     * @deprecated on version 0.1.1
+     *
+     * @see setRecipe()
+     */
+    public function setAction(string $type, $value)
+    {
+        return $this->setRecipe($type, $value);
     }
 
     /**
@@ -251,6 +255,10 @@ abstract class Input
      * Get recipe alias.
      *
      * @return string|null
+     *
+     * @deprecated on version 0.1.1
+     *
+     * @see getRecipe()
      */
     public function getAction(string $type)
     {

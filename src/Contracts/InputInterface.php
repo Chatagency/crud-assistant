@@ -104,15 +104,6 @@ interface InputInterface
     public function getSubElements();
 
     /**
-     * Set recipe alias.
-     *
-     * @param $value
-     *
-     * @return self
-     */
-    public function setAction(string $type, $value);
-
-    /**
      * Sets Recipe.
      *
      * @param $value
@@ -128,10 +119,4 @@ interface InputInterface
      */
     public function getRecipe(string $type);
 
-    /**
-     * Get recipe alias.
-     *
-     * @return string|null
-     */
-    public function getAction(string $type);
 }
