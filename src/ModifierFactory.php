@@ -2,7 +2,7 @@
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Modifiers;
+use Chatagency\CrudAssistant\Modifier;
 use Exception;
 
 /**
@@ -24,8 +24,8 @@ class ModifierFactory
         
         $modifier = new $type;
         
-        if(!$modifier instanceof Modifiers) {
-            throw new Exception("The Modifier ".$type. " is not an instance of ". Modifiers::class , 500);
+        if(!$modifier instanceof Modifier) {
+            throw new Exception("The Modifier ".$type. " is not an instance of ". Modifier::class , 500);
         }
         
         return $modifier;
