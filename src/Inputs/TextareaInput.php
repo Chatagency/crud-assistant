@@ -10,7 +10,7 @@ use Chatagency\CrudAssistant\Input;
 /**
  * Textarea input class.
  */
-class Textarea extends Input implements InputInterface
+class TextareaInput extends Input implements InputInterface
 {
     /**
      * Input type.
