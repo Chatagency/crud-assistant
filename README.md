@@ -87,7 +87,7 @@ $manager = CrudAssistant::make([
 ]);
 ```
 
-### Actions
+### Actions - [Docs](https://link-to-documentation)
 
 `Action`s are arbitrary functionality ran on an `InputCollection`.
 
@@ -96,6 +96,7 @@ use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 
+// Input
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
 $name->addRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
 $name->addRecipe(LaravelValidationRules::class, [
@@ -103,8 +104,11 @@ $name->addRecipe(LaravelValidationRules::class, [
     'max:250'
 ]);
 
+// Collection
 $manager = CrudAssistant::make([$name]);
+// sanitizes values
 $sanitized = $manager->execute(Sanitation::class);
+// returns Laravel validation rules
 $rules = $manager->execute(LaravelValidationRules::class);
 ```
 
