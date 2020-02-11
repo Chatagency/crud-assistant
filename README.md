@@ -7,20 +7,20 @@ Crud Assistant is a a set of utilities that helps crud management and component 
 
 Consult the [Documentation](https://link-to-documentation) for more detail.
 
-*Note*: We keep a repository of reusable components and implementation [here](http://link-to-extras)
+*Note*: We keep a repository of reusable components and part of the implementation [here](http://link-to-extras)
 
 
 ### Input - [Docs](https://link-to-documentation)
 
-The `Input` can represent many things:
+An `Input` can represent many things:
 
 - A form input
 - A cell on the database table
 - A column on a CSV file, etc.
 
-To summarize up, they encapsulate a single peace of data.
+To summarize, it encapsulates a single peace of data.
 
-There are different types of `Input`s, loosely associated with form input types:
+There are different types of `Inputs`, loosely associated with form input types:
 
 - `TextInput`
 - `SelectInput`
@@ -31,15 +31,15 @@ There are different types of `Input`s, loosely associated with form input types:
 - `RadioGroupInput`
 - `HiddenInput`
 
-Other input types can be created easily.
+Other input types can be easily created.
 
-`Inputs` area containers that hold the main data itself but also the instructions/transformations that the data might experience. It can hold: `name`, `type`, `label`, `version` (to manage change over time), `attributes` and, when it make sense,  `subElements`:
+`Inputs` area containers that hold the main data itself but also the instructions/transformations that data might experience. It can hold: `name`, `type`, `label`, `version` (to manage change over time), `attributes` and, when it make sense,  `subElements`:
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
-$name = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
-$name->setType('email');
-$name->setAttribute('required', 'required');
+$email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+$email->setType('email');
+$email->setAttribute('required', 'required');
 
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
@@ -48,7 +48,7 @@ $hobby->setSubElements([
     'Watch movies',
 ]);
 ```
-But (arguably) more important, it can hold `Recipes` for `Actions`.
+This way we can group all content/instructions in one place.But (arguably) more important, it can hold `Recipes` for `Actions`.
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
@@ -58,7 +58,7 @@ $name->addRecipe(\Chatagency\CrudAssistant\Actions\Sanitation::class, FILTER_SAN
 
 ### InputCollection - [Docs](https://link-to-documentation)
 
-The `InputCollection` holds one or multiple `Input`s.
+The `InputCollection` holds one or multiple `Inputs`.
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
@@ -66,12 +66,40 @@ use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\ActionFactory;
 
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$collection = new InputCollection([$name], new ActionFactory([]))
+$email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+$email->setType('email');
+
+$collection = new InputCollection([$name, $email], new ActionFactory([]))
 ```
 An action can be called on an `InputCollection`:
 
 ```php
 $actionResult = $collection->execute(\Chatagency\CrudAssistant\Actions\Sanitation::class);
+```
+
+### Actions - [Docs](https://link-to-documentation)
+
+`Actions` are arbitrary functionality ran on an `InputCollection`.
+
+```php
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+
+// Input
+$name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
+$name->addRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+$name->addRecipe(LaravelValidationRules::class, [
+    'required',
+    'max:250'
+]);
+
+$collection = new InputCollection([$name], new ActionFactory([]))
+
+// sanitizes values
+$sanitized = $collection->execute(Sanitation::class);
+// returns Laravel validation rules
+$rules = $manager->execute(LaravelValidationRules::class);
 ```
 
 ### CrudAssistant (Crud Manager) - [Docs](https://link-to-documentation)
@@ -87,33 +115,4 @@ $manager = CrudAssistant::make([
 ]);
 ```
 
-### Actions - [Docs](https://link-to-documentation)
 
-`Action`s are arbitrary functionality ran on an `InputCollection`.
-
-```php
-use Chatagency\CrudAssistant\CrudAssistant;
-use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
-
-// Input
-$name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->addRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
-$name->addRecipe(LaravelValidationRules::class, [
-    'required',
-    'max:250'
-]);
-
-// Collection
-$manager = CrudAssistant::make([$name]);
-// sanitizes values
-$sanitized = $manager->execute(Sanitation::class);
-// returns Laravel validation rules
-$rules = $manager->execute(LaravelValidationRules::class);
-```
-
-## Todo
-
-- HiddenInput tests
-- Add independent `Migration` version
-- Redo `ActionController` to have only extra ones in config()
