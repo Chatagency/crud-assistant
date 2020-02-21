@@ -73,6 +73,18 @@ class Action
     }
     
     /**
+     * Checks if the value is empty
+     *
+     * @param $value
+     *
+     * @return bool
+     */
+    public function empty($value)
+    {
+        return $value = '' || is_null($value);
+    }
+    
+    /**
      * Ignore if value is empty
      *
      * @param $value
@@ -91,11 +103,7 @@ class Action
             return false;
         }
         
-        if(!isset($recipe['ignoreIfEmpty'])) {
-            return false;
-        }
-        
-        return $recipe['ignoreIfEmpty'];
+        return $recipe['ignoreIfEmpty'] ?? false;
     }
     
     /**
@@ -117,23 +125,7 @@ class Action
             return false;
         }
         
-        if(!isset($recipe['LabelIfEmpty'])) {
-            return null;
-        }
-        
         return $recipe['LabelIfEmpty'] ?? null;
-    }
-    
-    /**
-     * Checks if the value is empty
-     *
-     * @param $value
-     *
-     * @return bool
-     */
-    public function empty($value)
-    {
-        return $value = '' || is_null($value);
     }
     
 }

@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\DataContainer;
 class IsSanitizedTest extends TestCase
 {
     /** @test */
-    public function the_sanitized_modifier_()
+    public function the_sanitized_modifier_decodes_the_value()
     {
         $modifer = new IsSanitized();
         $value = "This aren't true";
