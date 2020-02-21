@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use InvalidArgumentException;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
  * Action base class.
@@ -26,4 +27,113 @@ class Action
         
         return true;
     }
+    
+    /**
+     * Applies all modifiers to the a value
+     *
+     * @param $value
+     *
+     * @param InputInterface $input
+     *
+     * @return mixed
+     */
+    protected function modifiers($value, InputInterface $input)
+    {
+        $recipe = $input->getRecipe(static::class);
+        
+        if(!is_array($recipe)){
+            return false;
+        }
+        
+        $modifiers = $recipe['modifiers'] ?? [];
+        
+        if($modifiers && !$this->empty($value)){
+            foreach($modifiers as $modifierName => $data){
+                $value = (ModifierFactory::make($modifierName))->modify($value, $data);
+            }
+        }
+
+        return $value;
+    }
+    
+    /**
+     * Checks for value is to be ignored
+     *
+     * @param $recipe
+     *
+     * @return bool
+     */
+    public function ignore($recipe)
+    {
+        if(!is_array($recipe)){
+            return false;
+        }
+        
+        return $recipe['ignore'] ?? false;
+    }
+    
+    /**
+     * Ignore if value is empty
+     *
+     * @param $value
+     *
+     * @param $recipe
+     *
+     * @return bool
+     */
+    public function ignoreIfEmpty($value, $recipe)
+    {
+        if(!$this->empty($value)){
+            return false;
+        }
+        
+        if(!is_array($recipe)){
+            return false;
+        }
+        
+        if(!isset($recipe['ignoreIfEmpty'])) {
+            return false;
+        }
+        
+        return $recipe['ignoreIfEmpty'];
+    }
+    
+    /**
+     * Returns label if value is empty
+     *
+     * @param $value
+     *
+     * @param array  $recipe [description]
+     *
+     * @return string|null
+     */
+    public function labelIfEmpty($value, $recipe)
+    {
+        if(!$this->empty($value)){
+            return null;
+        }
+        
+        if(!is_array($recipe)){
+            return false;
+        }
+        
+        if(!isset($recipe['LabelIfEmpty'])) {
+            return null;
+        }
+        
+        return $recipe['LabelIfEmpty'] ?? null;
+    }
+    
+    /**
+     * Checks if the value is empty
+     *
+     * @param $value
+     *
+     * @return bool
+     */
+    public function empty($value)
+    {
+        return $value = '' || is_null($value);
+    }
+    
 }

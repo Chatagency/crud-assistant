@@ -26,6 +26,7 @@ class Sanitation extends Action implements ActionInterface
         $requestArray = $params->requestArray;
 
         foreach ($rules as $input => $rule) {
+            
             if (isset($requestArray[$input])) {
                 if (\is_array($rule) && isset($rule['rules']) && \is_array($rule['rules'])) {
                     $options = isset($rule['options']) && \is_array($rule['options']) ? $rule['options'] : [];
@@ -52,11 +53,17 @@ class Sanitation extends Action implements ActionInterface
         $rules = [];
 
         foreach ($inputs as $key => $input) {
-            $sanitation = $input->getRecipe(static::class) ?? null;
+            
+            $recipe = $input->getRecipe(static::class);
+            
+            if($this->ignore($recipe)) {
+                continue;
+            }
+            
             $name = $input->getName();
 
-            if ($sanitation) {
-                $rules[$name] = $sanitation;
+            if ($recipe) {
+                $rules[$name] = $recipe;
             }
         }
 

@@ -26,13 +26,18 @@ class LaravelMigration extends Action implements ActionInterface
         $version = $params->version;
 
         foreach ($inputs as $input) {
+            
             if ($input->getVersion() == $version) {
                 $tableField = null;
-                $migration = $input->getRecipe(static::class) ?? null;
+                $recipe = $input->getRecipe(static::class);
                 $name = $input->getName();
+                
+                if($this->ignore($recipe)) {
+                    continue;
+                }
 
-                if (isset($migration) && \is_array($migration)) {
-                    $type = $migration['type'] ?? null;
+                if (isset($recipe) && \is_array($recipe)) {
+                    $type = $recipe['type'] ?? null;
                     if (\is_callable($type)) {
                         $tableField = $type($table, $input);
                     } elseif ($type) {
@@ -40,20 +45,13 @@ class LaravelMigration extends Action implements ActionInterface
                     } else {
                         $tableField = $table->string($name);
                     }
-                } elseif (\is_callable($migration)) {
-                    $tableField = $migration($table, $input);
+                } elseif (\is_callable($recipe)) {
+                    $tableField = $recipe($table, $input);
                 } else {
                     $tableField = $table->string($name);
                 }
 
-                if ($tableField && \is_array($migration)) {
-                    if(isset($migration['nullable']) && $migration['nullable']){
-                        $tableField->nullable();
-                    }
-                    if(isset($migration['unique']) && $migration['unique']) {
-                        $tableField->unique();
-                    }
-                }
+                $tableField = $this->modifiers($tableField, $input);
             }
         }
 
