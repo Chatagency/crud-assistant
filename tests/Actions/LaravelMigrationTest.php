@@ -125,7 +125,7 @@ class LaravelMigrationTest extends TestCase
     }
 
     /** @test */
-    public function a_callback_can_be_passed_as_value_to_the_action()
+    public function a_callback_can_be_passed_as_value_to_the_action_or_as_the_type()
     {
         $migration = new LaravelMigration();
 
@@ -133,8 +133,15 @@ class LaravelMigrationTest extends TestCase
         $name->setRecipe(LaravelMigration::class, function ($table, $input) {
             return $table->string($input->getName())->nullable();
         });
+        
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(LaravelMigration::class, [
+            'type' => function ($table, $input) {
+                return $table->string($input->getName())->nullable();
+            }
+        ]);
 
-        $inputs = [$name];
+        $inputs = [$name, $email];
 
         $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
             $container = new DataContainer();
@@ -144,7 +151,7 @@ class LaravelMigrationTest extends TestCase
             $migration->execute($inputs, $container);
         });
         
-        $this->assertCount(1, $blueprint->getColumns());
+        $this->assertCount(2, $blueprint->getColumns());
     }
 
     /** @test */
@@ -243,5 +250,35 @@ class LaravelMigrationTest extends TestCase
         $this->assertEquals($inputName, $emailAttributes['name']);
         $this->assertTrue($emailAttributes['unique']);
         $this->assertTrue($emailAttributes['unsigned']);
+    }
+    
+    /** @test */
+    public function an_input_can_be_ignored_by_the_migration_action_action()
+    {
+        $migration = new LaravelMigration();
+        
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(LaravelMigration::class, [
+            'type' => 'text',
+        ]);
+        
+        $id = new TextInput('id', 'Id');
+        $id->setType('hidden');
+        
+        $id->setRecipe(LaravelMigration::class, [
+            'ignore' => true,
+        ]);
+        
+        $inputs = [$name, $id];
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
+            $container = new DataContainer();
+            $container->table = $table;
+            $container->version = 1;
+
+            $migration->execute($inputs, $container);
+        });
+        
+        $this->assertCount(1, $blueprint->getColumns());
     }
 }
