@@ -106,26 +106,4 @@ class Action
         return $recipe['ignoreIfEmpty'] ?? false;
     }
     
-    /**
-     * Returns label if value is empty
-     *
-     * @param $value
-     *
-     * @param array  $recipe [description]
-     *
-     * @return string|null
-     */
-    public function labelIfEmpty($value, $recipe)
-    {
-        if(!$this->empty($value)){
-            return null;
-        }
-        
-        if(!is_array($recipe)){
-            return false;
-        }
-        
-        return $recipe['LabelIfEmpty'] ?? null;
-    }
-    
 }
