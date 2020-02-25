@@ -6,7 +6,7 @@ use Chatagency\CrudAssistant\Modifier;
 use Chatagency\CrudAssistant\DataContainer;
 
 /**
- * Is Boolean Modifier
+ * Boolean Modifier
  */
 class BooleanModifier extends Modifier
 {

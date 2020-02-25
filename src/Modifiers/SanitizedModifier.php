@@ -6,7 +6,7 @@ use Chatagency\CrudAssistant\Modifier;
 use Chatagency\CrudAssistant\DataContainer;
 
 /**
- * Is Sanitized Modifier
+ * Sanitized Modifier
  */
 class SanitizedModifier extends Modifier
 {
