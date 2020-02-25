@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\DataContainer;
 /**
  * Is Boolean Modifier
  */
-class IsBoolean extends Modifier
+class BooleanModifier extends Modifier
 {
     
     protected $trueLabel = 'Yes';

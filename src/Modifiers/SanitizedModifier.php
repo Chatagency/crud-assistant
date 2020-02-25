@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\DataContainer;
 /**
  * Is Sanitized Modifier
  */
-class IsSanitized extends Modifier
+class SanitizedModifier extends Modifier
 {
     public function modify($value, DataContainer $data = null)
     {
