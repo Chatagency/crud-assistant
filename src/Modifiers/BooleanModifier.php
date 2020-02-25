@@ -14,6 +14,14 @@ class BooleanModifier extends Modifier
     protected $trueLabel = 'Yes';
     protected $falseLabel = 'No';
     
+    /**
+     * Modifies value
+     *
+     * @param  $value
+     * @param  DataContainer $data
+     *
+     * @return mixed
+     */
     public function modify($value, DataContainer $data = null)
     {
         $trueLabel = $data->trueLabel ?? $this->trueLabel;
