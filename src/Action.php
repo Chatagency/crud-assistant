@@ -47,7 +47,7 @@ class Action
         
         $modifiers = $recipe['modifiers'] ?? [];
         
-        if($modifiers && !$this->empty($value)){
+        if(is_array($modifiers) && !$this->empty($value)){
             foreach($modifiers as $modifierName => $data){
                 $value = (ModifierFactory::make($modifierName))->modify($value, $data);
             }
