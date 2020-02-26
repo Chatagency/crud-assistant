@@ -10,8 +10,18 @@ use Chatagency\CrudAssistant\DataContainer;
  */
 class BooleanModifier extends Modifier
 {
-    
+    /**
+     * True Label
+     *
+     * @var string
+     */
     protected $trueLabel = 'Yes';
+    
+    /**
+     * False Label
+     *
+     * @var string
+     */
     protected $falseLabel = 'No';
     
     /**
