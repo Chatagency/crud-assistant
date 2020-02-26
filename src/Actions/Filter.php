@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Chatagency\CrudAssistant\Actions;
+
+use Chatagency\CrudAssistant\Action;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+
+/**
+ * Laravel validation filtered action class.
+ */
+class Filter extends Action implements ActionInterface
+{
+    /**
+     * Executes action.
+     *
+     * @param DataContainerInterface $params
+     */
+    public function execute(array $inputs, DataContainerInterface $params = null)
+    {
+        $this->checkRequiredParams($params, ['data']);
+        
+        $data = $params->data;
+
+        foreach ($inputs as $input) {
+            
+            $name = $input->getName();
+            $recipe = $input->getRecipe(static::class);
+            $value = $data[$name] ?? null;
+            
+            if ($recipe) {
+                if (\is_callable($recipe)) {
+                    $data = $recipe($input, $params, $data);
+                } elseif(isset($recipe['filter']) && $recipe['filter']) {
+                    unset($data[$name]);
+                }
+            }
+            
+        }
+        
+        return $data;
+
+    }
+}
