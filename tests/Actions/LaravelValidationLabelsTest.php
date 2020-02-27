@@ -49,4 +49,21 @@ class LaravelValidationLabelsTest extends TestCase
         $this->assertCount(1, $result);
         $this->assertEquals('Name', $result['name']);
     }
+    
+    /** @test */
+    public function an_input_can_be_ignored_by_the_validation_labels_action()
+    {
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(LaravelValidationLabels::class, 'Your Name');
+
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(LaravelValidationLabels::class, [
+            'ignore' => true
+        ]);
+
+        $validation = new LaravelValidationLabels();
+        $result = $validation->execute([$name, $email]);
+
+        $this->assertCount(1, $result);
+    }
 }

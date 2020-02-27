@@ -7,6 +7,8 @@ use Chatagency\CrudAssistant\Actions\LaravelMigration;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Modifiers\UniqueMigrationModifier;
+use Chatagency\CrudAssistant\Modifiers\UnsignedMigrationModifier;
 use Illuminate\Database\Schema\Blueprint;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -109,36 +111,6 @@ class LaravelMigrationTest extends TestCase
             'type' => 'string',
         ]);
 
-        $email = new TextInput('email', 'Email');
-        $email->setRecipe(LaravelMigration::class, [
-            'type' => function ($table, $input) {
-                return $table->text($input->getName())->nullable();
-            },
-        ]);
-
-        $inputs = [$name, $email];
-
-        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
-            $container = new DataContainer();
-            $container->table = $table;
-            $container->version = 1;
-
-            $migration->execute($inputs, $container);
-        });
-
-        $this->assertCount(2, $blueprint->getColumns());
-    }
-
-    /** @test */
-    public function a_callback_can_be_passed_as_value_to_the_action()
-    {
-        $migration = new LaravelMigration();
-
-        $name = new TextInput('name', 'Name');
-        $name->setRecipe(LaravelMigration::class, function ($table, $input) {
-            return $table->string($input->getName())->nullable();
-        });
-
         $inputs = [$name];
 
         $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
@@ -150,6 +122,36 @@ class LaravelMigrationTest extends TestCase
         });
 
         $this->assertCount(1, $blueprint->getColumns());
+    }
+
+    /** @test */
+    public function a_callback_can_be_passed_as_value_to_the_action_or_as_the_type()
+    {
+        $migration = new LaravelMigration();
+
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(LaravelMigration::class, function ($table, $input) {
+            return $table->string($input->getName())->nullable();
+        });
+        
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(LaravelMigration::class, [
+            'type' => function ($table, $input) {
+                return $table->string($input->getName())->nullable();
+            }
+        ]);
+
+        $inputs = [$name, $email];
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
+            $container = new DataContainer();
+            $container->table = $table;
+            $container->version = 1;
+
+            $migration->execute($inputs, $container);
+        });
+        
+        $this->assertCount(2, $blueprint->getColumns());
     }
 
     /** @test */
@@ -175,5 +177,108 @@ class LaravelMigrationTest extends TestCase
             // $container->table = $table;
             $migration->execute($inputs, $container);
         });
+    }
+    
+    /** @test */
+    public function modifiers_can_be_applied_to_an_input()
+    {
+        $migration = new LaravelMigration();
+        
+        $inputName = 'email';
+        
+        $email = new TextInput($inputName, 'Email');
+        $email->setRecipe(LaravelMigration::class, [
+            'type' => 'string',
+            'modifiers' => [
+                UniqueMigrationModifier::class => new DataContainer([]),
+            ]
+        ]);
+        
+        $inputs = [$email];
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
+            $container = new DataContainer();
+            $container->table = $table;
+            $container->version = 1;
+
+            $migration->execute($inputs, $container);
+        });
+        
+        $columns = $blueprint->getColumns();
+        
+        $this->assertCount(1, $columns);
+        
+        $emailAttributes = $columns[0]->getAttributes();
+        
+        $this->assertEquals($inputName, $emailAttributes['name']);
+        $this->assertTrue($emailAttributes['unique']);
+        
+    }
+    
+    /** @test */
+    public function multiple_modifiers_can_be_applied_to_a_an_input()
+    {
+        $migration = new LaravelMigration();
+        
+        $inputName = 'email';
+        
+        $email = new TextInput($inputName, 'Email');
+        $email->setRecipe(LaravelMigration::class, [
+            'type' => 'string',
+            'modifiers' => [
+                UniqueMigrationModifier::class => new DataContainer([]),
+                UnsignedMigrationModifier::class => new DataContainer([]),
+            ]
+        ]);
+        
+        $inputs = [$email];
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
+            $container = new DataContainer();
+            $container->table = $table;
+            $container->version = 1;
+
+            $migration->execute($inputs, $container);
+        });
+        
+        $columns = $blueprint->getColumns();
+        
+        $this->assertCount(1, $columns);
+        
+        $emailAttributes = $columns[0]->getAttributes();
+        
+        $this->assertEquals($inputName, $emailAttributes['name']);
+        $this->assertTrue($emailAttributes['unique']);
+        $this->assertTrue($emailAttributes['unsigned']);
+    }
+    
+    /** @test */
+    public function an_input_can_be_ignored_by_the_migration_action_action()
+    {
+        $migration = new LaravelMigration();
+        
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(LaravelMigration::class, [
+            'type' => 'text',
+        ]);
+        
+        $id = new TextInput('id', 'Id');
+        $id->setType('hidden');
+        
+        $id->setRecipe(LaravelMigration::class, [
+            'ignore' => true,
+        ]);
+        
+        $inputs = [$name, $id];
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
+            $container = new DataContainer();
+            $container->table = $table;
+            $container->version = 1;
+
+            $migration->execute($inputs, $container);
+        });
+        
+        $this->assertCount(1, $blueprint->getColumns());
     }
 }

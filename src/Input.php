@@ -222,22 +222,6 @@ abstract class Input
     }
     
     /**
-     * Set recipe alias.
-     *
-     * @param $value
-     *
-     * @return self
-     *
-     * @deprecated on version 0.1.1
-     *
-     * @see setRecipe()
-     */
-    public function setAction(string $type, $value)
-    {
-        return $this->setRecipe($type, $value);
-    }
-
-    /**
      * Returns recipe by type.
      *
      * @return string|null
@@ -263,5 +247,21 @@ abstract class Input
     public function getAction(string $type)
     {
         return $this->getRecipe($type);
+    }
+    
+    /**
+     * Unsets attribute
+     *
+     * @param string $key
+     *
+     * @return self
+     */
+    public function unsetAttribute(string $key)
+    {
+        if(isset($this->attributes[$key])) {
+            unset($this->attributes[$key]);
+        }
+
+        return $this;
     }
 }
