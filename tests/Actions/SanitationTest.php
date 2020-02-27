@@ -104,4 +104,31 @@ class SanitationTest extends TestCase
         $this->assertNotEquals($container->requestArray['name'][0], $rules['name'][0]);
         $this->assertEquals($container->requestArray['name'][0], $rules['name_raw'][0]);
     }
+    
+    /** @test */
+    public function an_input_can_be_ignored_by_the_sanitation_action()
+    {
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(Sanitation::class, [
+            'ignore' => true
+        ]);
+
+        $inputs = [$name, $email];
+
+        $container = new DataContainer();
+        $container->requestArray = [
+            'name' => "Victor O'Reilly",
+            'email' => 'not_""an_email',
+            'title' => 'Supervisor',
+        ];
+
+        $sanitation = new Sanitation();
+        $rules = $sanitation->execute($inputs, $container);
+        
+        $this->assertTrue(isset($rules['name_raw']));
+        $this->assertFalse(isset($rules['email_raw']));
+    }
 }

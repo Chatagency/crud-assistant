@@ -4,7 +4,7 @@ namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ModifierFactory;
-use Chatagency\CrudAssistant\Modifiers\IsBoolean;
+use Chatagency\CrudAssistant\Modifiers\BooleanModifier;
 
 /**
  * Form Test
@@ -14,17 +14,17 @@ class ModifierFactoryTest extends TestCase
     /** @test */
     public function the_modifier_factory_instaciate_the_correct_modifier_class()
     {
-        $modifer = ModifierFactory::make(IsBoolean::class);
+        $modifer = ModifierFactory::make(BooleanModifier::class);
         
-        $this->assertInstanceOf(IsBoolean::class, $modifer);
+        $this->assertInstanceOf(BooleanModifier::class, $modifer);
     }
     
     /** @test */
     public function the_name_of_the_class_and_also_be_passed_to_the_modifier_factory()
     {
-        $modifer = ModifierFactory::make('IsBoolean');
+        $modifer = ModifierFactory::make('BooleanModifier');
         
-        $this->assertInstanceOf(IsBoolean::class, $modifer);
+        $this->assertInstanceOf(BooleanModifier::class, $modifer);
     }
     
     /** @test */

@@ -6,10 +6,18 @@ use Chatagency\CrudAssistant\Modifier;
 use Chatagency\CrudAssistant\DataContainer;
 
 /**
- * Is Sanitized Modifier
+ * Sanitized Modifier
  */
-class IsSanitized extends Modifier
+class SanitizedModifier extends Modifier
 {
+    /**
+     * Modifies value
+     *
+     * @param  $value
+     * @param  DataContainer $data
+     *
+     * @return mixed
+     */
     public function modify($value, DataContainer $data = null)
     {
         $filter = $data->filter ?? ENT_QUOTES;

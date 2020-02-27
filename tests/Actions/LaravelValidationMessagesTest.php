@@ -43,4 +43,24 @@ class LaravelValidationMessagesTest extends TestCase
 
         $this->assertCount(1, $result);
     }
+    
+    /** @test */
+    public function an_input_can_be_ignored_by_the_validation_messages_action()
+    {
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(LaravelValidationMessages::class, [
+            'name.required' => 'The name is required',
+            'name.max' => 'The name cannot be longer than 1000 characters',
+        ]);
+
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(LaravelValidationMessages::class, [
+            'ignore' => true,
+        ]);
+
+        $validation = new LaravelValidationMessages();
+        $result = $validation->execute([$name, $email]);
+        
+        $this->assertCount(2, $result);
+    }
 }

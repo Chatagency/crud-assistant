@@ -6,14 +6,32 @@ use Chatagency\CrudAssistant\Modifier;
 use Chatagency\CrudAssistant\DataContainer;
 
 /**
- * Is Boolean Modifier
+ * Boolean Modifier
  */
-class IsBoolean extends Modifier
+class BooleanModifier extends Modifier
 {
-    
+    /**
+     * True Label
+     *
+     * @var string
+     */
     protected $trueLabel = 'Yes';
+    
+    /**
+     * False Label
+     *
+     * @var string
+     */
     protected $falseLabel = 'No';
     
+    /**
+     * Modifies value
+     *
+     * @param  $value
+     * @param  DataContainer $data
+     *
+     * @return mixed
+     */
     public function modify($value, DataContainer $data = null)
     {
         $trueLabel = $data->trueLabel ?? $this->trueLabel;

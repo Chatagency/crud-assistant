@@ -24,13 +24,17 @@ class LaravelValidationMessages extends Action implements ActionInterface
 
         foreach ($inputs as $input) {
             $name = $input->getName();
-            $inputMessages = $input->getRecipe(static::class) ?? null;
-
-            if ($inputMessages) {
-                if (\is_callable($inputMessages)) {
-                    $messages = $inputMessages($messages, $input);
+            $recipe = $input->getRecipe(static::class);
+            
+            if($this->ignore($recipe)) {
+                continue;
+            }
+            
+            if ($recipe) {
+                if (\is_callable($recipe)) {
+                    $messages = $recipe($messages, $input);
                 } else {
-                    foreach ($inputMessages as $keyMessage => $message) {
+                    foreach ($recipe as $keyMessage => $message) {
                         $messages[$keyMessage] = $message;
                     }
                 }
