@@ -81,7 +81,7 @@ class Action
      */
     public function empty($value)
     {
-        return $value = '' || is_null($value);
+        return $value == '' || is_null($value);
     }
     
     /**
@@ -95,11 +95,11 @@ class Action
      */
     public function ignoreIfEmpty($value, $recipe)
     {
-        if(!$this->empty($value)){
+        if(!is_array($recipe)){
             return false;
         }
         
-        if(!is_array($recipe)){
+        if(!$this->empty($value)){
             return false;
         }
         

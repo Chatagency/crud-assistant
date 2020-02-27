@@ -29,6 +29,10 @@ class Filter extends Action implements ActionInterface
             $name = $input->getName();
             $recipe = $input->getRecipe(static::class);
             $value = $data[$name] ?? null;
+
+            if($this->ignoreIfEmpty($value, $recipe)) {
+                continue;
+            }
             
             if ($recipe) {
                 if (\is_callable($recipe)) {
