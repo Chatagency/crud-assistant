@@ -47,7 +47,7 @@ class InputTest extends TestCase
     }
     
     /** @test */
-    public function an_action_recipe_can_also_be_added_using_the_set_action_alias ()
+    public function if_recipe_does_not_exist_in_class_null_is_returned()
     {
         $validationValue = [
             'required',
@@ -56,9 +56,8 @@ class InputTest extends TestCase
 
         $input = new TextInput('email', 'Email', 1);
         $input->setType('email');
-        $input->setAction(LaravelValidationRules::class, $validationValue);
 
-        $this->assertEquals($input->getAction(LaravelValidationRules::class), $validationValue);
+        $this->assertEquals($input->getAction(LaravelValidationRules::class), null);
     }
     
     /** @test */
@@ -85,6 +84,24 @@ class InputTest extends TestCase
 
         $this->assertEquals('FormEmail', $input->getAttribute('id'));
         $this->assertCount(1, $input->getAttributes());
+    }
+    
+    /** @test */
+    public function an_arbitrary_attribute_can_be_removed_from_an_input_class()
+    {
+        $input = new TextInput('email');
+        $input->setType('email');
+
+        $this->assertNull($input->getAttribute('id'));
+
+        $input->setAttribute('id', 'FormEmail');
+
+        $this->assertEquals('FormEmail', $input->getAttribute('id'));
+        $this->assertCount(1, $input->getAttributes());
+        
+        $input->unsetAttribute('id');
+        
+        $this->assertCount(0, $input->getAttributes());
     }
 
     /** @test */

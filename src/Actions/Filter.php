@@ -9,9 +9,9 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Laravel validation rules action class.
+ * Laravel validation filtered action class.
  */
-class LaravelValidationRules extends Action implements ActionInterface
+class Filter extends Action implements ActionInterface
 {
     /**
      * Executes action.
@@ -20,26 +20,31 @@ class LaravelValidationRules extends Action implements ActionInterface
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
-        $rules = [];
+        $this->checkRequiredParams($params, ['data']);
+        
+        $data = $params->data;
 
         foreach ($inputs as $input) {
             
             $name = $input->getName();
             $recipe = $input->getRecipe(static::class);
-            
-            if($this->ignore($recipe)) {
+            $value = $data[$name] ?? null;
+
+            if($this->ignoreIfEmpty($value, $recipe)) {
                 continue;
             }
             
             if ($recipe) {
                 if (\is_callable($recipe)) {
-                    $rules[$name] = $recipe($input, $params);
-                } else {
-                    $rules[$name] = $recipe;
+                    $data = $recipe($input, $params, $data);
+                } elseif(isset($recipe['filter']) && $recipe['filter']) {
+                    unset($data[$name]);
                 }
             }
+            
         }
+        
+        return $data;
 
-        return $rules;
     }
 }

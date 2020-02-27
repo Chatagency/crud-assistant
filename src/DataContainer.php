@@ -89,7 +89,7 @@ class DataContainer implements DataContainerInterface
     public function contains(array $keys)
     {
         foreach($keys as $key) {
-            if(!isset($this->$key)) {
+            if(!isset($this->data[$key])) {
                 return false;
             }
         }
@@ -110,7 +110,7 @@ class DataContainer implements DataContainerInterface
     public function missing(array $keys)
     {
         foreach($keys as $key) {
-            if(!isset($this->$key)) {
+            if(!isset($this->data[$key])) {
                 return $key;
             }
         }
