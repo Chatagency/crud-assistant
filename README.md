@@ -29,7 +29,6 @@ There are different types of `Inputs`, loosely associated with form input types:
 - `CheckboxInput`
 - `RadioInput` (but you would usually use the...)
 - `RadioGroupInput`
-- `HiddenInput`
 
 Other input types can be easily created.
 
