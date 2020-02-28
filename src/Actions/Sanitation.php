@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Sanitation action class.
+ * Sanitation action.
  */
 class Sanitation extends Action implements ActionInterface
 {
