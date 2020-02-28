@@ -10,7 +10,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 /**
  * Action base class.
  */
-class Action
+abstract class Action
 {
     /**
      * Checks params integrity.
@@ -63,7 +63,7 @@ class Action
      *
      * @return bool
      */
-    public function ignore($recipe)
+    protected function ignore($recipe)
     {
         if(!is_array($recipe)){
             return false;
@@ -79,7 +79,7 @@ class Action
      *
      * @return bool
      */
-    public function empty($value)
+    protected function empty($value)
     {
         return $value == '' || is_null($value);
     }
@@ -93,7 +93,7 @@ class Action
      *
      * @return bool
      */
-    public function ignoreIfEmpty($value, $recipe)
+    protected function ignoreIfEmpty($value, $recipe)
     {
         if(!is_array($recipe)){
             return false;
