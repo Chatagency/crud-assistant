@@ -35,7 +35,7 @@ class DataContainer implements DataContainerInterface
      */
     public function __get(string $name)
     {
-        if (!isset($this->data[$name])) {
+        if (!array_key_exists($name, $this->data)) {
             $trace = debug_backtrace();
             trigger_error(
                 'Undefined property via __get(): '.$name.
