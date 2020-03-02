@@ -42,12 +42,12 @@ class Action
         $recipe = $input->getRecipe(static::class);
         
         if(!is_array($recipe)){
-            return false;
+            return $value;
         }
         
         $modifiers = $recipe['modifiers'] ?? [];
         
-        if(is_array($modifiers) && !$this->empty($value)){
+        if(is_array($modifiers) && !empty($modifiers) && !$this->empty($value)){
             foreach($modifiers as $modifierName => $data){
                 $value = (ModifierFactory::make($modifierName))->modify($value, $data);
             }
