@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use IteratorAggregate;
 
 /**
  * DataContainer.
  */
-class DataContainer implements DataContainerInterface
+class DataContainer implements DataContainerInterface, IteratorAggregate
 {
     /**
      * Arbitrary data.
@@ -76,6 +77,16 @@ class DataContainer implements DataContainerInterface
     public function __unset(string $name)
     {
         unset($this->data[$name]);
+    }
+    
+    /**
+     * Get an iterator for the items.
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->data);
     }
     
     /**
