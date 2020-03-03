@@ -47,7 +47,7 @@ abstract class Action
         
         $modifiers = $recipe['modifiers'] ?? [];
         
-        if(is_array($modifiers) && !empty($modifiers) && !$this->empty($value)){
+        if(is_array($modifiers) && !$this->isEmpty($value)){
             foreach($modifiers as $modifierName => $data){
                 $value = (ModifierFactory::make($modifierName))->modify($value, $data);
             }
@@ -79,7 +79,7 @@ abstract class Action
      *
      * @return bool
      */
-    protected function empty($value)
+   protected function isEmpty($value)
     {
         return $value == '' || is_null($value);
     }
@@ -99,7 +99,7 @@ abstract class Action
             return false;
         }
         
-        if(!$this->empty($value)){
+        if(!$this->isEmpty($value)){
             return false;
         }
         
