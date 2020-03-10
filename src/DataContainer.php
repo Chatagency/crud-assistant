@@ -6,11 +6,13 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use IteratorAggregate;
+use Countable;
+use ArrayIterator;
 
 /**
  * DataContainer.
  */
-class DataContainer implements DataContainerInterface, IteratorAggregate
+class DataContainer implements DataContainerInterface, IteratorAggregate, Countable
 {
     /**
      * Arbitrary data.
@@ -87,6 +89,16 @@ class DataContainer implements DataContainerInterface, IteratorAggregate
     public function getIterator()
     {
         return new ArrayIterator($this->data);
+    }
+    
+    /**
+     * Implement countable interface.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->data);
     }
     
     /**

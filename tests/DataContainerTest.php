@@ -78,4 +78,33 @@ class DataContainerTest extends TestCase
 
         $this->assertCount(3, $container->all());
     }
+    
+    /** @test */
+    public function count_can_be_used_on_a_data_container_object()
+    {
+        $container = new DataContainer();
+        $container->dollars = '$10.00';
+        $container->new = 'look';
+        $container->hobbies = ['run', 'play pokemon go', 'drink wine'];
+        
+        $this->assertCount(3, $container);
+        
+    }
+    
+    /** @test */
+    public function a_data_container_object_can_be_iterated_over()
+    {
+        $container = new DataContainer();
+        $container->dollars = '$10.00';
+        $container->new = 'look';
+        $container->hobbies = ['run', 'play pokemon go', 'drink wine'];
+        
+        $newArray = [];
+        foreach ($container as $key => $value) {
+            $newArray[$key] = $value;
+        }
+        
+        $this->assertEquals($newArray, $container->all());
+        
+    }
 }
