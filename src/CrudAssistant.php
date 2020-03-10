@@ -39,16 +39,6 @@ class CrudAssistant
     }
 
     /**
-     * Creates new instance of this class.
-     *
-     * @return self
-     */
-    public static function make(array $inputs = [], ActionFactory $actionFactory = null)
-    {
-        return new static($inputs, $actionFactory);
-    }
-
-    /**
      * Magic call method class tied
      * to collection and actions.
      *
@@ -92,6 +82,16 @@ class CrudAssistant
     }
 
     /**
+     * Creates new instance of this class.
+     *
+     * @return self
+     */
+    public static function make(array $inputs = [], ActionFactory $actionFactory = null)
+    {
+        return new static($inputs, $actionFactory);
+    }
+
+    /**
      * Returns input collection.
      *
      * @return InputCollection
@@ -119,5 +119,4 @@ class CrudAssistant
 
         return null;
     }
-
 }

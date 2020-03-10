@@ -21,30 +21,27 @@ class Filter extends Action implements ActionInterface
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
         $this->checkRequiredParams($params, ['data']);
-        
+
         $data = $params->data;
 
         foreach ($inputs as $input) {
-            
             $name = $input->getName();
             $recipe = $input->getRecipe(static::class);
             $value = $data[$name] ?? null;
 
-            if($this->ignoreIfEmpty($value, $recipe)) {
+            if ($this->ignoreIfEmpty($value, $recipe)) {
                 continue;
             }
-            
+
             if ($recipe) {
                 if (\is_callable($recipe)) {
                     $data = $recipe($input, $params, $data);
-                } elseif(isset($recipe['filter']) && $recipe['filter']) {
+                } elseif (isset($recipe['filter']) && $recipe['filter']) {
                     unset($data[$name]);
                 }
             }
-            
         }
-        
-        return $data;
 
+        return $data;
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\DataContainer;
-
 /**
- * Modifer Base Class
+ * Modifer Base Class.
  */
 abstract class Modifier
 {
