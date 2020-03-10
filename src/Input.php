@@ -220,7 +220,7 @@ abstract class Input
 
         return $this;
     }
-    
+
     /**
      * Returns recipe by type.
      *
@@ -241,24 +241,21 @@ abstract class Input
      * @return string|null
      *
      * @deprecated on version 0.1.1
-     *
      * @see getRecipe()
      */
     public function getAction(string $type)
     {
         return $this->getRecipe($type);
     }
-    
+
     /**
-     * Unsets attribute
-     *
-     * @param string $key
+     * Unsets attribute.
      *
      * @return self
      */
     public function unsetAttribute(string $key)
     {
-        if(isset($this->attributes[$key])) {
+        if (isset($this->attributes[$key])) {
             unset($this->attributes[$key]);
         }
 
