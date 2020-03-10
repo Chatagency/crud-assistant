@@ -26,11 +26,11 @@ class LaravelValidationLabels extends Action implements ActionInterface
             $name = $input->getName();
             $label = $input->getLabel();
             $recipe = $input->getRecipe(static::class);
-            
-            if($this->ignore($recipe)) {
+
+            if ($this->ignore($recipe)) {
                 continue;
             }
-            
+
             if ($recipe) {
                 if (\is_callable($recipe)) {
                     $labels = $recipe($labels, $input);
