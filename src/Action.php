@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\Modifier;
 use InvalidArgumentException;
 
 /**
@@ -83,8 +84,12 @@ class Action
         $modifiers = $recipe['modifiers'] ?? [];
 
         if (\is_array($modifiers)) {
-            foreach ($modifiers as $modifierName => $data) {
-                $value = (ModifierFactory::make($modifierName))->modify($value, $data);
+            foreach ($modifiers as $modifier => $data) {
+                if(is_a($modifier, Modifier::class)){
+                    $value = $option->modify($value, $option->getData());
+                    continue;
+                }
+                $value = (ModifierFactory::make($modifier))->modify($value, $data);
             }
         }
 
