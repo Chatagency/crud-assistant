@@ -23,14 +23,13 @@ class LaravelValidationRules extends Action implements ActionInterface
         $rules = [];
 
         foreach ($inputs as $input) {
-            
             $name = $input->getName();
             $recipe = $input->getRecipe(static::class);
-            
-            if($this->ignore($recipe)) {
+
+            if ($this->ignore($recipe)) {
                 continue;
             }
-            
+
             if ($recipe) {
                 if (\is_callable($recipe)) {
                     $rules[$name] = $recipe($input, $params);

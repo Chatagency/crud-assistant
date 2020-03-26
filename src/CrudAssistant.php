@@ -39,16 +39,6 @@ class CrudAssistant
     }
 
     /**
-     * Creates new instance of this class.
-     *
-     * @return self
-     */
-    public static function make(array $inputs = [], ActionFactory $actionFactory = null)
-    {
-        return new static($inputs, $actionFactory);
-    }
-
-    /**
      * Magic call method class tied
      * to collection and actions.
      *
@@ -81,7 +71,9 @@ class CrudAssistant
             return $this->collection->execute($action, $params);
         }
 
-        // Check if the method called is a collection method.
+        /**
+         * Check if the method called is a collection method.
+         */
         if (method_exists($this->collection, $name)) {
             $object_array = [$this->collection, $name];
 
@@ -89,6 +81,16 @@ class CrudAssistant
         }
 
         throw new BadMethodCallException('Method '.$name.' not exists in '.__CLASS__, 500);
+    }
+
+    /**
+     * Creates new instance of this class.
+     *
+     * @return self
+     */
+    public static function make(array $inputs = [], ActionFactory $actionFactory = null)
+    {
+        return new static($inputs, $actionFactory);
     }
 
     /**
@@ -119,5 +121,4 @@ class CrudAssistant
 
         return null;
     }
-
 }
