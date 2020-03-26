@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Countable;
 use IteratorAggregate;
 
 /**
  * DataContainer.
  */
-class DataContainer implements DataContainerInterface, IteratorAggregate
+class DataContainer implements DataContainerInterface, IteratorAggregate, Countable
 {
     /**
      * Arbitrary data.
@@ -36,7 +38,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate
      */
     public function __get(string $name)
     {
-        if (!array_key_exists($name, $this->data)) {
+        if (!\array_key_exists($name, $this->data)) {
             $trace = debug_backtrace();
             trigger_error(
                 'Undefined property via __get(): '.$name.
@@ -78,7 +80,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate
     {
         unset($this->data[$name]);
     }
-    
+
     /**
      * Get an iterator for the items.
      *
@@ -88,44 +90,50 @@ class DataContainer implements DataContainerInterface, IteratorAggregate
     {
         return new ArrayIterator($this->data);
     }
-    
+
+    /**
+     * Implement countable interface.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return \count($this->data);
+    }
+
     /**
      * Verifies that all keys in an
-     * array are set
-     *
-     * @param  array  $keys
+     * array are set.
      *
      * @return bool
      */
     public function contains(array $keys)
     {
-        foreach($keys as $key) {
-            if(!isset($this->data[$key])) {
+        foreach ($keys as $key) {
+            if (!isset($this->data[$key])) {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Verifies if any of the keys
      * in an array is missing in
      * the container. Returns
-     * first key missing
+     * first key missing.
      *
-     * @param  array  $keys
-     *
-     * @return string|boolean
+     * @return bool|string
      */
     public function missing(array $keys)
     {
-        foreach($keys as $key) {
-            if(!isset($this->data[$key])) {
+        foreach ($keys as $key) {
+            if (!isset($this->data[$key])) {
                 return $key;
             }
         }
-        
+
         return false;
     }
 

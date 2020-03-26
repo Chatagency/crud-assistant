@@ -118,5 +118,4 @@ interface InputInterface
      * @return string|null
      */
     public function getRecipe(string $type);
-
 }
