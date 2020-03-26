@@ -85,8 +85,8 @@ class Action
 
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier => $data) {
-                if(is_a($modifier, Modifier::class)){
-                    $value = $option->modify($value, $option->getData());
+                if(is_a($data, Modifier::class)){
+                    $value = $data->modify($value, $data->getData());
                     continue;
                 }
                 $value = (ModifierFactory::make($modifier))->modify($value, $data);

@@ -251,6 +251,43 @@ class LaravelMigrationTest extends TestCase
         $this->assertTrue($emailAttributes['unique']);
         $this->assertTrue($emailAttributes['unsigned']);
     }
+
+    /** @test */
+    public function modifiers_can_be_also_instantiated_instead()
+    {
+        $migration = new LaravelMigration();
+        
+        $inputName = 'email';
+        
+        $email = new TextInput($inputName, 'Email');
+        $email->setRecipe(LaravelMigration::class, [
+            'type' => 'string',
+            'modifiers' => [
+                new UnsignedMigrationModifier(new DataContainer([])),
+                UniqueMigrationModifier::class => new DataContainer([]),
+            ]
+        ]);
+        
+        $inputs = [$email];
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration) {
+            $container = new DataContainer();
+            $container->table = $table;
+            $container->version = 1;
+
+            $migration->execute($inputs, $container);
+        });
+        
+        $columns = $blueprint->getColumns();
+        
+        $this->assertCount(1, $columns);
+        
+        $emailAttributes = $columns[0]->getAttributes();
+        
+        $this->assertEquals($inputName, $emailAttributes['name']);
+        $this->assertTrue($emailAttributes['unique']);
+        $this->assertTrue($emailAttributes['unsigned']);
+    }
     
     /** @test */
     public function an_input_can_be_ignored_by_the_migration_action_action()
