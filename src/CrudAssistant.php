@@ -71,7 +71,9 @@ class CrudAssistant
             return $this->collection->execute($action, $params);
         }
 
-        // Check if the method called is a collection method.
+        /**
+         * Check if the method called is a collection method.
+         */
         if (method_exists($this->collection, $name)) {
             $object_array = [$this->collection, $name];
 
