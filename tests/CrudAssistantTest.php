@@ -3,11 +3,12 @@
 namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
-use BadMethodCallException;
 use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Actions\Sanitation;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Tests\TestClasses\TestAction;
+use BadMethodCallException;
 
 class CrudAssistantTest extends TestCase
 {
@@ -54,8 +55,12 @@ class CrudAssistantTest extends TestCase
     {
         $name = new TextInput('name');
         $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $name->setRecipe(TestAction::class, null);
 
-        $manager = new CrudAssistant([$name], $this->getActionFactory());
+        $actionFactory = $this->getActionFactory();
+        $actionFactory->registerAction(TestAction::class);
+
+        $manager = new CrudAssistant([$name], $actionFactory);
         $sanitation = $manager->sanitation([
             'requestArray' => [
                 'name' => 'John Smith',
@@ -64,6 +69,7 @@ class CrudAssistantTest extends TestCase
 
         $this->assertEquals('John Smith', $sanitation['name']);
         $this->assertCount(2, $sanitation);
+        $this->assertEquals('TestAction', $manager->testAction([]));
     }
 
     /** @test */

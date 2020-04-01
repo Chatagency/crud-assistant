@@ -110,6 +110,11 @@ class CrudAssistant
      */
     protected function getActionBase(string $action)
     {
+        $actionWithPath = $this->actionFactory->addNamespace($action);
+        if( $this->actionFactory->isPackageAction($actionWithPath)) {
+            return  $actionWithPath;
+        }
+        
         $actions = $this->actionFactory->getActions();
 
         foreach ($actions as $key => $value) {

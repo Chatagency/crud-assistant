@@ -6,7 +6,9 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterace;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use ReflectionClass;
 use InvalidArgumentException;
+use ReflectionException;
 
 /**
  * Actions Factory.
@@ -19,6 +21,13 @@ class ActionFactory implements ActionFactoryInterace
      * @var array
      */
     protected $actions = [];
+
+    /**
+     * Actions path.
+     *
+     * @var array
+     */
+    protected $path = 'Chatagency\CrudAssistant\Actions\\';
 
     /**
      * Construct for dependency injection.
@@ -37,9 +46,9 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return self
      */
-    public function registerAction(string $type)
+    public function registerAction(string $class)
     {
-        $this->actions[] = $type;
+        $this->actions[] = $class;
 
         return $this;
     }
@@ -59,9 +68,13 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return bool
      */
-    public function issetAction(string $type)
+    public function issetAction(string $class)
     {
-        return false !== array_search($type, $this->actions);
+        if($this->isPackageAction($class)) {
+            return true;
+        }
+        
+        return false !== array_search($class, $this->actions);
     }
 
     /**
@@ -69,9 +82,9 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return ActionInterface
      */
-    public function getInstanse(string $type)
+    public function getInstanse(string $class)
     {
-        $action = $this->getAction($type);
+        $action = $this->getAction($class);
 
         return new $action();
     }
@@ -83,20 +96,75 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return string
      */
-    public function getAction(string $type)
+    public function getAction(string $class)
     {
-        $key = array_search($type, $this->actions);
-
-        if (false === $key) {
-            throw new InvalidArgumentException('The '.$type.' Action has not been registered or does not exist', 500);
+        if($this->isPackageAction($class)) {
+            return $class;
         }
 
-        $class = $this->actions[$key];
+        if (!array_search($class, $this->actions)) {
+            throw new InvalidArgumentException('The '.$class.' Action has not been registered or does not exist', 500);
+        }
 
         if (!class_exists($class)) {
-            throw new InvalidArgumentException('The '.$type.' Action has not been registered or the namespace is wrong', 500);
+            throw new InvalidArgumentException('The '.$class.' Action has not been registered or the namespace is wrong', 500);
+        }
+
+        if (!$this->isCorrectPath($class)) {
+            throw new InvalidArgumentException('The '.$class.' Action is not extending the interface '.ActionInterface::class, 500);
         }
 
         return $class;
     }
+
+    /**
+     * Adds namespace to a classname
+     *
+     * @param string $class
+     * @return string
+     */
+    public function addNamespace(string $class)
+    {
+        return $this->path.ucfirst($class);
+    }
+
+    public function isPackageAction(string $class)
+    {
+        return $this->isCorrenctInterface($class) && $this->isCorrectPath($class);
+    }
+
+    /**
+     * Checks if class is in the correct path
+     *
+     * @param string $class
+     * 
+     * @return boolean
+     */
+    protected function isCorrectPath(string $class)
+    {
+        if (strpos($class, $this->path) !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if class has the correct interface
+     *
+     * @param string $class
+     * @return boolean
+     */
+    protected function isCorrenctInterface(string $class)
+    { 
+        try {
+            $reflector = new ReflectionClass($class);
+            $interfaces = $reflector->getInterfaceNames();
+            return in_array(ActionInterface::class, $interfaces);
+        }
+        catch(ReflectionException $e) {
+            return false;
+        }
+    }
+
 }
