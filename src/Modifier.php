@@ -15,17 +15,17 @@ abstract class Modifier
      * @var DataContainer
      */
     protected $data = null;
-    
+
     /**
-     * Construct for dependency injection
+     * Construct for dependency injection.
      */
     public function __construct(DataContainer $data = null)
     {
         $this->data = $data;
     }
-    
+
     /**
-     * Returns option data
+     * Returns option data.
      *
      * @return DataContainer|null
      */
@@ -33,13 +33,14 @@ abstract class Modifier
     {
         return $this->data;
     }
-    
+
     /**
      * Modifier must implement the
-     * modify method
-     * 
-     * @var $value
+     * modify method.
+     *
+     * @var
+     *
+     * @param mixed $value
      */
     abstract public function modify($value, DataContainer $data = null);
-    
 }

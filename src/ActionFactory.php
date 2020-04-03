@@ -6,8 +6,8 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterace;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
-use ReflectionClass;
 use InvalidArgumentException;
+use ReflectionClass;
 use ReflectionException;
 
 /**
@@ -70,10 +70,10 @@ class ActionFactory implements ActionFactoryInterace
      */
     public function issetAction(string $class)
     {
-        if($this->isOriginalAction($class)) {
+        if ($this->isOriginalAction($class)) {
             return true;
         }
-        
+
         return false !== array_search($class, $this->actions);
     }
 
@@ -98,11 +98,11 @@ class ActionFactory implements ActionFactoryInterace
      */
     public function getAction(string $class)
     {
-        if($this->isOriginalAction($class)) {
+        if ($this->isOriginalAction($class)) {
             return $class;
         }
 
-        if (!in_array($class, $this->actions)) {
+        if (!\in_array($class, $this->actions)) {
             throw new InvalidArgumentException('The '.$class.' Action has not been registered or does not exist', 500);
         }
 
@@ -118,9 +118,8 @@ class ActionFactory implements ActionFactoryInterace
     }
 
     /**
-     * Adds namespace to a classname
+     * Adds namespace to a classname.
      *
-     * @param string $class
      * @return string
      */
     public function addNamespace(string $class)
@@ -130,29 +129,25 @@ class ActionFactory implements ActionFactoryInterace
 
     /**
      * Verifies if the class is an original
-     * action class
+     * action class.
      *
-     * @param string $class
-     * 
      * @return boolean
      */
     public function isOriginalAction(string $class)
     {
-        return $this->extendsActionInterface($class) 
+        return $this->extendsActionInterface($class)
             && $this->hasActionPath($class)
             && class_exists($class);
     }
 
     /**
-     * Checks if class is in the correct path
+     * Checks if class is in the correct path.
      *
-     * @param string $class
-     * 
      * @return boolean
      */
     protected function hasActionPath(string $class)
     {
-        if (strpos($class, $this->path) !== false) {
+        if (false !== strpos($class, $this->path)) {
             return true;
         }
 
@@ -160,21 +155,19 @@ class ActionFactory implements ActionFactoryInterace
     }
 
     /**
-     * Checks if class has the correct interface
+     * Checks if class has the correct interface.
      *
-     * @param string $class
      * @return boolean
      */
     protected function extendsActionInterface(string $class)
-    { 
+    {
         try {
             $reflector = new ReflectionClass($class);
             $interfaces = $reflector->getInterfaceNames();
-            return in_array(ActionInterface::class, $interfaces);
-        }
-        catch(ReflectionException $e) {
+
+            return \in_array(ActionInterface::class, $interfaces);
+        } catch (ReflectionException $e) {
             return false;
         }
     }
-
 }

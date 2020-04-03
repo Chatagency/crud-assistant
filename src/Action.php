@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\Modifier;
 use InvalidArgumentException;
 
 /**
@@ -85,7 +84,7 @@ abstract class Action
 
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier => $data) {
-                if(is_a($data, Modifier::class)){
+                if (is_a($data, Modifier::class)) {
                     $value = $data->modify($value, $data->getData());
                     continue;
                 }

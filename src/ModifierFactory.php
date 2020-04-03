@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Modifier;
 use Exception;
 
 /**
@@ -13,20 +12,18 @@ use Exception;
 class ModifierFactory
 {
     /**
-     * Modifier classes path
-     * 
+     * Modifier classes path.
+     *
      * @var string
      */
     public const PATH = '\Chatagency\CrudAssistant\Modifiers\\';
 
     /**
-     * Returns modifier instance
+     * Returns modifier instance.
      *
-     * @param string $type
-     * 
-     * @return Modifier
-     * 
      * @throws Exception
+     *
+     * @return Modifier
      */
     public static function make(string $type)
     {

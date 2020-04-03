@@ -71,9 +71,7 @@ class CrudAssistant
             return $this->collection->execute($action, $params);
         }
 
-        /**
-         * Check if the method called is a collection method.
-         */
+        // Check if the method called is a collection method.
         if (method_exists($this->collection, $name)) {
             $object_array = [$this->collection, $name];
 
@@ -111,10 +109,10 @@ class CrudAssistant
     protected function getActionBase(string $action)
     {
         $actionWithPath = $this->actionFactory->addNamespace($action);
-        if( $this->actionFactory->isOriginalAction($actionWithPath)) {
+        if ($this->actionFactory->isOriginalAction($actionWithPath)) {
             return  $actionWithPath;
         }
-        
+
         $actions = $this->actionFactory->getActions();
 
         foreach ($actions as $key => $value) {
