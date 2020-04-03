@@ -11,7 +11,7 @@ use InvalidArgumentException;
 /**
  * Action base class.
  */
-class Action
+abstract class Action
 {
     /**
      * Checks for value is to be ignored.
