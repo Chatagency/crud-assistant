@@ -7,6 +7,8 @@ namespace Chatagency\CrudAssistant;
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterace;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use InvalidArgumentException;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Actions Factory.
@@ -19,6 +21,13 @@ class ActionFactory implements ActionFactoryInterace
      * @var array
      */
     protected $actions = [];
+
+    /**
+     * Actions path.
+     *
+     * @var array
+     */
+    protected $path = 'Chatagency\CrudAssistant\Actions\\';
 
     /**
      * Construct for dependency injection.
@@ -37,9 +46,9 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return self
      */
-    public function registerAction(string $type)
+    public function registerAction(string $class)
     {
-        $this->actions[] = $type;
+        $this->actions[] = $class;
 
         return $this;
     }
@@ -59,9 +68,13 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return bool
      */
-    public function issetAction(string $type)
+    public function issetAction(string $class)
     {
-        return false !== array_search($type, $this->actions);
+        if ($this->isOriginalAction($class)) {
+            return true;
+        }
+
+        return false !== array_search($class, $this->actions);
     }
 
     /**
@@ -69,9 +82,9 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return ActionInterface
      */
-    public function getInstanse(string $type)
+    public function getInstanse(string $class)
     {
-        $action = $this->getAction($type);
+        $action = $this->getAction($class);
 
         return new $action();
     }
@@ -83,20 +96,78 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return string
      */
-    public function getAction(string $type)
+    public function getAction(string $class)
     {
-        $key = array_search($type, $this->actions);
-
-        if (false === $key) {
-            throw new InvalidArgumentException('The '.$type.' Action has not been registered or does not exist', 500);
+        if ($this->isOriginalAction($class)) {
+            return $class;
         }
 
-        $class = $this->actions[$key];
+        if (!\in_array($class, $this->actions)) {
+            throw new InvalidArgumentException('The '.$class.' Action has not been registered or does not exist', 500);
+        }
 
         if (!class_exists($class)) {
-            throw new InvalidArgumentException('The '.$type.' Action has not been registered or the namespace is wrong', 500);
+            throw new InvalidArgumentException('The '.$class.' Action does not exist or the namespace is wrong', 500);
+        }
+
+        if (!$this->extendsActionInterface($class)) {
+            throw new InvalidArgumentException('The '.$class.' Action is not extending the interface '.ActionInterface::class, 500);
         }
 
         return $class;
+    }
+
+    /**
+     * Adds namespace to a classname.
+     *
+     * @return string
+     */
+    public function addNamespace(string $class)
+    {
+        return $this->path.ucfirst($class);
+    }
+
+    /**
+     * Verifies if the class is an original
+     * action class.
+     *
+     * @return boolean
+     */
+    public function isOriginalAction(string $class)
+    {
+        return $this->extendsActionInterface($class)
+            && $this->hasActionPath($class)
+            && class_exists($class);
+    }
+
+    /**
+     * Checks if class is in the correct path.
+     *
+     * @return boolean
+     */
+    protected function hasActionPath(string $class)
+    {
+        if (false !== strpos($class, $this->path)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if class has the correct interface.
+     *
+     * @return boolean
+     */
+    protected function extendsActionInterface(string $class)
+    {
+        try {
+            $reflector = new ReflectionClass($class);
+            $interfaces = $reflector->getInterfaceNames();
+
+            return \in_array(ActionInterface::class, $interfaces);
+        } catch (ReflectionException $e) {
+            return false;
+        }
     }
 }

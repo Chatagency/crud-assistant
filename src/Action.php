@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\Modifier;
 use InvalidArgumentException;
 
 /**
  * Action base class.
  */
-class Action
+abstract class Action
 {
     /**
      * Checks for value is to be ignored.
@@ -37,7 +36,7 @@ class Action
      *
      * @return bool
      */
-    public function ignoreIfEmpty($value, $recipe)
+    protected function ignoreIfEmpty($value, $recipe)
     {
         if (!\is_array($recipe)) {
             return false;
@@ -85,7 +84,7 @@ class Action
 
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier => $data) {
-                if(is_a($data, Modifier::class)){
+                if (is_a($data, Modifier::class)) {
                     $value = $data->modify($value, $data->getData());
                     continue;
                 }

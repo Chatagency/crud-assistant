@@ -11,9 +11,21 @@ use Exception;
  */
 class ModifierFactory
 {
+    /**
+     * Modifier classes path.
+     *
+     * @var string
+     */
     public const PATH = '\Chatagency\CrudAssistant\Modifiers\\';
 
-    public static function make($type)
+    /**
+     * Returns modifier instance.
+     *
+     * @throws Exception
+     *
+     * @return Modifier
+     */
+    public static function make(string $type)
     {
         $typeOrig = $type;
 
