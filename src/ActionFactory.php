@@ -70,7 +70,7 @@ class ActionFactory implements ActionFactoryInterace
      */
     public function issetAction(string $class)
     {
-        if($this->isPackageAction($class)) {
+        if($this->isOriginalAction($class)) {
             return true;
         }
         
@@ -98,19 +98,19 @@ class ActionFactory implements ActionFactoryInterace
      */
     public function getAction(string $class)
     {
-        if($this->isPackageAction($class)) {
+        if($this->isOriginalAction($class)) {
             return $class;
         }
 
-        if (!array_search($class, $this->actions)) {
+        if (!in_array($class, $this->actions)) {
             throw new InvalidArgumentException('The '.$class.' Action has not been registered or does not exist', 500);
         }
 
         if (!class_exists($class)) {
-            throw new InvalidArgumentException('The '.$class.' Action has not been registered or the namespace is wrong', 500);
+            throw new InvalidArgumentException('The '.$class.' Action does not exist or the namespace is wrong', 500);
         }
 
-        if (!$this->isCorrectPath($class)) {
+        if (!$this->isCorrenctInterface($class)) {
             throw new InvalidArgumentException('The '.$class.' Action is not extending the interface '.ActionInterface::class, 500);
         }
 
@@ -128,7 +128,7 @@ class ActionFactory implements ActionFactoryInterace
         return $this->path.ucfirst($class);
     }
 
-    public function isPackageAction(string $class)
+    public function isOriginalAction(string $class)
     {
         return $this->isCorrenctInterface($class) && $this->isCorrectPath($class);
     }
