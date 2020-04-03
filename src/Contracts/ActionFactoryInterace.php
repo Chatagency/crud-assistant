@@ -54,4 +54,22 @@ interface ActionFactoryInterace
      * @return string
      */
     public function getAction(string $class);
+
+    /**
+     * Adds namespace to a classname
+     *
+     * @param string $class
+     * @return string
+     */
+    public function addNamespace(string $class);
+
+    /**
+     * Verifies if the class is an original
+     * action class
+     *
+     * @param string $class
+     * 
+     * @return boolean
+     */
+    public function isOriginalAction(string $class);
 }

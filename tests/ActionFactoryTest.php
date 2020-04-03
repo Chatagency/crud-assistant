@@ -8,6 +8,7 @@ use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 use InvalidArgumentException;
 use Chatagency\CrudAssistant\Tests\TestClasses\TesAction;
 use Chatagency\CrudAssistant\Tests\TestClasses\TestActionTwo;
+use Chatagency\CrudAssistant\Tests\TestClasses\FakeAction;
 
 class ActionFactoryTest extends TestCase
 {
@@ -64,13 +65,24 @@ class ActionFactoryTest extends TestCase
     }
     
     /** @test */
-    public function an_exception_is_thrown_if_the_action_exists_in_the_the_factory_but_does_not_exist()
+    public function an_exception_is_thrown_if_the_action_exists_in_the_the_factory_but_the_class_does_not_exist()
     {
         $this->expectException(InvalidArgumentException::class);
         $config = $this->getConfig();
         $config[] = 'This\Class\Does\Not\Exist';
         $factory = new ActionFactory($config);
         $yo = $factory->getAction('This\Class\Does\Not\Exist');
+        
+    }
+
+    /** @test */
+    public function an_exception_is_thrown_if_the_action_exists_in_the_the_factory_but_does_not_extend_the_action_interface()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $config = $this->getConfig();
+        $config[] = FakeAction::class;
+        $factory = new ActionFactory($config);
+        $yo = $factory->getAction(FakeAction::class);
         
     }
 }

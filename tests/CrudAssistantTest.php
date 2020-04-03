@@ -59,8 +59,10 @@ class CrudAssistantTest extends TestCase
 
         $actionFactory = $this->getActionFactory();
         $actionFactory->registerAction(TestAction::class);
-
         $manager = new CrudAssistant([$name], $actionFactory);
+
+        $test = $manager->TestAction([]);
+
         $sanitation = $manager->sanitation([
             'requestArray' => [
                 'name' => 'John Smith',
@@ -69,7 +71,7 @@ class CrudAssistantTest extends TestCase
 
         $this->assertEquals('John Smith', $sanitation['name']);
         $this->assertCount(2, $sanitation);
-        $this->assertEquals('TestAction', $manager->testAction([]));
+        $this->assertEquals('TestAction', $manager->TestAction([]));
     }
 
     /** @test */

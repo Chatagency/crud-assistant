@@ -110,7 +110,7 @@ class ActionFactory implements ActionFactoryInterace
             throw new InvalidArgumentException('The '.$class.' Action does not exist or the namespace is wrong', 500);
         }
 
-        if (!$this->isCorrenctInterface($class)) {
+        if (!$this->extendsActionInterface($class)) {
             throw new InvalidArgumentException('The '.$class.' Action is not extending the interface '.ActionInterface::class, 500);
         }
 
@@ -128,9 +128,19 @@ class ActionFactory implements ActionFactoryInterace
         return $this->path.ucfirst($class);
     }
 
+    /**
+     * Verifies if the class is an original
+     * action class
+     *
+     * @param string $class
+     * 
+     * @return boolean
+     */
     public function isOriginalAction(string $class)
     {
-        return $this->isCorrenctInterface($class) && $this->isCorrectPath($class);
+        return $this->extendsActionInterface($class) 
+            && $this->hasActionPath($class)
+            && class_exists($class);
     }
 
     /**
@@ -140,7 +150,7 @@ class ActionFactory implements ActionFactoryInterace
      * 
      * @return boolean
      */
-    protected function isCorrectPath(string $class)
+    protected function hasActionPath(string $class)
     {
         if (strpos($class, $this->path) !== false) {
             return true;
@@ -155,7 +165,7 @@ class ActionFactory implements ActionFactoryInterace
      * @param string $class
      * @return boolean
      */
-    protected function isCorrenctInterface(string $class)
+    protected function extendsActionInterface(string $class)
     { 
         try {
             $reflector = new ReflectionClass($class);
