@@ -111,7 +111,7 @@ class CrudAssistant
     protected function getActionBase(string $action)
     {
         $actionWithPath = $this->actionFactory->addNamespace($action);
-        if( $this->actionFactory->isPackageAction($actionWithPath)) {
+        if( $this->actionFactory->isOriginalAction($actionWithPath)) {
             return  $actionWithPath;
         }
         
