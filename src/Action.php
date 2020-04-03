@@ -37,7 +37,7 @@ abstract class Action
      *
      * @return bool
      */
-    public function ignoreIfEmpty($value, $recipe)
+    protected function ignoreIfEmpty($value, $recipe)
     {
         if (!\is_array($recipe)) {
             return false;
