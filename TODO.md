@@ -1,7 +1,7 @@
 ## Todo
 
-- ☐ Add independent `Migration` version
-- ☐ Redo `ActionFactory` to have only extra ones in config() (`rethink`)
+- ☐ Enable pass version numbre in `Migration` recipe
+- ✅ Redo `ActionFactory` to have only extra ones in config() (`rethink`)
 - ☐ Create an OptionInput class for the select
 - ✅ Normalize action value `ignore` options
 - ☐ Normalize action `callback` option

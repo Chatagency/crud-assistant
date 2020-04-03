@@ -9,7 +9,6 @@ namespace Chatagency\CrudAssistant;
  */
 abstract class Modifier
 {
-    
     /*
      * Option Data
      *
