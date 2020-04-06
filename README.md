@@ -220,3 +220,5 @@ $rules = $manager->Filter([
    'data' => $data
 ]);
 ```
+## License
+This package is licensed with the [MIT License](https://choosealicense.com/licenses/mit/#).
