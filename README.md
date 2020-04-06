@@ -41,10 +41,11 @@ $email->setType('email');
 $email->setAttribute('required', 'required');
 
 use Chatagency\CrudAssistant\Inputs\SelectInput;
+use Chatagency\CrudAssistant\Inputs\OptionInput;
 $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
 $hobby->setSubElements([
-    'Read',
-    'Watch movies',
+    new OptionInput('Read'),
+    new OptionInput('Watch movies'),
 ]);
 ```
 This way we can group all content/instructions in one place.But (arguably) more important, it can hold `Recipes` for `Actions`.
