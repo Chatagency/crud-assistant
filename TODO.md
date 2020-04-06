@@ -1,9 +1,10 @@
 ## Todo
 
-- ☐ Enable pass version numbre in `Migration` recipe
 - ✅ Redo `ActionFactory` to have only extra ones in config() (`rethink`)
-- ☐ Create an OptionInput class for the select
 - ✅ Normalize action value `ignore` options
-- ☐ Normalize action `callback` option
 - ✅ Change `Modifiers` names in main package
+- ✅ Create an OptionInput class for the select
+- ☐ Enable passing version numbre in `Migration` recipe
+- ☐ Normalize action `callback` option
 - ☐ Document new methods
+- ☐ Normalize Recipe params
