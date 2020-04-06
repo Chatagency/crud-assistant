@@ -6,5 +6,4 @@
 - ✅ Create an OptionInput class for the select
 - ☐ Enable passing version numbre in `Migration` recipe
 - ☐ Normalize action `callback` option
-- ☐ Document new methods
 - ☐ Normalize Recipe params
