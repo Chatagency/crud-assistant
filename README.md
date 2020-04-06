@@ -1,16 +1,21 @@
 # Crud Assistant
 
-Crud Assistant is a a set of utilities that helps crud management and component reuse. There is one main goal CA is set to solve: **Organization**. Mainly, to keep all input related info in one place. This a project is meant to be used on small project such as landing pages since that is the main reason it was created. We just needed a fast way to create promotional landing pages very fast but still or them to be flexible enough to add custom functionality if needed.
+Crud Assistant is a a set of utilities that helps crud management and component re-use. There is one main goal Crud Assistant is set to solve: **Organization**. Mainly, to keep all input related info in one place. 
 
+**The Problem**: You create a leeds landing page with a simple form. It is approved and then it is moved to the production server. After that, the client calls with more changes: You have to add an additional fields or make changes to the existing ones. That involves changes to the html form, validation, migration, model, etc. This is where this package shines. It allows the you, depending on your implementation, to make the changes in just a couple of places and they will be reflected everywhare in your application. 
+
+With Crud Assistant you can consolidate all bussiness logic in on plade (`inputs`) and all runtime variables in other (`actions`). This also promotes code asolation and cod re-use.
+
+*Disclaimer: This a package is meant to be used on small project such as landing pages since that is the main reason it was created. We just needed a fast way to create promotional landing pages very fast but still or them to be flexible enough to add custom functionality if needed.*
 
 ## Use
 
-Consult the [Documentation](https://link-to-documentation) for more detail.
+Consult the [Documentation] for more detail.
 
-*Note*: We keep a repository of reusable components and part of the implementation [here](http://link-to-extras)
+*Note: We keep a repository of reusable components and part of the implementation [here]*
 
 
-### Input - [Docs](https://link-to-documentation)
+### Input - [Docs]
 
 An `Input` can represent many things:
 
@@ -23,10 +28,11 @@ To summarize, it encapsulates a single peace of data.
 There are different types of `Inputs`, loosely associated with form input types:
 
 - `TextInput`
-- `SelectInput`
 - `TextareaInput`
 - `FileInput`
 - `CheckboxInput`
+- `OptionInput` for the...                                                                                             
+- `SelectInput`
 - `RadioInput` (but you would usually use the...)
 - `RadioGroupInput`
 
