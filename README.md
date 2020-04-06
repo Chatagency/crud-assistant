@@ -89,8 +89,10 @@ $actionResult = $collection->execute(\Chatagency\CrudAssistant\Actions\Sanitatio
 
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+
 
 // Input
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
@@ -108,6 +110,30 @@ $sanitized = $collection->execute(Sanitation::class);
 $rules = $manager->execute(LaravelValidationRules::class);
 ```
 
+If runtime parameters must be passed to the action a `DataContainer` must be used:
+
+```php
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\ActionFactory;
+use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\Filter;
+
+// Input
+$name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
+$name->addRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+$name->addRecipe(Filter::class, [
+  'filter' => true
+]);
+
+$collection = new InputCollection([$name], new ActionFactory([]))
+
+// sanitizes values
+$filteredData = $collection->execute(Filter::class, new DataContainer(
+  'data' => $data
+));
+```
+
 ### CrudAssistant (Crud Manager) - [Docs](https://link-to-documentation)
 
 The `CrudAssistant` helps with the creation of an `InputCollection`:
@@ -120,5 +146,77 @@ $manager = CrudAssistant::make([
     new TextInput('name')
 ]);
 ```
+It also doubles as a `InputCollection` facade. 
 
+```php
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 
+$manager = CrudAssistant::make([
+    new TextInput('name')
+]);
+
+$rules = $manager->executes(LaravelValidationRules::class);
+```
+
+For convenience, it can also execute an action using just the name of the class:
+
+```php
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+
+$manager = CrudAssistant::make([
+    new TextInput('name')
+]);
+
+/**
+ * This
+ */
+$rules = $manager->executes(LaravelValidationRules::class);
+
+/**
+ * Is equal to this
+ */
+$rules = $manager->LaravelValidationRules();
+```
+
+If an array is passed in runtime to the action and array can be used instead of a `DataContainer`, The assistant will initiate the `DataContainer` before pass it to the collection:
+
+```php
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\Filter;
+
+$name = new TextInput('name');
+$name->addRecipe(Filter::class, [
+  'filter' => true
+]);
+
+$manager = CrudAssistant::make([
+    $name
+]);
+
+/**
+ * This
+ */
+$rules = $manager->executes(Filter::class, new DataContainer([
+   'data' => $data
+]));
+
+/**
+ * Is equal to this
+ */
+$rules = $manager->Filter(new DataContainer([
+   'data' => $data
+]));
+
+/**
+ * And this
+ */
+$rules = $manager->Filter([
+   'data' => $data
+]);
+```
