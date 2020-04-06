@@ -128,7 +128,7 @@ $name->addRecipe(Filter::class, [
 
 $collection = new InputCollection([$name], new ActionFactory([]))
 
-// sanitizes values
+// filters values
 $filteredData = $collection->execute(Filter::class, new DataContainer(
   'data' => $data
 ));
