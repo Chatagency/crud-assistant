@@ -2,9 +2,9 @@
 
 Crud Assistant is a a set of utilities that helps crud management and component re-use. There is one main goal Crud Assistant is set to solve: **Organization**. Mainly, to keep all input related info in one place. 
 
-**The Problem**: You create a leeds landing page with a simple form. It is approved and then it is moved to the production server. After that, the client calls with more changes: You have to add an additional fields or make changes to the existing ones. That involves changes to the html form, validation, migration, model, etc. This is where this package shines. It allows the you, depending on your implementation, to make the changes in just a couple of places and they will be reflected everywhare in your application. 
+**The Problem**: You create a leeds landing page with a simple form. It is approved and then it is moved to the production server. After that, the client calls with more changes: You have to add an additional fields or make changes to the existing ones. That involves changes to the html form, validation, migration, model, etc. This is where this package shines. It allows the you, depending on your implementation, to make the changes in just a couple of places and they will be reflected everywhere in your application. 
 
-With Crud Assistant you can consolidate all bussiness logic in on plade (`inputs`) and all runtime variables in other (`actions`). This also promotes code asolation and cod re-use.
+With Crud Assistant you can consolidate all business logic in `inputs` and all runtime variables are passed to the `actions`. This also promotes code isolation and cod re-use.
 
 *Disclaimer: This a package is meant to be used on small project such as landing pages since that is the main reason it was created. We just needed a fast way to create promotional landing pages very fast but still or them to be flexible enough to add custom functionality if needed.*
 
