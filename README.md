@@ -10,12 +10,12 @@ With Crud Assistant you can consolidate all business logic in `inputs` and all r
 
 ## Use
 
-Consult the [Documentation] for more detail.
+Consult the [documentation] for more detail.
 
 *Note: We keep a repository of reusable components and part of the implementation [here]*
 
 
-### Input - [Docs]
+### Input - [docs link]
 
 An `Input` can represent many things:
 
@@ -62,7 +62,7 @@ $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
 $name->addRecipe(\Chatagency\CrudAssistant\Actions\Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
 ```
 
-### InputCollection - [Docs](https://link-to-documentation)
+### InputCollection - [docs link]
 
 The `InputCollection` holds one or multiple `Inputs`.
 
@@ -83,7 +83,7 @@ An action can be called on an `InputCollection`:
 $actionResult = $collection->execute(\Chatagency\CrudAssistant\Actions\Sanitation::class);
 ```
 
-### Actions - [Docs](https://link-to-documentation)
+### Actions - [docs link]
 
 `Actions` are arbitrary functionality ran on an `InputCollection`.
 
@@ -134,7 +134,7 @@ $filteredData = $collection->execute(Filter::class, new DataContainer(
 ));
 ```
 
-### CrudAssistant (Crud Manager) - [Docs](https://link-to-documentation)
+### CrudAssistant (Crud Manager) - [docs link]
 
 The `CrudAssistant` helps with the creation of an `InputCollection`:
 
