@@ -1,12 +1,14 @@
 # Crud Assistant
 
-Crud Assistant is a a set of utilities that helps crud management and component re-use. There is one main goal Crud Assistant is set to solve: **Organization**. Mainly, to keep all input related info in one place. 
+Crud Assistant is a set of utilities that helps with crud management and component re-use. 
 
-**The Problem**: You create a leeds landing page with a simple form. It is approved and then it is moved to the production server. After that, the client calls with more changes: You have to add an additional fields or make changes to the existing ones. That involves changes to the html form, validation, migration, model, etc. This is where this package shines. It allows the you, depending on your implementation, to make the changes in just a couple of places and they will be reflected everywhere in your application. 
+There is one main goal Crud Assistant is set to solve: **Organization**.
 
-With Crud Assistant you can consolidate all business logic in `inputs` and all runtime variables are passed to the `actions`. This also promotes code isolation and cod re-use.
+**The Problem**: You create a landing page with a simple form using Laravel. Once approved you move it to the production server. After that, the client calls with more changes: You have to add an additional fields or make changes to the existing ones. That involves changes to the html form, validation, migration, model, etc. 
 
-*Disclaimer: This a package is meant to be used on small project such as landing pages since that is the main reason it was created. We just needed a fast way to create promotional landing pages very fast but still or them to be flexible enough to add custom functionality if needed.*
+This is where this package shines. It allows the you, depending on your implementation, to make all changes in just a couple of places and they will be reflected everywhere in your application. With Crud Assistant you can consolidate all business logic in `inputs` and all runtime variables are passed to the `actions`. This also promotes code isolation and code re-use.
+
+*Disclaimer: This a package is meant to be used on small project such as landing pages since that is the main reason it was created. We needed an easy way to create promotional landing pages and a fast way to apply changes to them*
 
 ## Use
 
@@ -153,23 +155,31 @@ use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 
-$manager = CrudAssistant::make([
-    new TextInput('name')
+$name = new TextInput('name');
+$name->addRecipe(LaravelValidationRules::class, [
+    'required',
+    'max:250'
 ]);
+
+$manager = CrudAssistant::make([$name]);
 
 $rules = $manager->executes(LaravelValidationRules::class);
 ```
 
-For convenience, it can also execute an action using just the name of the class:
+For convenience, it can also execute an action using just the name of the actions' class:
 
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 
-$manager = CrudAssistant::make([
-    new TextInput('name')
+$name = new TextInput('name');
+$name->addRecipe(LaravelValidationRules::class, [
+    'required',
+    'max:250'
 ]);
+
+$manager = CrudAssistant::make([$name]);
 
 /**
  * This
@@ -195,9 +205,7 @@ $name->addRecipe(Filter::class, [
   'filter' => true
 ]);
 
-$manager = CrudAssistant::make([
-    $name
-]);
+$manager = CrudAssistant::make([$name]);
 
 /**
  * This
