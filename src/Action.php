@@ -59,7 +59,7 @@ abstract class Action
     protected function checkRequiredParams(DataContainer $data, array $checks)
     {
         if ($missing = $data->missing($checks)) {
-            throw new InvalidArgumentException('The argument '.$missing.' is missing from the DataContainer class', 500);
+            throw new InvalidArgumentException('The argument '.$missing.' is missing for the '.static::class.' action', 500);
         }
 
         return true;
