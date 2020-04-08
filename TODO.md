@@ -6,5 +6,5 @@
 - ✅ Create an OptionInput class for the select
 - ✅ Enable passing version number in `Migration` recipe
 - ✅ Modify `ActionFactory` to be able to initiate without params
-- ☐ Pass model id available to `Modifiers`
+- ✅ Pass model id available to `Modifiers`
 - ☐ Work on new `DataObject` to use instead of the `DataContainer`

@@ -69,6 +69,7 @@ abstract class Action
      * Applies all modifiers to the a value.
      *
      * @param $value
+     * @param mixed|null $model
      *
      * @return mixed
      */
