@@ -37,7 +37,7 @@ class ActionFactoryTest extends TestCase
         $factory = new ActionFactory([]);
 
         $this->assertTrue($factory->issetAction(LaravelValidationRules::class));
-        $this->assertInstanceOf(LaravelValidationRules::class, $factory->getInstanse(LaravelValidationRules::class));
+        $this->assertInstanceOf(LaravelValidationRules::class, $factory->getInstance(LaravelValidationRules::class));
     }
 
     
@@ -61,7 +61,7 @@ class ActionFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $config = $this->getConfig();
         $factory = new ActionFactory($config);
-        $factory->getAction('unknow');
+        $factory->getAction('unknown');
     }
     
     /** @test */

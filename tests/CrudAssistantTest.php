@@ -93,6 +93,6 @@ class CrudAssistantTest extends TestCase
         ], $this->getActionFactory());
 
         $this->expectException(BadMethodCallException::class);
-        $manager->randomMetod();
+        $manager->randomMethod();
     }
 }

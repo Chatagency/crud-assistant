@@ -82,7 +82,7 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return ActionInterface
      */
-    public function getInstanse(string $class)
+    public function getInstance(string $class)
     {
         $action = $this->getAction($class);
 
