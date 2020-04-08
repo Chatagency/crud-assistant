@@ -72,7 +72,7 @@ abstract class Action
      *
      * @return mixed
      */
-    protected function modifiers($value, InputInterface $input)
+    protected function modifiers($value, InputInterface $input, $model = null)
     {
         $recipe = $input->getRecipe(static::class);
 
@@ -88,7 +88,7 @@ abstract class Action
                     $value = $data->modify($value, $data->getData());
                     continue;
                 }
-                $value = (ModifierFactory::make($modifier))->modify($value, $data);
+                $value = (ModifierFactory::make($modifier))->modify($value, $data, $model);
             }
         }
 
