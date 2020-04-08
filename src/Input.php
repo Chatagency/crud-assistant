@@ -57,11 +57,6 @@ abstract class Input
     protected $recipes = [];
 
     /**
-     * Class construct.
-     *
-     * @param string $label
-     * @param string $label
-     *
      * @return self
      */
     public function __construct(string $name, string $label = null, int $version = 1)
@@ -70,7 +65,7 @@ abstract class Input
         $this->label = $label ? $label : $name;
         $this->version = $version ? $version : 1;
 
-        return$this;
+        return $this;
     }
 
     /**
@@ -249,7 +244,7 @@ abstract class Input
     }
 
     /**
-     * Unsets attribute.
+     * Unset attribute.
      *
      * @return self
      */

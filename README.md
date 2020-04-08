@@ -1,16 +1,23 @@
 # Crud Assistant
 
-Crud Assistant is a a set of utilities that helps crud management and component reuse. There is one main goal CA is set to solve: **Organization**. Mainly, to keep all input related info in one place. This a project is meant to be used on small project such as landing pages since that is the main reason it was created. We just needed a fast way to create promotional landing pages very fast but still or them to be flexible enough to add custom functionality if needed.
+Crud Assistant is a set of utilities that helps with crud management and component re-use. 
 
+There is one main goal Crud Assistant is set to solve: **Organization**.
+
+**The Problem**: You create a landing page with a simple form using Laravel. Once approved you move it to the production server. After that, the client calls with more changes: You have to add an additional fields or make changes to the existing ones. That involves changes to the html form, validation, migration, model, etc. 
+
+This is where this package shines. It allows the you, depending on your implementation, to make all changes in just a couple of places and they will be reflected everywhere in your application. With Crud Assistant you can consolidate all business logic in `inputs` and all runtime variables are passed to the `actions`. This also promotes code isolation and code re-use.
+
+*Disclaimer: This a package is meant to be used on small project such as landing pages since that is the main reason it was created. We needed an easy way to create promotional landing pages and a fast way to apply changes to them*
 
 ## Use
 
-Consult the [Documentation](https://link-to-documentation) for more detail.
+Consult the [documentation] for more detail.
 
-*Note*: We keep a repository of reusable components and part of the implementation [here](http://link-to-extras)
+*Note: We keep a repository of reusable components and part of the implementation [here]*
 
 
-### Input - [Docs](https://link-to-documentation)
+### Input - [docs link]
 
 An `Input` can represent many things:
 
@@ -23,10 +30,11 @@ To summarize, it encapsulates a single peace of data.
 There are different types of `Inputs`, loosely associated with form input types:
 
 - `TextInput`
-- `SelectInput`
 - `TextareaInput`
 - `FileInput`
 - `CheckboxInput`
+- `OptionInput` for the...                                                                                             
+- `SelectInput`
 - `RadioInput` (but you would usually use the...)
 - `RadioGroupInput`
 
@@ -53,10 +61,10 @@ This way we can group all content/instructions in one place.But (arguably) more 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->addRecipe(\Chatagency\CrudAssistant\Actions\Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+$name->setRecipe(\Chatagency\CrudAssistant\Actions\Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
 ```
 
-### InputCollection - [Docs](https://link-to-documentation)
+### InputCollection - [docs link]
 
 The `InputCollection` holds one or multiple `Inputs`.
 
@@ -64,45 +72,52 @@ The `InputCollection` holds one or multiple `Inputs`.
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\ActionFactory;
+use Chatagency\CrudAssistant\DataContainer;
 
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
 $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
 $email->setType('email');
 
-$collection = new InputCollection([$name, $email], new ActionFactory([]))
+$collection = new InputCollection([$name, $email], new ActionFactory([]));
 ```
-An action can be called on an `InputCollection`:
+An action can be called on an `InputCollection` using the execute method:
 
 ```php
-$actionResult = $collection->execute(\Chatagency\CrudAssistant\Actions\Sanitation::class);
+$data = new DataContainer([ 'requestArray' => []]);
+$actionResult = $collection->execute(\Chatagency\CrudAssistant\Actions\Sanitation::class,$data);
 ```
 
-### Actions - [Docs](https://link-to-documentation)
+### Actions - [docs link]
 
-`Actions` are arbitrary functionality ran on an `InputCollection`.
+`Actions` are arbitrary functionality ran on an `InputCollection`. If runtime parameters must be passed to the action a `DataContainer` must be used:
 
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\Sanitation;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+
 
 // Input
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->addRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
-$name->addRecipe(LaravelValidationRules::class, [
+$name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+$name->setRecipe(LaravelValidationRules::class, [
     'required',
     'max:250'
 ]);
 
-$collection = new InputCollection([$name], new ActionFactory([]))
+$collection = new InputCollection([$name], new ActionFactory([]));
 
 // sanitizes values
-$sanitized = $collection->execute(Sanitation::class);
+$sanitized = $collection->execute(Sanitation::class, new DataContainer([
+    'requestArray' => []
+]));
 // returns Laravel validation rules
-$rules = $manager->execute(LaravelValidationRules::class);
+$rules = $collection->execute(LaravelValidationRules::class, new DataContainer());
 ```
 
-### CrudAssistant (Crud Manager) - [Docs](https://link-to-documentation)
+### CrudAssistant (Crud Manager) - [docs link]
 
 The `CrudAssistant` helps with the creation of an `InputCollection`:
 
@@ -112,7 +127,87 @@ use Chatagency\CrudAssistant\Inputs\TextInput;
 
 $manager = CrudAssistant::make([
     new TextInput('name')
+], new ActionFactory([]));
+```
+It also doubles as a `InputCollection` facade. If no `ActionFactory` is passed as a second parameter, it then uses the array in `config('crud-assistant')`:
+
+```php
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+
+$name = new TextInput('name');
+$name->setRecipe(LaravelValidationRules::class, [
+    'required',
+    'max:250'
 ]);
+
+$manager = CrudAssistant::make([$name]);
+
+$rules = $manager->execute(LaravelValidationRules::class);
 ```
 
+For convenience, it can also execute an action using just the name of the actions' class:
 
+```php
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+
+$name = new TextInput('name');
+$name->setRecipe(LaravelValidationRules::class, [
+    'required',
+    'max:250'
+]);
+
+$manager = CrudAssistant::make([$name]);
+
+/**
+ * This
+ */
+$rules = $manager->execute(LaravelValidationRules::class);
+
+/**
+ * Is equal to this
+ */
+$rules = $manager->LaravelValidationRules();
+```
+
+If an array is passed in runtime to the action and array can be used instead of a `DataContainer`, The assistant will initiate the `DataContainer` before pass it to the collection:
+
+```php
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Actions\Filter;
+
+$name = new TextInput('name');
+$name->setRecipe(Filter::class, [
+  'filter' => true
+]);
+
+$manager = CrudAssistant::make([$name]);
+
+/**
+ * This
+ */
+$rules = $manager->execute(Filter::class, new DataContainer([
+    'data' => []
+]));
+
+/**
+ * Is equal to this
+ */
+$rules = $manager->Filter(new DataContainer([
+    'data' => []
+]));
+
+/**
+ * And this
+ */
+$rules = $manager->Filter([
+    'data' => []
+]);
+```
+## License
+This package is licensed with the [MIT License](https://choosealicense.com/licenses/mit/#).
