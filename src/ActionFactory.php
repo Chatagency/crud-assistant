@@ -34,7 +34,7 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return self
      */
-    public function __construct(array $actions)
+    public function __construct(array $actions = [])
     {
         $this->actions = $actions;
 

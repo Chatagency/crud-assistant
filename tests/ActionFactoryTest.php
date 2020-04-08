@@ -34,7 +34,7 @@ class ActionFactoryTest extends TestCase
     /** @test */
     public function the_action_factory_returns_an_instance_if_it_is_in_the_right_path_and_is_a_real_action()
     {
-        $factory = new ActionFactory([]);
+        $factory = new ActionFactory();
 
         $this->assertTrue($factory->issetAction(LaravelValidationRules::class));
         $this->assertInstanceOf(LaravelValidationRules::class, $factory->getInstance(LaravelValidationRules::class));

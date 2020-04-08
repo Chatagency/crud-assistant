@@ -49,7 +49,7 @@ class DocumentationTest extends TestCase
         $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
         $email->setType('email');
 
-        $collection = new InputCollection([$name, $email], new ActionFactory([]));
+        $collection = new InputCollection([$name, $email], new ActionFactory());
 
         $data = new DataContainer([ 'requestArray' => []]);
         $actionResult = $collection->execute(\Chatagency\CrudAssistant\Actions\Sanitation::class,$data);
@@ -68,7 +68,7 @@ class DocumentationTest extends TestCase
             'max:250'
         ]);
         
-        $collection = new InputCollection([$name], new ActionFactory([]));
+        $collection = new InputCollection([$name], new ActionFactory());
         
         // sanitizes values
         $sanitized = $collection->execute(Sanitation::class, new DataContainer([
@@ -89,7 +89,7 @@ class DocumentationTest extends TestCase
             'max:250'
         ]);
         
-        $manager = CrudAssistant::make([$name], new ActionFactory([]));
+        $manager = CrudAssistant::make([$name], new ActionFactory());
         
         $rules = $manager->execute(LaravelValidationRules::class);
 
@@ -105,7 +105,7 @@ class DocumentationTest extends TestCase
             'max:250'
         ]);
         
-        $manager = CrudAssistant::make([$name], new ActionFactory([]));
+        $manager = CrudAssistant::make([$name], new ActionFactory());
         
         /**
          * This
@@ -129,7 +129,7 @@ class DocumentationTest extends TestCase
           'filter' => true
         ]);
         
-        $manager = CrudAssistant::make([$name], new ActionFactory([]));
+        $manager = CrudAssistant::make([$name], new ActionFactory());
 
         /**
          * This
