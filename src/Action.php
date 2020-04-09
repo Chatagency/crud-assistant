@@ -86,7 +86,7 @@ abstract class Action
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier => $data) {
                 if (is_a($data, Modifier::class)) {
-                    $value = $data->modify($value, $data->getData());
+                    $value = $data->modify($value, $data->getData(), $model);
                     continue;
                 }
                 $value = (ModifierFactory::make($modifier))->modify($value, $data, $model);
