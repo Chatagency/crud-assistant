@@ -16,12 +16,11 @@ class NullableMigrationModifier extends Modifier
     /**
      * Modifies value.
      *
-     * @param  $value
+     * @param mixed         $value
      * @param DataContainer $data
-     *
-     * @return mixed
+     * @param $model
      */
-    public function modify($value, DataContainer $data = null)
+    public function modify($value, DataContainer $data = null, $model = null)
     {
         if ($value instanceof ColumnDefinition) {
             $value->nullable();

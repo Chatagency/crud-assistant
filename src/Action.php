@@ -69,10 +69,11 @@ abstract class Action
      * Applies all modifiers to the a value.
      *
      * @param $value
+     * @param mixed|null $model
      *
      * @return mixed
      */
-    protected function modifiers($value, InputInterface $input)
+    protected function modifiers($value, InputInterface $input, $model = null)
     {
         $recipe = $input->getRecipe(static::class);
 
@@ -85,10 +86,10 @@ abstract class Action
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier => $data) {
                 if (is_a($data, Modifier::class)) {
-                    $value = $data->modify($value, $data->getData());
+                    $value = $data->modify($value, $data->getData(), $model);
                     continue;
                 }
-                $value = (ModifierFactory::make($modifier))->modify($value, $data);
+                $value = (ModifierFactory::make($modifier))->modify($value, $data, $model);
             }
         }
 

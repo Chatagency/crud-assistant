@@ -78,7 +78,7 @@ $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
 $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
 $email->setType('email');
 
-$collection = new InputCollection([$name, $email], new ActionFactory([]));
+$collection = new InputCollection([$name, $email], new ActionFactory());
 ```
 An action can be called on an `InputCollection` using the execute method:
 
@@ -107,7 +107,7 @@ $name->setRecipe(LaravelValidationRules::class, [
     'max:250'
 ]);
 
-$collection = new InputCollection([$name], new ActionFactory([]));
+$collection = new InputCollection([$name], new ActionFactory());
 
 // sanitizes values
 $sanitized = $collection->execute(Sanitation::class, new DataContainer([
@@ -127,7 +127,7 @@ use Chatagency\CrudAssistant\Inputs\TextInput;
 
 $manager = CrudAssistant::make([
     new TextInput('name')
-], new ActionFactory([]));
+], new ActionFactory());
 ```
 It also doubles as a `InputCollection` facade. If no `ActionFactory` is passed as a second parameter, it then uses the array in `config('crud-assistant')`:
 

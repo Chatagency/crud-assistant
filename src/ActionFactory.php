@@ -34,7 +34,7 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return self
      */
-    public function __construct(array $actions)
+    public function __construct(array $actions = [])
     {
         $this->actions = $actions;
 
@@ -82,7 +82,7 @@ class ActionFactory implements ActionFactoryInterace
      *
      * @return ActionInterface
      */
-    public function getInstanse(string $class)
+    public function getInstance(string $class)
     {
         $action = $this->getAction($class);
 
@@ -131,7 +131,7 @@ class ActionFactory implements ActionFactoryInterace
      * Verifies if the class is an original
      * action class.
      *
-     * @return boolean
+     * @return bool
      */
     public function isOriginalAction(string $class)
     {
@@ -143,7 +143,7 @@ class ActionFactory implements ActionFactoryInterace
     /**
      * Checks if class is in the correct path.
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasActionPath(string $class)
     {
@@ -157,7 +157,7 @@ class ActionFactory implements ActionFactoryInterace
     /**
      * Checks if class has the correct interface.
      *
-     * @return boolean
+     * @return bool
      */
     protected function extendsActionInterface(string $class)
     {

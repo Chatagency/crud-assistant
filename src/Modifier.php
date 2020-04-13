@@ -38,9 +38,9 @@ abstract class Modifier
      * Modifier must implement the
      * modify method.
      *
-     * @var
-     *
-     * @param mixed $value
+     * @param mixed         $value
+     * @param DataContainer $data
+     * @param $model
      */
-    abstract public function modify($value, DataContainer $data = null);
+    abstract public function modify($value, DataContainer $data = null, $model = null);
 }

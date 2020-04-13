@@ -44,7 +44,7 @@ interface ActionFactoryInterace
      *
      * @return ActionInterface
      */
-    public function getInstanse(string $class);
+    public function getInstance(string $class);
 
     /**
      * Returns a specific action class name.
