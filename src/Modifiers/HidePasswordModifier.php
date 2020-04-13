@@ -1,40 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Modifiers;
 
-use Chatagency\CrudAssistant\Modifier;
 use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Modifier;
 
 /**
- * Hide Password Modifier
+ * Hide Password Modifier.
  */
 class HidePasswordModifier extends Modifier
 {
-    
     protected $defaultValue = '******';
-  
+
     /**
-     * Obscures Password
+     * Modifies value.
      *
-     * @param $value
+     * @param mixed         $value
      * @param DataContainer $data
-     * 
-     * @return mixed
+     * @param $model
      */
-    public function modify($value, DataContainer $data = null)
+    public function modify($value, DataContainer $data = null, $model = null)
     {
         $content = $data && isset($data->value) ? $data->value : $this->defaultValue;
-        
+
         return $content;
     }
-    
+
     /**
-     * Returns default value
+     * Returns default value.
      *
      * @return string
      */
     public function getDefaultValue()
     {
-      return $this->defaultValue;
+        return $this->defaultValue;
     }
 }

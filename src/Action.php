@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\Modifier;
 use InvalidArgumentException;
 
 /**
  * Action base class.
  */
-class Action
+abstract class Action
 {
     /**
      * Checks for value is to be ignored.
@@ -37,7 +36,7 @@ class Action
      *
      * @return bool
      */
-    public function ignoreIfEmpty($value, $recipe)
+    protected function ignoreIfEmpty($value, $recipe)
     {
         if (!\is_array($recipe)) {
             return false;
@@ -60,7 +59,7 @@ class Action
     protected function checkRequiredParams(DataContainer $data, array $checks)
     {
         if ($missing = $data->missing($checks)) {
-            throw new InvalidArgumentException('The argument '.$missing.' is missing from the DataContainer class', 500);
+            throw new InvalidArgumentException('The argument '.$missing.' is missing for the '.static::class.' action', 500);
         }
 
         return true;
@@ -70,10 +69,11 @@ class Action
      * Applies all modifiers to the a value.
      *
      * @param $value
+     * @param mixed|null $model
      *
      * @return mixed
      */
-    protected function modifiers($value, InputInterface $input)
+    protected function modifiers($value, InputInterface $input, $model = null)
     {
         $recipe = $input->getRecipe(static::class);
 
@@ -85,11 +85,11 @@ class Action
 
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier => $data) {
-                if(is_a($data, Modifier::class)){
-                    $value = $data->modify($value, $data->getData());
+                if (is_a($data, Modifier::class)) {
+                    $value = $data->modify($value, $data->getData(), $model);
                     continue;
                 }
-                $value = (ModifierFactory::make($modifier))->modify($value, $data);
+                $value = (ModifierFactory::make($modifier))->modify($value, $data, $model);
             }
         }
 

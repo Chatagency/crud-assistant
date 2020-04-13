@@ -142,6 +142,6 @@ class InputCollection implements InputCollectionInterface
      */
     protected function getActionInstace(string $type)
     {
-        return $this->actionFactory->getInstanse($type);
+        return $this->actionFactory->getInstance($type);
     }
 }

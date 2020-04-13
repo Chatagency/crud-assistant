@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Laravel validation labels action class.
+ * Laravel validation labels action.
  */
 class LaravelValidationLabels extends Action implements ActionInterface
 {

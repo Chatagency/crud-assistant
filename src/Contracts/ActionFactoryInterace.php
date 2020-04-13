@@ -23,7 +23,7 @@ interface ActionFactoryInterace
      *
      * @return self
      */
-    public function registerAction(string $type);
+    public function registerAction(string $class);
 
     /**
      * Returns actions array.
@@ -37,14 +37,14 @@ interface ActionFactoryInterace
      *
      * @return bool
      */
-    public function issetAction(string $type);
+    public function issetAction(string $class);
 
     /**
      * Returns action instance.
      *
      * @return ActionInterface
      */
-    public function getInstanse(string $type);
+    public function getInstance(string $class);
 
     /**
      * Returns a specific action class name.
@@ -53,5 +53,20 @@ interface ActionFactoryInterace
      *
      * @return string
      */
-    public function getAction(string $type);
+    public function getAction(string $class);
+
+    /**
+     * Adds namespace to a classname.
+     *
+     * @return string
+     */
+    public function addNamespace(string $class);
+
+    /**
+     * Verifies if the class is an original
+     * action class.
+     *
+     * @return boolean
+     */
+    public function isOriginalAction(string $class);
 }

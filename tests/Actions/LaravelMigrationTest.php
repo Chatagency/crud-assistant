@@ -50,6 +50,95 @@ class LaravelMigrationTest extends TestCase
     }
 
     /** @test */
+    public function the_input_version_determines_if_an_input_belongs_to_a_migration()
+    {
+        $migration = new LaravelMigration();
+
+        /**
+         * Input version set to the default (1)
+         */
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(LaravelMigration::class, [
+            'type' => 'text',
+        ]);
+
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(LaravelMigration::class, [
+            'nullable' => true,
+            'unique' => true,
+        ]);
+        
+        /**
+         * Input version set to 2
+         */
+        $description = new TextInput('description', 'Description', 2);
+        $description->setRecipe(LaravelMigration::class, [
+            'type' => 'longText',
+        ]);
+
+        $inputs = [$name, $email, $description];
+
+        $container = new DataContainer();
+
+        /**
+         * Migration version set to 1
+         */
+        $container->version = 1;
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration, $container) {
+            $container->table = $table;
+            $migration->execute($inputs, $container);
+        });
+
+        $this->assertCount(2, $blueprint->getColumns());
+    }
+
+    /** @test */
+    public function if_a_version_is_passed_with_the_recipe_it_overwrites_the_input_version()
+    {
+        $migration = new LaravelMigration();
+
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(LaravelMigration::class, [
+            'type' => 'text',
+        ]);
+
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(LaravelMigration::class, [
+            'nullable' => true,
+            'unique' => true,
+        ]);
+        
+        /**
+         * Input version set to the default (1)
+         */
+        $description = new TextInput('description', 'Description');
+        $description->setRecipe(LaravelMigration::class, [
+            /**
+             * Version in recipe set to 2
+             */
+            'version' => 2,
+            'type' => 'longText',
+        ]);
+
+        $inputs = [$name, $email, $description];
+
+        $container = new DataContainer();
+
+        /**
+         * Migration version set to 1
+         */
+        $container->version = 1;
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration, $container) {
+            $container->table = $table;
+            $migration->execute($inputs, $container);
+        });
+
+        $this->assertCount(2, $blueprint->getColumns());
+    }
+
+    /** @test */
     public function a_migration_action_can_be_created_using_a_collection()
     {
         $migration = new LaravelMigration();
