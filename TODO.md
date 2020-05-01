@@ -2,9 +2,11 @@
 
 - ✅ Redo `ActionFactory` to have only extra ones in config() (`rethink`)
 - ✅ Normalize action value `ignore` options
-- ✅ Change `Modifiers` names in main package
+- ✅ Normalize `Modifiers` class names
 - ✅ Create an OptionInput class for the select
-- ✅ Enable passing version number in `Migration` recipe
+- ✅ Enable passing version number to `MigrationAction` when setting recipe
 - ✅ Modify `ActionFactory` to be able to initiate without params
 - ✅ Pass model id available to `Modifiers`
-- ☐ Work on new `DataObject` to use instead of the `DataContainer`
+- ☐ Rethink `DataObject` to use type hints
+- ☐ Validate action exists when setting a recipe
+- ☐ Enable passing versions of the field to `MigrationAction` when setting recipe
