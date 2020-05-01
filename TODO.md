@@ -7,6 +7,6 @@
 - ✅ Enable passing version number to `MigrationAction` when setting recipe
 - ✅ Modify `ActionFactory` to be able to initiate without params
 - ✅ Pass model id available to `Modifiers`
+- ✅ Enable passing versions of the field to `MigrationAction` when setting recipe
 - ☐ Rethink `DataObject` to use type hints
 - ☐ Validate action exists when setting a recipe
-- ☐ Enable passing versions of the field to `MigrationAction` when setting recipe
