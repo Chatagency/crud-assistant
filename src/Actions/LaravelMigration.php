@@ -24,14 +24,13 @@ class LaravelMigration extends Action implements ActionInterface
 
         $table = $params->table;
         $version = $params->version;
-        $tableField = null;
 
         foreach ($inputs as $input) {
-            $recipe = $input->getRecipe(static::class);
-            $inputVersion = $input->getVersion();
+            $recipe = $this->getRecipe($input, $version);
+            $inputVersion = \is_array($recipe) && isset($recipe['version']) ? $recipe['version'] : $input->getVersion();
 
             if ($inputVersion == $version) {
-
+                $tableField = null;
                 $name = $input->getName();
 
                 if ($this->ignore($recipe)) {
@@ -43,12 +42,15 @@ class LaravelMigration extends Action implements ActionInterface
                     continue;
                 }
 
-                $type = $recipe['type'] ?? null;
-                
-                if (\is_callable($type)) {
-                    $tableField = $type($table, $input);
-                } elseif ($type) {
-                    $tableField = $table->$type($name);
+                if (isset($recipe) && \is_array($recipe)) {
+                    $type = $recipe['type'] ?? null;
+                    if (\is_callable($type)) {
+                        $tableField = $type($table, $input);
+                    } elseif ($type) {
+                        $tableField = $table->$type($name);
+                    } else {
+                        $tableField = $table->string($name);
+                    }
                 } else {
                     $tableField = $table->string($name);
                 }
@@ -60,4 +62,20 @@ class LaravelMigration extends Action implements ActionInterface
         return $table;
     }
 
+    public function getRecipe($input, $migrationVersion)
+    {
+        $recipe = $input->getRecipe(static::class);
+        
+        if(is_array($recipe) && isset($recipe['versions']) && is_array($recipe['versions'])) {
+            foreach($recipe['versions'] as $version => $versionedRecipe) {
+                if($migrationVersion === $version) {
+                    $versionedRecipe['version'] = $version;
+                    $recipe = $versionedRecipe;
+                    break;
+                }
+            }
+        }
+
+        return $recipe;
+    }
 }
