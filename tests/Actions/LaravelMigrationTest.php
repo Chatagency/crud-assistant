@@ -7,6 +7,7 @@ use Chatagency\CrudAssistant\Actions\LaravelMigration;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Modifiers\NullableMigrationModifier;
 use Chatagency\CrudAssistant\Modifiers\UniqueMigrationModifier;
 use Chatagency\CrudAssistant\Modifiers\UnsignedMigrationModifier;
 use Illuminate\Database\Schema\Blueprint;
@@ -94,7 +95,7 @@ class LaravelMigrationTest extends TestCase
     }
 
     /** @test */
-    public function if_a_version_is_passed_with_the_recipe_it_overwrites_the_input_version()
+    public function if_a_version_is_passed_to_the_migrations_action_with_the_recipe_it_overwrites_the_input_version()
     {
         $migration = new LaravelMigration();
 
@@ -136,6 +137,56 @@ class LaravelMigrationTest extends TestCase
         });
 
         $this->assertCount(2, $blueprint->getColumns());
+    }
+
+    /** @test */
+    public function if_multiple_recipe_versions_are_passed_to_the_migrations_action_the_one_that_matches_is_used()
+    {
+        $migration = new LaravelMigration();
+
+        /**
+         * Input version set to the default (1)
+         */
+        $name = new TextInput('name', 'Name');
+        $name->setRecipe(LaravelMigration::class, [
+            /**
+             * Multiple versions
+             */
+            'versions' => [
+                1 => [
+                    'type' => 'text',
+                ],
+                2 => [
+                    'type' => 'string',
+                    'modifiers' => [
+                        new NullableMigrationModifier(new DataContainer())
+                    ],
+                ],
+            ],
+        ]);
+
+        $inputs = [$name];
+
+        $container = new DataContainer();
+        $container->version = 1;
+
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration, $container) {
+            $container->table = $table;
+            $migration->execute($inputs, $container);
+        });
+
+        $this->assertCount(1, $blueprint->getColumns());
+        $this->assertEquals('text', $blueprint->getColumns()[0]->getAttributes()['type']);
+
+        $container->version = 2;
+        $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($inputs, $migration, $container) {
+            $container->table = $table;
+            $migration->execute($inputs, $container);
+        });
+
+        $this->assertCount(1, $blueprint->getColumns());
+        $this->assertEquals('string', $blueprint->getColumns()[0]->getAttributes()['type']);
+
     }
 
     /** @test */
