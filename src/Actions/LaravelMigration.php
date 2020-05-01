@@ -24,30 +24,31 @@ class LaravelMigration extends Action implements ActionInterface
 
         $table = $params->table;
         $version = $params->version;
+        $tableField = null;
 
         foreach ($inputs as $input) {
             $recipe = $input->getRecipe(static::class);
-            $inputVersion = \is_array($recipe) && isset($recipe['version']) ? $recipe['version'] : $input->getVersion();
+            $inputVersion = $input->getVersion();
 
             if ($inputVersion == $version) {
-                $tableField = null;
+
                 $name = $input->getName();
 
                 if ($this->ignore($recipe)) {
                     continue;
                 }
 
-                if (isset($recipe) && \is_array($recipe)) {
-                    $type = $recipe['type'] ?? null;
-                    if (\is_callable($type)) {
-                        $tableField = $type($table, $input);
-                    } elseif ($type) {
-                        $tableField = $table->$type($name);
-                    } else {
-                        $tableField = $table->string($name);
-                    }
-                } elseif (\is_callable($recipe)) {
+                if (\is_callable($recipe)) {
                     $tableField = $recipe($table, $input);
+                    continue;
+                }
+
+                $type = $recipe['type'] ?? null;
+                
+                if (\is_callable($type)) {
+                    $tableField = $type($table, $input);
+                } elseif ($type) {
+                    $tableField = $table->$type($name);
                 } else {
                     $tableField = $table->string($name);
                 }
@@ -58,4 +59,5 @@ class LaravelMigration extends Action implements ActionInterface
 
         return $table;
     }
+
 }
