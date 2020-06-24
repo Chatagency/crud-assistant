@@ -213,7 +213,7 @@ class LaravelMigrationTest extends TestCase
 
         $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($collection, $container) {
             $container->table = $table;
-            $collection->execute(LaravelMigration::class, $container);
+            $collection->execute(new LaravelMigration($container));
         });
 
         $this->assertCount(2, $blueprint->getColumns());

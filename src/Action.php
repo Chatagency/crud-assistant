@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use InvalidArgumentException;
 
 /**
@@ -12,6 +13,30 @@ use InvalidArgumentException;
  */
 abstract class Action
 {
+    /**
+     * Data
+     *
+     * @var DataContainerInterface
+     */
+    protected $params;
+    
+    /**
+     * Construct
+     *
+     * @param DataContainerInterface $params
+     */
+    public function __construct(DataContainerInterface $params = null)
+    {
+        $this->params = $params ?? new DataContainer();
+
+        return $this;
+    }
+
+    public function getParams()
+    {
+        return $this->params;
+    }
+    
     /**
      * Checks for value is to be ignored.
      *
