@@ -3,13 +3,12 @@
 namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Actions\Sanitation;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Tests\TestClasses\TestAction;
-use BadMethodCallException;
 use Chatagency\CrudAssistant\DataContainer;
+use BadMethodCallException;
 
 class CrudAssistantTest extends TestCase
 {

@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Actions\Filter;
 use Chatagency\CrudAssistant\Modifier;
-use Chatagency\CrudAssistant\Tests\Fake\NotOriginalAction;
 use InvalidArgumentException;
 
 class ActionFactoryTest extends TestCase

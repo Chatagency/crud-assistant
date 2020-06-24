@@ -12,7 +12,6 @@ use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 use Chatagency\CrudAssistant\Actions\Sanitation;
-use Chatagency\CrudAssistant\Actions\Filter;
 
 
 class DocumentationTest extends TestCase
