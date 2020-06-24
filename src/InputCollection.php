@@ -33,10 +33,10 @@ class InputCollection implements InputCollectionInterface
      *
      * @return self
      */
-    public function __construct(array $inputsArray, ActionFactory $actionFactory)
+    public function __construct(array $inputsArray, ActionFactory $actionFactory = null)
     {
         $this->inputsArray = array_merge($this->inputsArray, $inputsArray);
-        $this->actionFactory = $actionFactory;
+        $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
     }
@@ -72,7 +72,7 @@ class InputCollection implements InputCollectionInterface
     }
 
     /**
-     * Retruns inputs array count.
+     * Returns inputs array count.
      *
      * @return int
      */
@@ -132,7 +132,7 @@ class InputCollection implements InputCollectionInterface
      */
     public function execute(string $type, DataContainer $params = null)
     {
-        return $this->getActionInstace($type)->execute($this->inputsArray, $params);
+        return $this->getActionInstance($type)->execute($this->inputsArray, $params);
     }
 
     /**
@@ -140,7 +140,7 @@ class InputCollection implements InputCollectionInterface
      *
      * @return ActionInterface
      */
-    protected function getActionInstace(string $type)
+    protected function getActionInstance(string $type)
     {
         return $this->actionFactory->getInstance($type);
     }

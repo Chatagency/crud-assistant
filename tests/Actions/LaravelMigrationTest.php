@@ -209,8 +209,7 @@ class LaravelMigrationTest extends TestCase
         $container = new DataContainer();
         $container->version = 1;
 
-        $config = require __DIR__.'/../../config/config.php';
-        $collection = new InputCollection($inputs, new ActionFactory($config['actions']));
+        $collection = new InputCollection($inputs);
 
         $blueprint = new Blueprint('contacts', function (Blueprint $table) use ($collection, $container) {
             $container->table = $table;

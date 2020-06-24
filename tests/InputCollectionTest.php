@@ -2,7 +2,6 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
-use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
@@ -13,15 +12,8 @@ class InputCollectionTest extends TestCase
 {
     public function getCollection(array $inputs = [])
     {
-        /**
-         * Laravel config() is not available
-         * inside the package.
-         *
-         * @var array
-         */
-        $config = require __DIR__.'/../config/config.php';
 
-        return new InputCollection($inputs, new ActionFactory($config['actions']));
+        return new InputCollection($inputs);
     }
 
     /** @test */

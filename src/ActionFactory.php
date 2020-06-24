@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Contracts\ActionFactoryInterace;
+use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -13,70 +13,15 @@ use ReflectionException;
 /**
  * Actions Factory.
  */
-class ActionFactory implements ActionFactoryInterace
+class ActionFactory implements ActionFactoryInterface
 {
-    /**
-     * Actions array actions.
-     *
-     * @var array
-     */
-    protected $actions = [];
-
     /**
      * Actions path.
      *
      * @var array
      */
     protected $path = 'Chatagency\CrudAssistant\Actions\\';
-
-    /**
-     * Construct for dependency injection.
-     *
-     * @return self
-     */
-    public function __construct(array $actions = [])
-    {
-        $this->actions = $actions;
-
-        return $this;
-    }
-
-    /**
-     * Adds/replaces action path to the actions.
-     *
-     * @return self
-     */
-    public function registerAction(string $class)
-    {
-        $this->actions[] = $class;
-
-        return $this;
-    }
-
-    /**
-     * Returns actions array.
-     *
-     * @return array
-     */
-    public function getActions()
-    {
-        return $this->actions;
-    }
-
-    /**
-     * Checks if an action has been registered.
-     *
-     * @return bool
-     */
-    public function issetAction(string $class)
-    {
-        if ($this->isOriginalAction($class)) {
-            return true;
-        }
-
-        return false !== array_search($class, $this->actions);
-    }
-
+    
     /**
      * Returns action instance.
      *
@@ -102,10 +47,6 @@ class ActionFactory implements ActionFactoryInterace
             return $class;
         }
 
-        if (!\in_array($class, $this->actions)) {
-            throw new InvalidArgumentException('The '.$class.' Action has not been registered or does not exist', 500);
-        }
-
         if (!class_exists($class)) {
             throw new InvalidArgumentException('The '.$class.' Action does not exist or the namespace is wrong', 500);
         }
@@ -115,16 +56,6 @@ class ActionFactory implements ActionFactoryInterace
         }
 
         return $class;
-    }
-
-    /**
-     * Adds namespace to a classname.
-     *
-     * @return string
-     */
-    public function addNamespace(string $class)
-    {
-        return $this->path.ucfirst($class);
     }
 
     /**
