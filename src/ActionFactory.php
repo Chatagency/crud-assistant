@@ -29,7 +29,7 @@ class ActionFactory implements ActionFactoryInterface
      */
     public function getInstance(string $class)
     {
-        $action = $this->getAction($class);
+        $action = $this->isAction($class);
 
         return new $action();
     }
@@ -41,7 +41,7 @@ class ActionFactory implements ActionFactoryInterface
      *
      * @return string
      */
-    public function getAction(string $class)
+    public function isAction(string $class)
     {
         if ($this->isOriginalAction($class)) {
             return $class;

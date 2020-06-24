@@ -67,10 +67,11 @@ interface InputCollectionInterface
 
     /**
      * Execute actions.
+     * 
+     * @param ActionInterface $action
      *
-     * @param DataContainer $params
-     *
-     * @return mixed
+     * @return DataContainer
+     * 
      */
-    public function execute(string $type, DataContainer $params = null);
+    public function execute(ActionInterface $action);
 }

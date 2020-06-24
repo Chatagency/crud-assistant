@@ -25,7 +25,7 @@ interface ActionFactoryInterface
      *
      * @return string
      */
-    public function getAction(string $class);
+    public function isAction(string $class);
 
     /**
      * Verifies if the class is an original
@@ -34,4 +34,5 @@ interface ActionFactoryInterface
      * @return boolean
      */
     public function isOriginalAction(string $class);
+    
 }
