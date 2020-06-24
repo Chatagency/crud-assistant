@@ -27,12 +27,4 @@ interface ActionFactoryInterface
      */
     public function isAction(string $class);
 
-    /**
-     * Verifies if the class is an original
-     * action class.
-     *
-     * @return boolean
-     */
-    public function isOriginalAction(string $class);
-    
 }

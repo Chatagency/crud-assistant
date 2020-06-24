@@ -5,16 +5,28 @@ namespace Chatagency\CrudAssistant\Tests;
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\Modifier;
+use Chatagency\CrudAssistant\Tests\Fake\NotOriginalAction;
 use InvalidArgumentException;
 
 class ActionFactoryTest extends TestCase
 {
+    
+    /** @test */
+    public function the_action_factory_can_instantiate_an_action_using_the_name()
+    {
+        $factory = new ActionFactory();
+        $action = $factory->getInstance(Filter::class);
+        
+        $this->assertInstanceOf(Filter::class, $action);
+    }
+
     /** @test */
     public function the_action_factory_can_check_if_a_class_is_a_real_action()
     {
         $factory = new ActionFactory();
         $action = $factory->isAction(Filter::class);
-
+        
         $this->assertEquals($action, Filter::class);
     }
     
@@ -32,7 +44,7 @@ class ActionFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $config[] = 'This\Class\Does\Not\Exist';
         $factory = new ActionFactory();
-        $yo = $factory->isAction('This\Class\Does\Not\Exist');
+        $factory->isAction('This\Class\Does\Not\Exist');
         
     }
 
@@ -42,7 +54,8 @@ class ActionFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $config[] = FakeAction::class;
         $factory = new ActionFactory();
-        $yo = $factory->isAction(FakeAction::class);
+        $factory->isAction(Modifier::class);
         
     }
+    
 }

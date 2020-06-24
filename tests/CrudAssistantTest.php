@@ -9,6 +9,7 @@ use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Tests\TestClasses\TestAction;
 use BadMethodCallException;
+use Chatagency\CrudAssistant\DataContainer;
 
 class CrudAssistantTest extends TestCase
 {
@@ -43,17 +44,19 @@ class CrudAssistantTest extends TestCase
 
         $manager = new CrudAssistant([$name]);
 
-        $manager->TestAction([]);
+        $manager->execute(new TestAction());
 
-        $sanitation = $manager->sanitation([
-            'requestArray' => [
-                'name' => 'John Smith',
-            ],
-        ]);
+        $sanitation = $manager->execute(new Sanitation(
+            new DataContainer([
+                'requestArray' => [
+                    'name' => 'John Smith',
+                ],
+            ])
+        ));
 
         $this->assertEquals('John Smith', $sanitation['name']);
         $this->assertCount(2, $sanitation);
-        $this->assertEquals('TestAction', $manager->TestAction([]));
+        $this->assertEquals('TestAction', $manager->execute(new TestAction()));
     }
 
     /** @test */

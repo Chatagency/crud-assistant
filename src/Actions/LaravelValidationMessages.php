@@ -20,6 +20,8 @@ class LaravelValidationMessages extends Action implements ActionInterface
      */
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
+        $params = $params ?? $this->getParams();
+        
         $messages = [];
 
         foreach ($inputs as $input) {
