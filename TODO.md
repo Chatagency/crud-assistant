@@ -10,7 +10,8 @@
 - ✅ Enable passing versions of the field to `MigrationAction` when setting recipe
 - ✅ Change Action calling to composition
 - ✅ Eliminate config file and change action factory
-- ☐ Rethink `DataObject` to use type hints
 - ☐ Validate action exists when setting a recipe
 - ☐ Refactor input collection into a composite
 - ☐ Refactor `Input::setSubElements()` to use an `InputCollection`
+- ☐ Rethink recipes parameters (new Recipe class)
+- ☐ Rethink action parameters (specific `DataContainer` classes)
