@@ -37,6 +37,7 @@ There are different types of `Inputs`, loosely associated with form input types:
 - `SelectInput`
 - `RadioInput` (but you would usually use the...)
 - `RadioGroupInput`
+- `InputCollection` can also be and input that holds a collection of inputs (`TODO`)
 
 Other input types can be easily created.
 
@@ -44,17 +45,22 @@ Other input types can be easily created.
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Inputs\SelectInput;
+use Chatagency\CrudAssistant\Inputs\OptionInput;
+
 $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
 $email->setType('email');
 $email->setAttribute('required', 'required');
 
-use Chatagency\CrudAssistant\Inputs\SelectInput;
-use Chatagency\CrudAssistant\Inputs\OptionInput;
 $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
-$hobby->setSubElements([
+
+/**
+ * TODO: use input collection instead of array
+ */
+$hobby->setSubElements(new InputCollection([
     new OptionInput('Read'),
     new OptionInput('Watch movies'),
-]);
+]));
 ```
 This way we can group all content/instructions in one place.But (arguably) more important, it can hold `Recipes` for `Actions`.
 
@@ -71,19 +77,20 @@ The `InputCollection` holds one or multiple `Inputs`.
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\InputCollection;
-use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\DataContainer;
 
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
 $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
 $email->setType('email');
 
-$collection = new InputCollection([$name, $email], new ActionFactory());
+$collection = new InputCollection([$name, $email]);
 ```
 An action can be called on an `InputCollection` using the execute method:
 
 ```php
-$data = new DataContainer([ 'requestArray' => []]);
+$data = new DataContainer([
+  'requestArray' => []
+]);
 $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\Sanitation($data));
 ```
 
@@ -93,7 +100,6 @@ $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\Sanit
 
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
-use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\Sanitation;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
@@ -107,7 +113,7 @@ $name->setRecipe(LaravelValidationRules::class, [
     'max:250'
 ]);
 
-$collection = new InputCollection([$name], new ActionFactory());
+$collection = new InputCollection([$name]);
 
 // sanitizes values
 $sanitized = $collection->execute(new Sanitation(
@@ -119,7 +125,7 @@ $sanitized = $collection->execute(new Sanitation(
 $rules = $collection->execute(new LaravelValidationRules);
 ```
 
-### CrudAssistant (Crud Manager) - [docs link]
+### CrudAssistant [docs link]
 
 The `CrudAssistant` helps with the creation of an `InputCollection`:
 
@@ -127,11 +133,19 @@ The `CrudAssistant` helps with the creation of an `InputCollection`:
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 
+$manager = new CrudAssistant([
+    new TextInput('name')
+]);
+
+/**
+ * Or
+ */
 $manager = CrudAssistant::make([
     new TextInput('name')
-], new ActionFactory());
+]);
+
 ```
-It also doubles as a `InputCollection` facade. If no `ActionFactory` is passed as a second parameter, it then uses the array in `config('crud-assistant')`:
+It also doubles as a `InputCollection` facade.:
 
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
