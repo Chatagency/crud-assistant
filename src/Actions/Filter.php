@@ -21,7 +21,7 @@ class Filter extends Action implements ActionInterface
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
         $params = $params ?? $this->getParams();
-        
+
         $this->checkRequiredParams($params, ['data']);
 
         $data = $params->data;

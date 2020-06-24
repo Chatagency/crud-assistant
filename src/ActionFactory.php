@@ -8,14 +8,12 @@ use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use InvalidArgumentException;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * Actions Factory.
  */
 class ActionFactory implements ActionFactoryInterface
 {
-
     /**
      * Returns action instance.
      *

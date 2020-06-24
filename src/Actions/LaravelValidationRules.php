@@ -21,7 +21,7 @@ class LaravelValidationRules extends Action implements ActionInterface
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
         $params = $params ?? $this->getParams();
-        
+
         $rules = [];
 
         foreach ($inputs as $input) {

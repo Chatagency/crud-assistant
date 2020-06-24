@@ -11,5 +11,4 @@ use Illuminate\Support\ServiceProvider;
  */
 class CrudAssistantServiceProvider extends ServiceProvider
 {
-    
 }

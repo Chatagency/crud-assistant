@@ -67,11 +67,8 @@ interface InputCollectionInterface
 
     /**
      * Execute actions.
-     * 
-     * @param ActionInterface $action
      *
      * @return DataContainer
-     * 
      */
     public function execute(ActionInterface $action);
 }

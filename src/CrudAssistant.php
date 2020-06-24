@@ -72,5 +72,4 @@ class CrudAssistant
     {
         return $this->collection;
     }
-
 }

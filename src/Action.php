@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
 
 /**
@@ -14,14 +14,14 @@ use InvalidArgumentException;
 abstract class Action
 {
     /**
-     * Data
+     * Data.
      *
      * @var DataContainerInterface
      */
     protected $params;
-    
+
     /**
-     * Construct
+     * Construct.
      *
      * @param DataContainerInterface $params
      */
@@ -36,7 +36,7 @@ abstract class Action
     {
         return $this->params;
     }
-    
+
     /**
      * Checks for value is to be ignored.
      *

@@ -21,7 +21,7 @@ class LaravelValidationLabels extends Action implements ActionInterface
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
         $params = $params ?? $this->getParams();
-        
+
         $labels = [];
 
         foreach ($inputs as $input) {

@@ -26,5 +26,4 @@ interface ActionFactoryInterface
      * @return string
      */
     public function isAction(string $class);
-
 }
