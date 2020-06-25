@@ -8,6 +8,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
+use Exception;
 
 /**
  * Input Collection Class.
@@ -20,6 +21,13 @@ class InputCollection implements InputCollectionInterface
      * @var array
      */
     protected $inputsArray = [];
+
+    /**
+     * Partial Inputs
+     *
+     * @var array
+     */
+    protected $partialInputs = [];
 
     /**
      * Action Factory.
@@ -35,7 +43,10 @@ class InputCollection implements InputCollectionInterface
      */
     public function __construct(array $inputsArray, ActionFactory $actionFactory = null)
     {
-        $this->inputsArray = array_merge($this->inputsArray, $inputsArray);
+        foreach($inputsArray as $input) {
+            $this->addInput($input);
+        }
+        
         $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
@@ -67,8 +78,50 @@ class InputCollection implements InputCollectionInterface
         if (isset($this->inputsArray[$key])) {
             unset($this->inputsArray[$key]);
         }
+        if (isset($this->partialInputs[$key])) {
+            unset($this->partialInputs[$key]);
+        }
 
         return $this;
+    }
+
+    /**
+     * Sets the array of partial inputs
+     *
+     * @param array $partialInputs
+     * 
+     * @return self
+     * 
+     * @throws Exception
+     */
+    public function setPartialInputs(array $partialInputs)
+    {
+        if(empty($partialInputs)) {
+            throw new Exception("The array passed to ".__METHOD__. " is empty", 500);
+        }
+        
+        $inputs = $this->getInputs();
+        
+        if(empty($inputs)) {
+            throw new Exception("This collection cannot add partial inputs because it has no inputs", 500);
+        }
+
+        foreach($partialInputs as $inputName) {
+            $this->partialInputs[$inputName] = $this->getInput($inputName);
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * Returns the array of partial inputs
+     *
+     * @return array
+     */
+    public function getPartialInputs()
+    {
+        return $this->partialInputs;
     }
 
     /**
@@ -99,11 +152,21 @@ class InputCollection implements InputCollectionInterface
 
     /**
      * Returns inputs array.
+     * If partial inputs have been set
+     * it returns partial inputs
+     * 
+     * @param bool $all
      *
      * @return array
      */
-    public function getInputs()
+    public function getInputs(bool $all = false)
     {
+        $partialInputs = $this->getPartialInputs();
+
+        if(!empty($partialInputs) && !$all) {
+           return $partialInputs;
+        }
+
         return $this->inputsArray;
     }
 
@@ -124,10 +187,26 @@ class InputCollection implements InputCollectionInterface
     }
 
     /**
+     * Returns Input Labels.
+     *
+     * @return array
+     */
+    public function getInputLabels()
+    {
+        $labels = [];
+
+        foreach ($this->getInputs() as $key => $input) {
+            $labels[] = $input->getLabel();
+        }
+
+        return $labels;
+    }
+
+    /**
      * Execute actions.
      */
     public function execute(ActionInterface $action)
     {
-        return $action->execute($this->inputsArray);
+        return $action->execute($this->getInputs());
     }
 }
