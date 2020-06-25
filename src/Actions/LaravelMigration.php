@@ -46,7 +46,7 @@ class LaravelMigration extends Action implements ActionInterface
 
                 if (isset($recipe) && \is_array($recipe)) {
                     $type = $recipe['type'] ?? null;
-                    if (\is_callable($type)) {
+                    if (!is_string($type) && \is_callable($type)) {
                         $tableField = $type($table, $input);
                     } elseif ($type) {
                         $tableField = $table->$type($name);
