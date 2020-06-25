@@ -10,6 +10,7 @@
 - ✅ Enable passing versions of the field to `MigrationAction` when setting recipe
 - ✅ Change Action calling to composition
 - ✅ Eliminate config file and change action factory
+- ☐ Add sub form functionality to `InputCollection`
 - ☐ Validate action exists when setting a recipe
 - ☐ Refactor input collection into a composite
 - ☐ Refactor `Input::setSubElements()` to use an `InputCollection`
