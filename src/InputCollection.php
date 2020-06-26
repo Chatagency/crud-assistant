@@ -27,7 +27,7 @@ class InputCollection implements InputCollectionInterface
      *
      * @var array
      */
-    protected $partialInputs = [];
+    protected $partialCollection = [];
 
     /**
      * Action Factory.
@@ -78,8 +78,8 @@ class InputCollection implements InputCollectionInterface
         if (isset($this->inputsArray[$key])) {
             unset($this->inputsArray[$key]);
         }
-        if (isset($this->partialInputs[$key])) {
-            unset($this->partialInputs[$key]);
+        if (isset($this->partialCollection[$key])) {
+            unset($this->partialCollection[$key]);
         }
 
         return $this;
@@ -88,15 +88,15 @@ class InputCollection implements InputCollectionInterface
     /**
      * Sets the array of partial inputs
      *
-     * @param array $partialInputs
+     * @param array $partialCollection
      * 
      * @return self
      * 
      * @throws Exception
      */
-    public function setPartialInputs(array $partialInputs)
+    public function setPartialCollection(array $partialCollection)
     {
-        if(empty($partialInputs)) {
+        if(empty($partialCollection)) {
             throw new Exception("The array passed to ".__METHOD__. " is empty", 500);
         }
         
@@ -106,8 +106,8 @@ class InputCollection implements InputCollectionInterface
             throw new Exception("This collection cannot add partial inputs because it has no inputs", 500);
         }
 
-        foreach($partialInputs as $inputName) {
-            $this->partialInputs[$inputName] = $this->getInput($inputName);
+        foreach($partialCollection as $inputName) {
+            $this->partialCollection[$inputName] = $this->getInput($inputName);
         }
 
         return $this;
@@ -119,9 +119,9 @@ class InputCollection implements InputCollectionInterface
      *
      * @return array
      */
-    public function getPartialInputs()
+    public function getPartialCollection()
     {
-        return $this->partialInputs;
+        return $this->partialCollection;
     }
 
     /**
@@ -161,10 +161,10 @@ class InputCollection implements InputCollectionInterface
      */
     public function getInputs(bool $all = false)
     {
-        $partialInputs = $this->getPartialInputs();
+        $partialCollection = $this->getpartialCollection();
 
-        if(!empty($partialInputs) && !$all) {
-           return $partialInputs;
+        if(!empty($partialCollection) && !$all) {
+           return $partialCollection;
         }
 
         return $this->inputsArray;
