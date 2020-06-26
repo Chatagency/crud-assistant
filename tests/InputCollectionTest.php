@@ -15,7 +15,7 @@ class InputCollectionTest extends TestCase
     /** @test */
     public function a_collection_can_have_multiple_inputs()
     {
-        $form = new InputCollection([]);
+        $form = new InputCollection();
 
         $form->addInput(new TextInput('name', 'Name'));
         $this->assertEquals($form->count(), 1);
@@ -27,7 +27,7 @@ class InputCollectionTest extends TestCase
     /** @test */
     public function inputs_can_be_accessed_using_get_input()
     {
-        $form = new InputCollection([]);
+        $form = new InputCollection();
 
         $form->addInput(new TextInput('name', 'Name'));
         $name = $form->getInput('name');
@@ -39,14 +39,14 @@ class InputCollectionTest extends TestCase
     public function an_exception_is_thrown_if_a_non_existing_input_is_accessed()
     {
         $this->expectException(InvalidArgumentException::class);
-        $form = new InputCollection([]);
+        $form = new InputCollection();
         $name = $form->getInput('name');
     }
 
     /** @test */
     public function an_input_can_be_removed_from_the_collection()
     {
-        $form = new InputCollection([]);
+        $form = new InputCollection();
 
         $form->addInput(new TextInput('name', 'Name'));
         $this->assertEquals(1, $form->count());
@@ -173,7 +173,7 @@ class InputCollectionTest extends TestCase
     /** @test */
     public function if_no_inputs_have_been_set_an_exception_is_thrown_when_trying_create_an_sub_collection()
     {
-        $form = new InputCollection([]);
+        $form = new InputCollection();
 
         $this->expectException(Exception::class);
 

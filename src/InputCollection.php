@@ -41,7 +41,7 @@ class InputCollection implements InputCollectionInterface
      *
      * @return self
      */
-    public function __construct(array $inputsArray, ActionFactory $actionFactory = null)
+    public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
     {
         foreach($inputsArray as $input) {
             $this->addInput($input);
