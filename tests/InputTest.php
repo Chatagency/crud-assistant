@@ -3,10 +3,12 @@
 namespace Chatagency\CrudAssistant\Tests;
 
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class InputTest extends TestCase
@@ -47,6 +49,25 @@ class InputTest extends TestCase
 
         $this->assertEquals($input->getAction(LaravelValidationRules::class), $validationValue);
     }
+
+    /** @test */
+    public function if_a_recipe_with_invalid_action_is_set_an_exception_is_throw()
+    {
+        $validationValue = [
+            'required',
+            'email',
+        ];
+
+        $input = new TextInput('email', 'Email', 1);
+        $input->setType('email');
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $input->setRecipe(CrudAssistant::class, 1);
+
+        $this->assertNull($input->getRecipe(CrudAssistant::class));
+
+    }
     
     /** @test */
     public function if_recipe_does_not_exist_in_class_null_is_returned()
@@ -63,13 +84,16 @@ class InputTest extends TestCase
     }
     
     /** @test */
-    public function the_label_and_version_can_be_set_after_the_input_has_been_instantiated()
+    public function the_name_label_and_version_can_be_set_after_the_input_has_been_instantiated()
     {
         $input = new TextInput('email');
+
+        $input->setName('new_email');
         $input->setType('email');
         $input->setLabel('Add your email');
         $input->setVersion(2);
 
+        $this->assertEquals('new_email', $input->getName());
         $this->assertEquals('Add your email', $input->getLabel());
         $this->assertEquals(2, $input->getVersion());
     }
@@ -122,7 +146,7 @@ class InputTest extends TestCase
     }
 
     /** @test */
-    public function sub_elements_are_themself_inputs()
+    public function sub_elements_are_themselves_inputs()
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
         $hobbies = [
