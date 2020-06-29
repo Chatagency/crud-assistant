@@ -53,16 +53,11 @@ class InputTest extends TestCase
     /** @test */
     public function if_a_recipe_with_invalid_action_is_set_an_exception_is_throw()
     {
-        $validationValue = [
-            'required',
-            'email',
-        ];
+        $this->expectException(InvalidArgumentException::class);
 
         $input = new TextInput('email', 'Email', 1);
         $input->setType('email');
-
-        $this->expectException(InvalidArgumentException::class);
-
+        
         $input->setRecipe(CrudAssistant::class, 1);
 
         $this->assertNull($input->getRecipe(CrudAssistant::class));
