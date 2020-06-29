@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
+use InvalidArgumentException;
+
 /**
  * Input Base Class.
  */
@@ -57,13 +60,22 @@ abstract class Input
     protected $recipes = [];
 
     /**
+     * Action Factory
+     *
+     * @var ActionFactory
+     */
+    protected $actionFactory;
+
+    /**
      * @return self
      */
-    public function __construct(string $name, string $label = null, int $version = 1)
+    public function __construct(string $name, string $label = null, int $version = 1, ActionFactoryInterface $actionFactory = null)
     {
         $this->name = $name;
         $this->label = $label ? $label : $name;
         $this->version = $version ? $version : 1;
+
+        $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
     }
@@ -209,9 +221,13 @@ abstract class Input
      *
      * @return self
      */
-    public function setRecipe(string $type, $value)
+    public function setRecipe(string $action, $value)
     {
-        $this->recipes[$type] = $value;
+        if(!$this->actionFactory->isAction($action)) {
+            throw new InvalidArgumentException('The action '.$action.' is not a valid action', 500);
+        }
+        
+        $this->recipes[$action] = $value;
 
         return $this;
     }
