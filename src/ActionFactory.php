@@ -18,29 +18,31 @@ class ActionFactory implements ActionFactoryInterface
      * Returns action instance.
      *
      * @return ActionInterface
+     * 
+     * @throws InvalidArgumentException
      */
-    public function getInstance(string $class)
+    public function getInstance(string $action)
     {
-        $action = $this->isAction($class);
-
+        if(!$this->isAction($action)) {
+            throw new InvalidArgumentException('The action '.$action.' is not valid', 500);
+        }
+        
         return new $action();
     }
 
     /**
      * Returns a specific action class name.
      *
-     * @throws InvalidArgumentException
-     *
      * @return string
      */
     public function isAction(string $class)
     {
         if (!class_exists($class)) {
-            throw new InvalidArgumentException('The '.$class.' Action does not exist or the namespace is wrong', 500);
+            return false;
         }
 
         if (!$this->extendsActionInterface($class)) {
-            throw new InvalidArgumentException('The '.$class.' Action is not extending the interface '.ActionInterface::class, 500);
+            return false;
         }
 
         return $class;

@@ -5,7 +5,7 @@ namespace Chatagency\CrudAssistant\Tests;
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\Actions\Filter;
-use Chatagency\CrudAssistant\Modifier;
+use Chatagency\CrudAssistant\CrudAssistant;
 use InvalidArgumentException;
 
 class ActionFactoryTest extends TestCase
@@ -30,30 +30,18 @@ class ActionFactoryTest extends TestCase
     }
     
     /** @test */
-    public function an_exception_is_thrown_if_the_action_does_not_exist_when_get_action_is_called()
+    public function the_get_action_returns_false_if_the_action_does_not_exist()
     {
-        $this->expectException(InvalidArgumentException::class);
         $factory = new ActionFactory();
-        $factory->isAction('unknown');
-    }
-    
-    /** @test */
-    public function an_exception_is_thrown_if_the_action_exists_in_the_the_factory_but_the_class_does_not_exist()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $config[] = 'This\Class\Does\Not\Exist';
-        $factory = new ActionFactory();
-        $factory->isAction('This\Class\Does\Not\Exist');
+        $this->assertFalse($factory->isAction('This\Class\Does\Not\Exist'));
         
     }
 
     /** @test */
-    public function an_exception_is_thrown_if_the_action_exists_in_the_the_factory_but_does_not_extend_the_action_interface()
+    public function the_get_action_returns_false_if_the_action_does_not_extend_the_action_interface()
     {
-        $this->expectException(InvalidArgumentException::class);
-        $config[] = FakeAction::class;
         $factory = new ActionFactory();
-        $factory->isAction(Modifier::class);
+        $this->assertFalse( $factory->isAction(CrudAssistant::class));
         
     }
     
