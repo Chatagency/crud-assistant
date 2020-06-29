@@ -21,6 +21,15 @@ class ActionFactoryTest extends TestCase
     }
 
     /** @test */
+    public function if_the_instantiated_action_does_not_exist_or_is_invalid_an_exception_is_throw()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        
+        $factory = new ActionFactory();
+        $action = $factory->getInstance(CrudAssistant::class);
+    }
+
+    /** @test */
     public function the_action_factory_can_check_if_a_class_is_a_real_action()
     {
         $factory = new ActionFactory();
