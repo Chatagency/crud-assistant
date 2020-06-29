@@ -145,7 +145,7 @@ $manager = CrudAssistant::make([
 ]);
 
 ```
-It also doubles as a `InputCollection` facade.:
+It also doubles as a `InputCollection` facade:
 
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
