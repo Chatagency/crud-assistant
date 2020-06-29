@@ -8,6 +8,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
+use Exception;
 
 /**
  * Input Collection Class.
@@ -22,6 +23,13 @@ class InputCollection implements InputCollectionInterface
     protected $inputsArray = [];
 
     /**
+     * Partial Inputs
+     *
+     * @var array
+     */
+    protected $partialCollection = [];
+
+    /**
      * Action Factory.
      *
      * @var ActionFactory
@@ -33,10 +41,13 @@ class InputCollection implements InputCollectionInterface
      *
      * @return self
      */
-    public function __construct(array $inputsArray, ActionFactory $actionFactory)
+    public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
     {
-        $this->inputsArray = array_merge($this->inputsArray, $inputsArray);
-        $this->actionFactory = $actionFactory;
+        foreach($inputsArray as $input) {
+            $this->addInput($input);
+        }
+        
+        $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
     }
@@ -67,12 +78,54 @@ class InputCollection implements InputCollectionInterface
         if (isset($this->inputsArray[$key])) {
             unset($this->inputsArray[$key]);
         }
+        if (isset($this->partialCollection[$key])) {
+            unset($this->partialCollection[$key]);
+        }
 
         return $this;
     }
 
     /**
-     * Retruns inputs array count.
+     * Sets the array of partial inputs
+     *
+     * @param array $partialCollection
+     * 
+     * @return self
+     * 
+     * @throws Exception
+     */
+    public function setPartialCollection(array $partialCollection)
+    {
+        if(empty($partialCollection)) {
+            throw new Exception("The array passed to ".__METHOD__. " is empty", 500);
+        }
+        
+        $inputs = $this->getInputs();
+        
+        if(empty($inputs)) {
+            throw new Exception("This collection cannot add partial inputs because it has no inputs", 500);
+        }
+
+        foreach($partialCollection as $inputName) {
+            $this->partialCollection[$inputName] = $this->getInput($inputName);
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * Returns the array of partial inputs
+     *
+     * @return array
+     */
+    public function getPartialCollection()
+    {
+        return $this->partialCollection;
+    }
+
+    /**
+     * Returns inputs array count.
      *
      * @return int
      */
@@ -99,11 +152,21 @@ class InputCollection implements InputCollectionInterface
 
     /**
      * Returns inputs array.
+     * If partial inputs have been set
+     * it returns partial inputs
+     * 
+     * @param bool $all
      *
      * @return array
      */
-    public function getInputs()
+    public function getInputs(bool $all = false)
     {
+        $partialCollection = $this->getpartialCollection();
+
+        if(!empty($partialCollection) && !$all) {
+           return $partialCollection;
+        }
+
         return $this->inputsArray;
     }
 
@@ -124,24 +187,26 @@ class InputCollection implements InputCollectionInterface
     }
 
     /**
-     * Execute actions.
+     * Returns Input Labels.
      *
-     * @param DataContainer $params
-     *
-     * @return mixed
+     * @return array
      */
-    public function execute(string $type, DataContainer $params = null)
+    public function getInputLabels()
     {
-        return $this->getActionInstace($type)->execute($this->inputsArray, $params);
+        $labels = [];
+
+        foreach ($this->getInputs() as $key => $input) {
+            $labels[] = $input->getLabel();
+        }
+
+        return $labels;
     }
 
     /**
-     * Returns action type instance.
-     *
-     * @return ActionInterface
+     * Execute actions.
      */
-    protected function getActionInstace(string $type)
+    public function execute(ActionInterface $action)
     {
-        return $this->actionFactory->getInstance($type);
+        return $action->execute($this->getInputs());
     }
 }

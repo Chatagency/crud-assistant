@@ -12,7 +12,6 @@ use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 use Chatagency\CrudAssistant\Actions\Sanitation;
-use Chatagency\CrudAssistant\Actions\Filter;
 
 
 class DocumentationTest extends TestCase
@@ -52,7 +51,7 @@ class DocumentationTest extends TestCase
         $collection = new InputCollection([$name, $email], new ActionFactory());
 
         $data = new DataContainer([ 'requestArray' => []]);
-        $actionResult = $collection->execute(\Chatagency\CrudAssistant\Actions\Sanitation::class,$data);
+        $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\Sanitation($data));
 
         $this->assertTrue(true);
     }
@@ -71,11 +70,13 @@ class DocumentationTest extends TestCase
         $collection = new InputCollection([$name], new ActionFactory());
         
         // sanitizes values
-        $sanitized = $collection->execute(Sanitation::class, new DataContainer([
-            'requestArray' => []
-        ]));
+        $sanitized = $collection->execute(new Sanitation(
+            new DataContainer([
+                'requestArray' => []
+            ])
+        ));
         // returns Laravel validation rules
-        $rules = $collection->execute(LaravelValidationRules::class, new DataContainer());
+        $rules = $collection->execute(new LaravelValidationRules);
 
         $this->assertTrue(true);
     }
@@ -91,7 +92,7 @@ class DocumentationTest extends TestCase
         
         $manager = CrudAssistant::make([$name], new ActionFactory());
         
-        $rules = $manager->execute(LaravelValidationRules::class);
+        $rules = $manager->execute(new LaravelValidationRules);
 
         $this->assertTrue(true);
     }
@@ -107,51 +108,8 @@ class DocumentationTest extends TestCase
         
         $manager = CrudAssistant::make([$name], new ActionFactory());
         
-        /**
-         * This
-         */
-        $rules = $manager->execute(LaravelValidationRules::class);
+        $rules = $manager->execute(new LaravelValidationRules);
         
-        /**
-         * Is equal to this
-         */
-        $rules = $manager->LaravelValidationRules();
-
-        $this->assertTrue(true);
-    }
-
-    /** @test */
-    public function  docs_assistant_three_test()
-    {
-
-        $name = new TextInput('name');
-        $name->setRecipe(Filter::class, [
-          'filter' => true
-        ]);
-        
-        $manager = CrudAssistant::make([$name], new ActionFactory());
-
-        /**
-         * This
-         */
-        $rules = $manager->execute(Filter::class, new DataContainer([
-           'data' => []
-        ]));
-        
-        /**
-         * Is equal to this
-         */
-        $rules = $manager->Filter(new DataContainer([
-           'data' => []
-        ]));
-        
-        /**
-         * And this
-         */
-        $rules = $manager->Filter([
-           'data' => []
-        ]);
-
         $this->assertTrue(true);
     }
 

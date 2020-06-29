@@ -10,9 +10,11 @@ namespace Chatagency\CrudAssistant\Contracts;
 interface ActionInterface
 {
     /**
-     * Executes action.
+     * Execute actions.
      *
-     * @param DataContainerInterface $params
+     * @param ActionInterface $action
+     *
+     * @return DataContainer
      */
     public function execute(array $inputs, DataContainerInterface $params = null);
 }

@@ -4,85 +4,54 @@ namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ActionFactory;
-use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\CrudAssistant;
 use InvalidArgumentException;
-use Chatagency\CrudAssistant\Tests\TestClasses\TesAction;
-use Chatagency\CrudAssistant\Tests\TestClasses\TestActionTwo;
-use Chatagency\CrudAssistant\Tests\TestClasses\FakeAction;
 
 class ActionFactoryTest extends TestCase
 {
-    public function getConfig()
-    {
-        /*
-         * Laravel config() is not available
-         * inside the package
-         * @var array
-         */
-        return require __DIR__.'/../config/config.php';
-    }
-
+    
     /** @test */
-    public function the_factory_must_be_created_with_an_array_of_actions()
-    {
-        $config = $this->getConfig();
-        $factory = new ActionFactory($config);
-
-        $this->assertCount(count($config), $factory->getActions());
-    }
-
-    /** @test */
-    public function the_action_factory_returns_an_instance_if_it_is_in_the_right_path_and_is_a_real_action()
+    public function the_action_factory_can_instantiate_an_action_using_the_name()
     {
         $factory = new ActionFactory();
-
-        $this->assertTrue($factory->issetAction(LaravelValidationRules::class));
-        $this->assertInstanceOf(LaravelValidationRules::class, $factory->getInstance(LaravelValidationRules::class));
-    }
-
-    
-    /** @test */
-    public function a_non_action_package_can_be_registered_either_in_the_constructor_or_after_instantiated()
-    {
-        $factory = new ActionFactory([
-            TestAction::class
-        ]);
-
-        $this->assertTrue($factory->issetAction(TestAction::class));
-
-        $this->assertFalse($factory->issetAction(TestActionTwo::class));
-        $factory->registerAction(TestActionTwo::class);
-        $this->assertTrue($factory->issetAction(TestActionTwo::class));
+        $action = $factory->getInstance(Filter::class);
+        
+        $this->assertInstanceOf(Filter::class, $action);
     }
 
     /** @test */
-    public function an_exception_is_thrown_if_the_action_does_not_exist_when_get_action_is_called()
+    public function if_the_instantiated_action_does_not_exist_or_is_invalid_an_exception_is_throw()
     {
         $this->expectException(InvalidArgumentException::class);
-        $config = $this->getConfig();
-        $factory = new ActionFactory($config);
-        $factory->getAction('unknown');
+        
+        $factory = new ActionFactory();
+        $action = $factory->getInstance(CrudAssistant::class);
+    }
+
+    /** @test */
+    public function the_action_factory_can_check_if_a_class_is_a_real_action()
+    {
+        $factory = new ActionFactory();
+        $action = $factory->isAction(Filter::class);
+        
+        $this->assertEquals($action, Filter::class);
     }
     
     /** @test */
-    public function an_exception_is_thrown_if_the_action_exists_in_the_the_factory_but_the_class_does_not_exist()
+    public function the_get_action_returns_false_if_the_action_does_not_exist()
     {
-        $this->expectException(InvalidArgumentException::class);
-        $config = $this->getConfig();
-        $config[] = 'This\Class\Does\Not\Exist';
-        $factory = new ActionFactory($config);
-        $yo = $factory->getAction('This\Class\Does\Not\Exist');
+        $factory = new ActionFactory();
+        $this->assertFalse($factory->isAction('This\Class\Does\Not\Exist'));
         
     }
 
     /** @test */
-    public function an_exception_is_thrown_if_the_action_exists_in_the_the_factory_but_does_not_extend_the_action_interface()
+    public function the_get_action_returns_false_if_the_action_does_not_extend_the_action_interface()
     {
-        $this->expectException(InvalidArgumentException::class);
-        $config = $this->getConfig();
-        $config[] = FakeAction::class;
-        $factory = new ActionFactory($config);
-        $yo = $factory->getAction(FakeAction::class);
+        $factory = new ActionFactory();
+        $this->assertFalse( $factory->isAction(CrudAssistant::class));
         
     }
+    
 }
