@@ -12,13 +12,6 @@ use BadMethodCallException;
 class CrudAssistant
 {
     /**
-     * Action factory.
-     *
-     * @var ActionFactory
-     */
-    protected $actionFactory;
-
-    /**
      * Input collection.
      *
      * @var InputCollection
@@ -30,10 +23,9 @@ class CrudAssistant
      *
      * @return self
      */
-    public function __construct(array $inputs = [], ActionFactory $actionFactory = null)
+    public function __construct(array $inputs = [])
     {
-        $this->actionFactory = $actionFactory ?? new ActionFactory(config('crud-assistant.actions'));
-        $this->collection = new InputCollection($inputs, $this->actionFactory);
+        $this->collection = new InputCollection($inputs);
 
         return $this;
     }
@@ -51,26 +43,6 @@ class CrudAssistant
      */
     public function __call($name, $arguments)
     {
-        /**
-         * Check if the method called is an action.
-         */
-        $action = $this->getActionBase($name);
-
-        if ($action) {
-            $params = !empty($arguments) ? $arguments[0] : [];
-
-            /*
-             * A data container must be passed
-             * as the second param to the
-             * execute method.
-             */
-            if (!$params instanceof DataContainer) {
-                $params = new DataContainer($params);
-            }
-
-            return $this->collection->execute($action, $params);
-        }
-
         // Check if the method called is a collection method.
         if (method_exists($this->collection, $name)) {
             $object_array = [$this->collection, $name];
@@ -86,9 +58,9 @@ class CrudAssistant
      *
      * @return self
      */
-    public static function make(array $inputs = [], ActionFactory $actionFactory = null)
+    public static function make(array $inputs = [])
     {
-        return new static($inputs, $actionFactory);
+        return new static($inputs);
     }
 
     /**
@@ -99,29 +71,5 @@ class CrudAssistant
     public function getCollection()
     {
         return $this->collection;
-    }
-
-    /**
-     * Returns action class name without path.
-     *
-     * @return string|null
-     */
-    protected function getActionBase(string $action)
-    {
-        $actionWithPath = $this->actionFactory->addNamespace($action);
-        if ($this->actionFactory->isOriginalAction($actionWithPath)) {
-            return  $actionWithPath;
-        }
-
-        $actions = $this->actionFactory->getActions();
-
-        foreach ($actions as $key => $value) {
-            $base = substr(strrchr($value, '\\'), 1);
-            if ($base == ucfirst($action)) {
-                return $value;
-            }
-        }
-
-        return null;
     }
 }

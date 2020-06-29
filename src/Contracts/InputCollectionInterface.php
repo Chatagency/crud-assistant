@@ -17,7 +17,7 @@ interface InputCollectionInterface
      *
      * @return self
      */
-    public function __construct(array $inputsArray, ActionFactory $actionFactory);
+    public function __construct(array $inputsArray, ActionFactory $actionFactory = null);
 
     /**
      * Adds input to the array.
@@ -36,7 +36,7 @@ interface InputCollectionInterface
     public function removeInput(string $key);
 
     /**
-     * Retruns inputs array count.
+     * Returns inputs array count.
      *
      * @return int
      */
@@ -68,9 +68,7 @@ interface InputCollectionInterface
     /**
      * Execute actions.
      *
-     * @param DataContainer $params
-     *
-     * @return mixed
+     * @return DataContainer
      */
-    public function execute(string $type, DataContainer $params = null);
+    public function execute(ActionInterface $action);
 }

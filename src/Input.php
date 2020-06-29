@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
+use InvalidArgumentException;
+
 /**
  * Input Base Class.
  */
@@ -40,7 +43,7 @@ abstract class Input
     /**
      * Input Sub Elements.
      *
-     * @var [type]
+     * @var array
      */
     protected $subElements = [];
 
@@ -57,13 +60,34 @@ abstract class Input
     protected $recipes = [];
 
     /**
+     * Action Factory
+     *
+     * @var ActionFactory
+     */
+    protected $actionFactory;
+
+    /**
      * @return self
      */
-    public function __construct(string $name, string $label = null, int $version = 1)
+    public function __construct(string $name, string $label = null, int $version = 1, ActionFactoryInterface $actionFactory = null)
     {
         $this->name = $name;
         $this->label = $label ? $label : $name;
         $this->version = $version ? $version : 1;
+
+        $this->actionFactory = $actionFactory ?? new ActionFactory();
+
+        return $this;
+    }
+
+    /**
+     * Sets input name.
+     *
+     * @return self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
 
         return $this;
     }
@@ -193,6 +217,20 @@ abstract class Input
     }
 
     /**
+     * Unset attribute.
+     *
+     * @return self
+     */
+    public function unsetAttribute(string $key)
+    {
+        if (isset($this->attributes[$key])) {
+            unset($this->attributes[$key]);
+        }
+
+        return $this;
+    }
+    
+    /**
      * Returns input sub elements.
      *
      * @return array
@@ -209,9 +247,13 @@ abstract class Input
      *
      * @return self
      */
-    public function setRecipe(string $type, $value)
+    public function setRecipe(string $recipe, $value)
     {
-        $this->recipes[$type] = $value;
+        if(!$this->actionFactory->isAction($recipe)) {
+            throw new InvalidArgumentException('The recipe '.$recipe.' is not a valid action', 500);
+        }
+        
+        $this->recipes[$recipe] = $value;
 
         return $this;
     }
@@ -221,10 +263,10 @@ abstract class Input
      *
      * @return string|null
      */
-    public function getRecipe(string $type)
+    public function getRecipe(string $recipe)
     {
-        if (isset($this->recipes[$type])) {
-            return $this->recipes[$type];
+        if (isset($this->recipes[$recipe])) {
+            return $this->recipes[$recipe];
         }
 
         return null;
@@ -238,22 +280,9 @@ abstract class Input
      * @deprecated on version 0.1.1
      * @see getRecipe()
      */
-    public function getAction(string $type)
+    public function getAction(string $recipe)
     {
-        return $this->getRecipe($type);
+        return $this->getRecipe($recipe);
     }
 
-    /**
-     * Unset attribute.
-     *
-     * @return self
-     */
-    public function unsetAttribute(string $key)
-    {
-        if (isset($this->attributes[$key])) {
-            unset($this->attributes[$key]);
-        }
-
-        return $this;
-    }
 }
