@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
+use Chatagency\CrudAssistant\InputCollection;
+
 /**
  * Input Collection Interface.
  */
@@ -38,7 +40,7 @@ interface InputInterface
      *
      * @return self
      */
-    public function setSubElements(array $subElements);
+    public function setSubElements(InputCollection $subElements);
 
     /**
      * Sets input version.

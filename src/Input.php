@@ -121,7 +121,7 @@ abstract class Input
      *
      * @return self
      */
-    public function setSubElements(array $subElements)
+    public function setSubElements(InputCollection $subElements)
     {
         $this->subElements = $subElements;
 

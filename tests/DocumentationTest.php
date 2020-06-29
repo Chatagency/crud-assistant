@@ -24,10 +24,10 @@ class DocumentationTest extends TestCase
         $email->setAttribute('required', 'required');
 
         $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
-        $hobby->setSubElements([
+        $hobby->setSubElements(new InputCollection([
             new OptionInput('Read'),
             new OptionInput('Watch movies'),
-        ]);
+        ]));
 
         $this->assertTrue(true);
     }

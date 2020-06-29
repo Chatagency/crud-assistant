@@ -5,6 +5,7 @@ namespace Chatagency\CrudAssistant\Tests;
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Input;
+use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Inputs\TextInput;
@@ -129,11 +130,11 @@ class InputTest extends TestCase
     public function sub_elements_can_be_added_to_an_input_class()
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
-        $hobbies = [
+        $hobbies = new InputCollection([
             new OptionInput('watch tv'), 
             new OptionInput('play pokemon go'), 
             new OptionInput('drink wine'),
-        ];
+        ]);
         $input->setSubElements($hobbies);
 
         $this->assertCount(3, $input->getSubElements());
