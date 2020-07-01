@@ -7,13 +7,16 @@ namespace Chatagency\CrudAssistant;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
 use InvalidArgumentException;
 use Exception;
 
 /**
  * Input Collection Class.
  */
-class InputCollection implements InputCollectionInterface
+class InputCollection implements InputCollectionInterface, IteratorAggregate, Countable
 {
     /**
      * Inputs array.
@@ -131,7 +134,7 @@ class InputCollection implements InputCollectionInterface
      */
     public function count()
     {
-        return \count($this->inputsArray);
+        return \count($this->getInputs());
     }
 
     /**
@@ -209,4 +212,15 @@ class InputCollection implements InputCollectionInterface
     {
         return $action->execute($this->getInputs());
     }
+
+    /**
+     * Get an iterator for the items.
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->getInputs());
+    }
+
 }

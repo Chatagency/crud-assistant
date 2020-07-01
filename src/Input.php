@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
+use Chatagency\CrudAssistant\Tests\InputCollectionTest;
 use InvalidArgumentException;
 
 /**
@@ -233,7 +234,7 @@ abstract class Input
     /**
      * Returns input sub elements.
      *
-     * @return array
+     * @return InputCollectionTest
      */
     public function getSubElements()
     {

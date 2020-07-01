@@ -3,6 +3,7 @@
 namespace Chatagency\CrudAssistant\Tests;
 
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Exception;
@@ -194,6 +195,21 @@ class InputCollectionTest extends TestCase
 
         $this->assertCount(2, $form->getInputs(true));
         $this->assertCount(1, $form->getInputs());
+
+    }
+
+    /** @test */
+    public function the_input_collection_is_iterable()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'address');
+
+        $form = new InputCollection([$name, $email, $address]);
+        
+        foreach($form as $inputName => $input) {
+            $this->assertInstanceOf(InputInterface::class, $input);
+        }
 
     }
 }

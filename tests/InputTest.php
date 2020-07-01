@@ -3,8 +3,9 @@
 namespace Chatagency\CrudAssistant\Tests;
 
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\CrudAssistant;
-use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
@@ -142,15 +143,18 @@ class InputTest extends TestCase
     }
 
     /** @test */
-    public function sub_elements_are_themselves_inputs()
+    public function sub_elements_are_an_input_collection_with_inputs()
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
-        $hobbies = [
-            new OptionInput('watch tv'),
-        ];
+        $hobbies = new InputCollection([
+            new OptionInput('watch_tv'),
+        ]);
         $input->setSubElements($hobbies);
 
-        $this->assertInstanceOf(Input::class, $input->getSubElements()[0]);
+        $subElements = $input->getSubElements();
+
+        $this->assertInstanceOf(InputCollectionInterface::class, $subElements);
+        $this->assertInstanceOf(InputInterface::class, $subElements->getInput('watch_tv'));
 
         
     }

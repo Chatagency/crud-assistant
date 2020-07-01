@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant\Contracts;
 
 use Chatagency\CrudAssistant\InputCollection;
+use InputCollectionInterface;
 
 /**
  * Input Collection Interface.
@@ -101,7 +102,7 @@ interface InputInterface
     /**
      * Returns input sub elements.
      *
-     * @return array
+     * @return InputCollectionInterface
      */
     public function getSubElements();
 
