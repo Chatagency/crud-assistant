@@ -3,6 +3,8 @@
 namespace Chatagency\CrudAssistant\Tests\Actions;
 
 use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+use Chatagency\CrudAssistant\InputCollection;
+use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Illuminate\Validation\Rule;
@@ -36,7 +38,13 @@ class LaravelValidationRulesTest extends TestCase
     public function a_closure_can_be_passed_as_a_value_instead_of_an_array_to_the_validation_rules()
     {
         $name = new SelectInput('hobbies', 'Your Hobby');
-        $name->setSubElements(['run', 'play pokemon go', 'drink wine']);
+        
+        $name->setSubElements(new InputCollection([
+            new OptionInput('run', 'Run'),
+            new OptionInput('play_pokemon_go', 'Play Pokemon Go'),
+            new OptionInput('run', 'Run'),
+        ]));
+        
         $name->setRecipe(LaravelValidationRules::class, function ($input) {
             $hobbies = $input->getSubElements();
 
