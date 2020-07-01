@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
-use Chatagency\CrudAssistant\Tests\InputCollectionTest;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use InvalidArgumentException;
 
 /**
@@ -122,7 +122,7 @@ abstract class Input
      *
      * @return self
      */
-    public function setSubElements(InputCollection $subElements)
+    public function setSubElements(InputCollectionInterface $subElements)
     {
         $this->subElements = $subElements;
 
@@ -234,7 +234,7 @@ abstract class Input
     /**
      * Returns input sub elements.
      *
-     * @return InputCollectionTest
+     * @return InputCollectionInterface
      */
     public function getSubElements()
     {
