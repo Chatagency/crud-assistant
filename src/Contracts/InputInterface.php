@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
-
 /**
  * Input Collection Interface.
  */

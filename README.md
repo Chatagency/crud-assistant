@@ -25,7 +25,7 @@ An `Input` can represent many things:
 - A cell on the database table
 - A column on a CSV file, etc.
 
-To summarize, it encapsulates a single peace of data.
+To summarize, it encapsulates the description of a single peace of data.
 
 There are different types of `Inputs`, loosely associated with form input types:
 
@@ -37,11 +37,11 @@ There are different types of `Inputs`, loosely associated with form input types:
 - `SelectInput`
 - `RadioInput` (but you would usually use the...)
 - `RadioGroupInput`
-- `InputCollection` can also be and input that holds a collection of inputs (`TODO`)
+- `InputCollection` can also be and input that holds a collection of inputs
 
 Other input types can be easily created.
 
-`Inputs` area containers that hold the main data itself but also the instructions/transformations that data might experience. It can hold: `name`, `type`, `label`, `version` (to manage change over time), `attributes` and, when it make sense,  `subElements`:
+`Inputs` area containers that hold the main description of the data but also the instructions/transformations that data might experience. It can hold: `name`, `type`, `label`, `version` (to manage change over time), `attributes` and, when it make cases,  `subElements`:
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
@@ -54,15 +54,12 @@ $email->setAttribute('required', 'required');
 
 $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
 
-/**
- * TODO: use input collection instead of array
- */
 $hobby->setSubElements(new InputCollection([
     new OptionInput('Read'),
     new OptionInput('Watch movies'),
 ]));
 ```
-This way we can group all content/instructions in one place.But (arguably) more important, it can hold `Recipes` for `Actions`.
+This way we can group all content/instructions in one place. But (arguably) more important, it can hold `Recipes` for `Actions`.
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
@@ -102,13 +99,12 @@ $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\Sanit
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\Sanitation;
-use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
-
+use Chatagency\CrudAssistant\Actions\Filter;
 
 // Input
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
 $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
-$name->setRecipe(LaravelValidationRules::class, [
+$name->setRecipe(Filter::class, [
     'required',
     'max:250'
 ]);
@@ -122,7 +118,11 @@ $sanitized = $collection->execute(new Sanitation(
     ])
 ));
 // returns Laravel validation rules
-$rules = $collection->execute(new LaravelValidationRules);
+$rules = $collection->execute(new Filter(
+    new DataContainer([
+        'data' => []
+    ])
+));
 ```
 
 ### CrudAssistant [docs link]
@@ -150,17 +150,22 @@ It also doubles as a `InputCollection` facade:
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+use Chatagency\CrudAssistant\Actions\Filter;
 
 $name = new TextInput('name');
-$name->setRecipe(LaravelValidationRules::class, [
-    'required',
-    'max:250'
-]);
-
-$manager = CrudAssistant::make([$name]);
-
-$rules = $manager->execute(new LaravelValidationRules);
+  $name->setRecipe(Filter::class, [
+      'filter' => true
+  ]);
+  
+  $manager = CrudAssistant::make([$name]);
+  
+  $rules = $manager->execute(new Filter(
+      new DataContainer([
+          'data' => [
+              'name' => 'John Doe'
+          ]
+      ])
+  ));
 ```
 
 ## License

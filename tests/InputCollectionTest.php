@@ -2,8 +2,9 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
-use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Exception;
@@ -60,39 +61,24 @@ class InputCollectionTest extends TestCase
     public function an_action_can_be_executed_from_a_collection()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(LaravelValidationRules::class, [
-            'required',
-            'max:250',
-        ]);
-
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(LaravelValidationRules::class, [
-            'required',
-            'email',
-        ]);
 
         $form = new InputCollection([$name, $email]);
-        $validation = $form->execute(new LaravelValidationRules);
 
-        $this->assertCount(2, $validation);
-        $this->assertNotFalse($validation);
-    }
-
-    /** @test */
-    public function a_collection_can_contain_inputs_with_or_without_actions()
-    {
-        $name = new TextInput('name', 'Name');
-        $email = new TextInput('email', 'Email');
-        $email->setRecipe(LaravelValidationRules::class, [
-            'required',
-            'email',
+        $model = new DataContainer([
+            'name' => 'John',
+            'email' => 'john#@email.com',
         ]);
 
-        $form = new InputCollection([$name, $email]);
-        $validation = $form->execute(new LaravelValidationRules);
+        $labelValue = $form->execute(new LabelValueAction(
+            new DataContainer([
+                'model' => $model
+            ])
+        ));
 
-        $this->assertCount(1, $validation);
-        $this->assertNotFalse($validation);
+        $this->assertCount(2, $labelValue);
+
+
     }
 
     /** @test */

@@ -109,16 +109,25 @@ abstract class Action
         $modifiers = $recipe['modifiers'] ?? [];
 
         if (\is_array($modifiers)) {
-            foreach ($modifiers as $modifier => $data) {
-                if (is_a($data, Modifier::class)) {
-                    $value = $data->modify($value, $data->getData(), $model);
-                    continue;
-                }
-                $value = (ModifierFactory::make($modifier))->modify($value, $data, $model);
+            foreach ($modifiers as $modifier) {
+                $value = $this->executeModifier($modifier, $value, $model);
             }
         }
 
         return $value;
+    }
+
+    /**
+     * Executes single modifier.
+     *
+     * @param $value
+     * @param mixed|null $model
+     *
+     * @return mixed
+     */
+    protected function executeModifier(Modifier $modifier, $value, $model = null)
+    {
+        return $modifier->modify($value, $modifier->getData(), $model);
     }
 
     /**

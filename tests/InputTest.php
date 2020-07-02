@@ -2,7 +2,7 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
-use Chatagency\CrudAssistant\Actions\LaravelValidationRules;
+use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\CrudAssistant;
@@ -40,16 +40,15 @@ class InputTest extends TestCase
     /** @test */
     public function an_action_recipe_can_can_be_added_to_an_input()
     {
-        $validationValue = [
-            'required',
-            'email',
+        $value  = [
+            'label' => 'This is an email',
         ];
 
         $input = new TextInput('email', 'Email', 1);
         $input->setType('email');
-        $input->setRecipe(LaravelValidationRules::class, $validationValue);
+        $input->setRecipe(LabelValueAction::class, $value);
 
-        $this->assertEquals($input->getAction(LaravelValidationRules::class), $validationValue);
+        $this->assertEquals($input->getAction(LabelValueAction::class), $value);
     }
 
     /** @test */
@@ -69,15 +68,10 @@ class InputTest extends TestCase
     /** @test */
     public function if_recipe_does_not_exist_in_class_null_is_returned()
     {
-        $validationValue = [
-            'required',
-            'email',
-        ];
-
         $input = new TextInput('email', 'Email', 1);
         $input->setType('email');
 
-        $this->assertNull($input->getAction(LaravelValidationRules::class));
+        $this->assertNull($input->getAction(LabelValueAction::class));
     }
     
     /** @test */
@@ -132,9 +126,9 @@ class InputTest extends TestCase
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
         $hobbies = new InputCollection([
-            new OptionInput('watch tv'), 
-            new OptionInput('play pokemon go'), 
-            new OptionInput('drink wine'),
+            new OptionInput('watch_tv'), 
+            new OptionInput('play_pokemon go'), 
+            new OptionInput('drink_wine'),
         ]);
         $input->setSubElements($hobbies);
 
@@ -158,4 +152,6 @@ class InputTest extends TestCase
 
         
     }
+
+    
 }

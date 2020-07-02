@@ -61,7 +61,7 @@ abstract class Input
     protected $recipes = [];
 
     /**
-     * Action Factory
+     * Action Factory.
      *
      * @var ActionFactory
      */
@@ -230,7 +230,7 @@ abstract class Input
 
         return $this;
     }
-    
+
     /**
      * Returns input sub elements.
      *
@@ -250,10 +250,10 @@ abstract class Input
      */
     public function setRecipe(string $recipe, $value)
     {
-        if(!$this->actionFactory->isAction($recipe)) {
+        if (!$this->actionFactory->isAction($recipe)) {
             throw new InvalidArgumentException('The recipe '.$recipe.' is not a valid action', 500);
         }
-        
+
         $this->recipes[$recipe] = $value;
 
         return $this;
@@ -285,5 +285,4 @@ abstract class Input
     {
         return $this->getRecipe($recipe);
     }
-
 }

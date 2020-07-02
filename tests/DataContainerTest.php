@@ -12,8 +12,8 @@ class DataContainerTest extends TestCase
     public function an_arbitrary_key_and_value_pair_can_be_set()
     {
         $container = new DataContainer();
-        $container->newkey = 'New content';
-        $this->assertEquals('New content', $container->newkey);
+        $container->newKey = 'New content';
+        $this->assertEquals('New content', $container->newKey);
     }
 
     /** @test */

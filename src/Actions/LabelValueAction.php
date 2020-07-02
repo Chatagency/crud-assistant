@@ -9,9 +9,9 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
- * Laravel validation rules action.
+ * Label Value Action.
  */
-class LaravelValidationRules extends Action implements ActionInterface
+class LabelValueAction extends Action implements ActionInterface
 {
     /**
      * Executes action.
@@ -22,25 +22,27 @@ class LaravelValidationRules extends Action implements ActionInterface
     {
         $params = $params ?? $this->getParams();
 
-        $rules = [];
+        $this->checkRequiredParams($params, ['model']);
+
+        $data = [];
+        $model = $params->model;
 
         foreach ($inputs as $input) {
-            $name = $input->getName();
             $recipe = $input->getRecipe(static::class);
 
             if ($this->ignore($recipe)) {
                 continue;
             }
 
-            if ($recipe) {
-                if (\is_callable($recipe)) {
-                    $rules[$name] = $recipe($input, $params);
-                } else {
-                    $rules[$name] = $recipe;
-                }
-            }
+            $name = $input->getName() ?? null;
+            $label = $recipe['label'] ?? $input->getLabel() ?? null;
+            $value = $recipe['value'] ?? $model->$name ?? null;
+
+            $value = $this->modifiers($value, $input, $model);
+
+            $data[$label] = $value;
         }
 
-        return $rules;
+        return $data;
     }
 }
