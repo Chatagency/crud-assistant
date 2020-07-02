@@ -126,9 +126,9 @@ class InputTest extends TestCase
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
         $hobbies = new InputCollection([
-            new OptionInput('watch tv'), 
-            new OptionInput('play pokemon go'), 
-            new OptionInput('drink wine'),
+            new OptionInput('watch_tv'), 
+            new OptionInput('play_pokemon go'), 
+            new OptionInput('drink_wine'),
         ]);
         $input->setSubElements($hobbies);
 
@@ -152,4 +152,6 @@ class InputTest extends TestCase
 
         
     }
+
+    
 }
