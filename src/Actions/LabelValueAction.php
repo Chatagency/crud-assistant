@@ -21,17 +21,16 @@ class LabelValueAction extends Action implements ActionInterface
     public function execute(array $inputs, DataContainerInterface $params = null)
     {
         $params = $params ?? $this->getParams();
-        
+
         $this->checkRequiredParams($params, ['model']);
-        
+
         $data = [];
         $model = $params->model;
 
         foreach ($inputs as $input) {
-            
             $recipe = $input->getRecipe(static::class);
-            
-            if($this->ignore($recipe)) {
+
+            if ($this->ignore($recipe)) {
                 continue;
             }
 
@@ -42,10 +41,8 @@ class LabelValueAction extends Action implements ActionInterface
             $value = $this->modifiers($value, $input, $model);
 
             $data[$label] = $value;
-
         }
 
         return $data;
     }
-
 }

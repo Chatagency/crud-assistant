@@ -17,16 +17,16 @@ class ActionFactory implements ActionFactoryInterface
     /**
      * Returns action instance.
      *
-     * @return ActionInterface
-     * 
      * @throws InvalidArgumentException
+     *
+     * @return ActionInterface
      */
     public function getInstance(string $action)
     {
-        if(!$this->isAction($action)) {
+        if (!$this->isAction($action)) {
             throw new InvalidArgumentException('The action '.$action.' is not valid', 500);
         }
-        
+
         return new $action();
     }
 

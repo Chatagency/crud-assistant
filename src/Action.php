@@ -6,7 +6,6 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Exception;
 use InvalidArgumentException;
 
 /**
@@ -111,7 +110,7 @@ abstract class Action
 
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier) {
-               $value = $this->executeModifier($modifier, $value, $model);
+                $value = $this->executeModifier($modifier, $value, $model);
             }
         }
 
@@ -119,12 +118,11 @@ abstract class Action
     }
 
     /**
-     * Executes single modifier
+     * Executes single modifier.
      *
-     * @param Modifier $modifier
      * @param $value
      * @param mixed|null $model
-     * 
+     *
      * @return mixed
      */
     protected function executeModifier(Modifier $modifier, $value, $model = null)

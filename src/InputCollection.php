@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use ArrayIterator;
 use Countable;
-use IteratorAggregate;
-use InvalidArgumentException;
 use Exception;
+use InvalidArgumentException;
+use IteratorAggregate;
 
 /**
  * Input Collection Class.
@@ -26,7 +26,7 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     protected $inputsArray = [];
 
     /**
-     * Partial Inputs
+     * Partial Inputs.
      *
      * @var array
      */
@@ -46,10 +46,10 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
      */
     public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
     {
-        foreach($inputsArray as $input) {
+        foreach ($inputsArray as $input) {
             $this->addInput($input);
         }
-        
+
         $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
@@ -89,36 +89,33 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     }
 
     /**
-     * Sets the array of partial inputs
+     * Sets the array of partial inputs.
      *
-     * @param array $partialCollection
-     * 
-     * @return self
-     * 
      * @throws Exception
+     *
+     * @return self
      */
     public function setPartialCollection(array $partialCollection)
     {
-        if(empty($partialCollection)) {
-            throw new Exception("The array passed to ".__METHOD__. " is empty", 500);
-        }
-        
-        $inputs = $this->getInputs();
-        
-        if(empty($inputs)) {
-            throw new Exception("This collection cannot add partial inputs because it has no inputs", 500);
+        if (empty($partialCollection)) {
+            throw new Exception('The array passed to '.__METHOD__.' is empty', 500);
         }
 
-        foreach($partialCollection as $inputName) {
+        $inputs = $this->getInputs();
+
+        if (empty($inputs)) {
+            throw new Exception('This collection cannot add partial inputs because it has no inputs', 500);
+        }
+
+        foreach ($partialCollection as $inputName) {
             $this->partialCollection[$inputName] = $this->getInput($inputName);
         }
 
         return $this;
-
     }
 
     /**
-     * Returns the array of partial inputs
+     * Returns the array of partial inputs.
      *
      * @return array
      */
@@ -156,9 +153,7 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     /**
      * Returns inputs array.
      * If partial inputs have been set
-     * it returns partial inputs
-     * 
-     * @param bool $all
+     * it returns partial inputs.
      *
      * @return array
      */
@@ -166,8 +161,8 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     {
         $partialCollection = $this->getpartialCollection();
 
-        if(!empty($partialCollection) && !$all) {
-           return $partialCollection;
+        if (!empty($partialCollection) && !$all) {
+            return $partialCollection;
         }
 
         return $this->inputsArray;
@@ -222,5 +217,4 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     {
         return new ArrayIterator($this->getInputs());
     }
-
 }
