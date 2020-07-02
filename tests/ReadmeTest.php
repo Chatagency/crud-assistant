@@ -5,7 +5,6 @@ namespace Chatagency\CrudAssistant\Tests;
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\InputCollection;
-use Chatagency\CrudAssistant\ActionFactory;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
@@ -14,7 +13,7 @@ use Chatagency\CrudAssistant\Actions\Filter;
 use Chatagency\CrudAssistant\Actions\Sanitation;
 
 
-class DocumentationTest extends TestCase
+class ReadmeTest extends TestCase
 {
     /** 
      * @test 
