@@ -46,11 +46,23 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
      */
     public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
     {
+        $this->setInputs($inputsArray);
+        $this->actionFactory = $actionFactory ?? new ActionFactory();
+
+        return $this;
+    }
+
+    /**
+     * Set all inputs
+     *
+     * @param array $inputsArray
+     * @return self
+     */
+    public function setInputs(array $inputsArray)
+    {
         foreach ($inputsArray as $input) {
             $this->addInput($input);
         }
-
-        $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
     }

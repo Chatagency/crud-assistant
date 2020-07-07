@@ -20,6 +20,14 @@ interface InputCollectionInterface
     public function __construct(array $inputsArray, ActionFactory $actionFactory = null);
 
     /**
+     * Set all inputs
+     *
+     * @param array $inputsArray
+     * @return self
+     */
+    public function setInputs(array $inputsArray);
+    
+    /**
      * Adds input to the array.
      *
      * @param string $key
