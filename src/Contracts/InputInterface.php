@@ -12,9 +12,6 @@ interface InputInterface
     /**
      * Class construct.
      *
-     * @param string $label
-     * @param string $label
-     *
      * @return self
      */
     public function __construct(string $name, string $label = null, int $version = 1);
@@ -28,8 +25,6 @@ interface InputInterface
 
     /**
      * Sets input attributes.
-     *
-     * @param string $value
      */
     public function setAttribute(string $name, $value);
 
