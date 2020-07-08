@@ -70,7 +70,7 @@ abstract class Input
     /**
      * @return self
      */
-    public function __construct(string $name, string $label = null, int $version = 1, ActionFactoryInterface $actionFactory = null)
+    public function __construct(string $name = null, string $label = null, int $version = 1, ActionFactoryInterface $actionFactory = null)
     {
         $this->name = $name;
         $this->label = $label ? $label : $name;

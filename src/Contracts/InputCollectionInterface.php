@@ -13,20 +13,13 @@ use Chatagency\CrudAssistant\DataContainer;
 interface InputCollectionInterface
 {
     /**
-     * Constructor.
-     *
-     * @return self
-     */
-    public function __construct(array $inputsArray, ActionFactory $actionFactory = null);
-
-    /**
-     * Set all inputs
+     * Sets inputs array.
      *
      * @param array $inputsArray
      * @return self
      */
     public function setInputs(array $inputsArray);
-    
+
     /**
      * Adds input to the array.
      *
@@ -42,6 +35,22 @@ interface InputCollectionInterface
      * @return self
      */
     public function removeInput(string $key);
+
+    /**
+     * Sets the array of partial inputs.
+     *
+     * @throws Exception
+     *
+     * @return self
+     */
+    public function setPartialCollection(array $partialCollection);
+
+    /**
+     * Returns the array of partial inputs.
+     *
+     * @return array
+     */
+    public function getPartialCollection();
 
     /**
      * Returns inputs array count.
@@ -61,10 +70,12 @@ interface InputCollectionInterface
 
     /**
      * Returns inputs array.
+     * If partial inputs have been set
+     * it returns partial inputs.
      *
      * @return array
      */
-    public function getInputs();
+    public function getInputs(bool $all = false);
 
     /**
      * Returns Input Names.
@@ -74,9 +85,14 @@ interface InputCollectionInterface
     public function getInputNames();
 
     /**
-     * Execute actions.
+     * Returns Input Labels.
      *
-     * @return DataContainer
+     * @return array
+     */
+    public function getInputLabels();
+
+    /**
+     * Execute actions.
      */
     public function execute(ActionInterface $action);
 }

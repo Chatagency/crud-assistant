@@ -14,7 +14,14 @@ interface InputInterface
      *
      * @return self
      */
-    public function __construct(string $name, string $label = null, int $version = 1);
+    public function __construct(string $name = null, string $label = null, int $version = 1);
+    
+    /**
+     * Sets input name.
+     *
+     * @return self
+     */
+    public function setName(string $name);
 
     /**
      * Sets input label.
