@@ -53,7 +53,7 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     }
 
     /**
-     * Set all inputs
+     * Sets inputs array.
      *
      * @param array $inputsArray
      * @return self
