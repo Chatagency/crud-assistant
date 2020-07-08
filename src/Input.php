@@ -273,16 +273,4 @@ abstract class Input
         return null;
     }
 
-    /**
-     * Get recipe alias.
-     *
-     * @return string|null
-     *
-     * @deprecated on version 0.1.1
-     * @see getRecipe()
-     */
-    public function getAction(string $recipe)
-    {
-        return $this->getRecipe($recipe);
-    }
 }

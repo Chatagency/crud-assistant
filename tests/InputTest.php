@@ -48,7 +48,7 @@ class InputTest extends TestCase
         $input->setType('email');
         $input->setRecipe(LabelValueAction::class, $value);
 
-        $this->assertEquals($input->getAction(LabelValueAction::class), $value);
+        $this->assertEquals($input->getRecipe(LabelValueAction::class), $value);
     }
 
     /** @test */
@@ -71,7 +71,7 @@ class InputTest extends TestCase
         $input = new TextInput('email', 'Email', 1);
         $input->setType('email');
 
-        $this->assertNull($input->getAction(LabelValueAction::class));
+        $this->assertNull($input->getRecipe(LabelValueAction::class));
     }
     
     /** @test */
