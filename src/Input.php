@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
 
 /**
  * Input Base Class.
  */
-abstract class Input
+abstract class Input implements InputInterface
 {
     /**
      * Name.
@@ -262,7 +264,7 @@ abstract class Input
     /**
      * Returns recipe by type.
      *
-     * @return string|null
+     * @return mixed
      */
     public function getRecipe(string $recipe)
     {
@@ -271,6 +273,19 @@ abstract class Input
         }
 
         return null;
+    }
+
+    /**
+     * Executes Action
+     *
+     * @param ActionInterface $action
+     * @param DataContainer $output
+     * 
+     * @return DataContainer
+     */
+    public function execute(ActionInterface $action, DataContainer $output)
+    {
+        return $action->execute($this, $output);
     }
 
 }

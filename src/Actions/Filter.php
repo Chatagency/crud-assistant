@@ -7,6 +7,7 @@ namespace Chatagency\CrudAssistant\Actions;
 use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
  * Filter action.
@@ -14,36 +15,41 @@ use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 class Filter extends Action implements ActionInterface
 {
     /**
-     * Executes action.
+     * Execute action on input
      *
-     * @param DataContainerInterface $params
+     * @param InputInterface $input
+     * @param DataContainerInterface $output
+     * 
+     * @return DataContainerInterface
      */
-    public function execute(array $inputs, DataContainerInterface $params = null)
+    public function execute(InputInterface $input, DataContainerInterface $output)
     {
-        $params = $params ?? $this->getParams();
+        $params = $this->getParams();
 
         $this->checkRequiredParams($params, ['data']);
 
-        $data = $params->data;
-
-        foreach ($inputs as $input) {
-            $name = $input->getName();
-            $recipe = $input->getRecipe(static::class);
-            $value = $data[$name] ?? null;
-
-            if ($this->ignoreIfEmpty($value, $recipe)) {
-                continue;
-            }
-
-            if ($recipe) {
-                if (\is_callable($recipe)) {
-                    $data = $recipe($input, $params, $data);
-                } elseif (isset($recipe['filter']) && $recipe['filter']) {
-                    unset($data[$name]);
-                }
-            }
+        if(!isset($output->data)) {
+            $output->data = [];
         }
 
-        return $data;
+        $data = $params->data;
+
+        $outputData = $output->data;
+        $name = $input->getName();
+        $recipe = $input->getRecipe(static::class);
+        $value = $data[$name] ?? null;
+
+        if ($this->ignoreIfEmpty($value, $recipe)) {
+            return $output;
+        }
+
+        if (\is_callable($recipe)) {
+            $output = $recipe($input, $params, $output);
+        } elseif (!isset($recipe['filter']) || !$recipe['filter']) {
+            $outputData[$name] = $data[$name];
+            $output->data = $outputData;
+        }
+
+        return $output;
     }
 }

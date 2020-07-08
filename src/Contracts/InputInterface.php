@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
+use Chatagency\CrudAssistant\DataContainer;
+
 /**
  * Input Collection Interface.
  */
@@ -117,7 +119,17 @@ interface InputInterface
     /**
      * Returns recipe by type.
      *
-     * @return string|null
+     * @return mixed
      */
     public function getRecipe(string $type);
+
+    /**
+     * Executes Action
+     *
+     * @param ActionInterface $action
+     * @param DataContainer $output
+     * 
+     * @return DataContainer
+     */
+    public function execute(ActionInterface $action, DataContainer $output);
 }

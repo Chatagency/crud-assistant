@@ -7,6 +7,7 @@ namespace Chatagency\CrudAssistant\Actions;
 use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
  * Sanitation action.
@@ -14,60 +15,36 @@ use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 class Sanitation extends Action implements ActionInterface
 {
     /**
-     * Executes action.
+     * Execute action on input
      *
-     * @param DataContainerInterface $params
+     * @param InputInterface $input
+     * @param DataContainerInterface $output
+     * 
+     * @return DataContainerInterface
      */
-    public function execute(array $inputs, DataContainerInterface $params = null)
+    public function execute(InputInterface $input, DataContainerInterface $output)
     {
         $params = $params ?? $this->getParams();
 
         $this->checkRequiredParams($params, ['requestArray']);
 
-        $rules = $this->rules($inputs);
+        $rule = $input->getRecipe(static::class);
         $requestArray = $params->requestArray;
-
-        foreach ($rules as $input => $rule) {
-            if (isset($requestArray[$input])) {
-                if (\is_array($rule) && isset($rule['rules']) && \is_array($rule['rules'])) {
-                    $options = isset($rule['options']) && \is_array($rule['options']) ? $rule['options'] : [];
-                    foreach ($rule['rules'] as $val) {
-                        $requestArray = $this->applyFilter($input, $val, $requestArray, $options);
-                    }
-                    $requestArray[$input.'_raw'] = $requestArray[$input];
-                } else {
-                    $requestArray = $this->applyFilter($input, $rule, $requestArray);
+        $name = $input->getName();
+      
+        if (isset($requestArray[$input])) {
+            if (\is_array($rule) && isset($rule['rules']) && \is_array($rule['rules'])) {
+                $options = isset($rule['options']) && \is_array($rule['options']) ? $rule['options'] : [];
+                foreach ($rule['rules'] as $val) {
+                    $requestArray = $this->applyFilter($name, $val, $requestArray, $options);
                 }
+                $requestArray[$name.'_raw'] = $requestArray[$name];
+            } else {
+                $requestArray = $this->applyFilter($name, $rule, $requestArray);
             }
         }
-
+        
         return $requestArray;
-    }
-
-    /**
-     * Returns rules array.
-     *
-     * @return array
-     */
-    protected function rules(array $inputs)
-    {
-        $rules = [];
-
-        foreach ($inputs as $key => $input) {
-            $recipe = $input->getRecipe(static::class);
-
-            if ($this->ignore($recipe)) {
-                continue;
-            }
-
-            $name = $input->getName();
-
-            if ($recipe) {
-                $rules[$name] = $recipe;
-            }
-        }
-
-        return $rules;
     }
 
     /**

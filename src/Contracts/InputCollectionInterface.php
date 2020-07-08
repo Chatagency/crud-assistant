@@ -91,8 +91,4 @@ interface InputCollectionInterface
      */
     public function getInputLabels();
 
-    /**
-     * Execute actions.
-     */
-    public function execute(ActionInterface $action);
 }

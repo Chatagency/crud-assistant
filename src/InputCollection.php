@@ -171,7 +171,7 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
      */
     public function getInputs(bool $all = false)
     {
-        $partialCollection = $this->getpartialCollection();
+        $partialCollection = $this->getPartialCollection();
 
         if (!empty($partialCollection) && !$all) {
             return $partialCollection;
@@ -213,11 +213,21 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     }
 
     /**
-     * Execute actions.
+     * Executes Action.
+     *
+     * @param ActionInterface $action
+     * @param DataContainer $output
+     * 
+     * @return DataContainer
      */
-    public function execute(ActionInterface $action)
+    public function execute(ActionInterface $action, DataContainer $output)
     {
-        return $action->execute($this->getInputs());
+        $output = $output ?? new DataContainer();
+        foreach($this->getInputs() as $input) {
+            $output = $input->execute($input, $output);
+        }
+        
+        return $output;
     }
 
     /**

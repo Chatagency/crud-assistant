@@ -23,7 +23,7 @@ class FilterTest extends TestCase
         
         $description = new TextInput('description', 'Description');
         
-        $inputs = [$name, $email, $description];
+        $inputs = [$email, $name, $description];
         
         $container = new DataContainer();
         $container->data = [
@@ -32,10 +32,15 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filtered = $filter->execute($inputs, $container);
-        
-        $this->assertCount(2, $filtered);
-        $this->assertFalse(isset($filtered[$email->getName()]));
+        $filter = new Filter($container);
+
+        $filtered = new DataContainer;
+        foreach($inputs as $input) {
+            $filtered = $filter->execute($input, $filtered);
+        }
+
+        $this->assertCount(2, $filtered->data);
+        $this->assertFalse(isset($filtered->data[$email->getName()]));
 
     }
     
