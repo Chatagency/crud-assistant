@@ -28,7 +28,6 @@ class LabelValueAction extends Action implements ActionInterface
 
         $this->checkRequiredParams($params, ['model']);
 
-        $data = [];
         $model = $params->model;
 
         $recipe = $input->getRecipe(static::class);
@@ -43,8 +42,8 @@ class LabelValueAction extends Action implements ActionInterface
 
         $value = $this->modifiers($value, $input, $model);
 
-        $data[$label] = $value;
+        $output->$label = $value;
 
-        return $data;
+        return $output;
     }
 }

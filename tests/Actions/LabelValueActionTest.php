@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class LabelValueActionTest extends TestCase
 {
     /** @test */
-    public function the_label_value_action_returns_an_array_with_labels_as_keys()
+    public function the_label_value_action_returns_an_container_with_labels_as_keys()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -22,15 +22,21 @@ class LabelValueActionTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john@email.com',
         ]);
-
-        $labelValues = (new LabelValueAction())->execute($inputs, new DataContainer([
+        
+        $container = new DataContainer([
             'model' => $model,
-        ]));
+        ]);
+        
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $output = (new LabelValueAction($container))->execute($input, $output);
+        }
 
         $emailName = $email->getName();
+        $emailLabel = $email->getLabel();
 
-        $this->assertCount(2, $labelValues);
-        $this->assertEquals($model->$emailName, $labelValues[$email->getLabel()]);
+        $this->assertCount(2, $output);
+        $this->assertEquals($model->$emailName, $output->$emailLabel);
 
     }
 
@@ -43,7 +49,10 @@ class LabelValueActionTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
 
-        (new LabelValueAction())->execute($inputs, new DataContainer([]));
+        $output = new DataContainer;
+        foreach($inputs as $input) {
+            (new LabelValueAction(new DataContainer))->execute($input, $output);
+        }
     }
 
     /** @test */
@@ -61,12 +70,17 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
 
-        $labelValues = (new LabelValueAction())->execute($inputs, new DataContainer([
+        $container = new DataContainer([
             'model' => $model,
-        ]));
+        ]);
+        
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $output = (new LabelValueAction($container))->execute($input, $output);
+        }
 
-        $this->assertCount(1, $labelValues);
-        $this->assertNotContains($model->name, $labelValues);
+        $this->assertCount(1, $output);
+        $this->assertNotContains($model->name, $output);
 
     }
 
@@ -93,11 +107,16 @@ class LabelValueActionTest extends TestCase
             'accept' => true,
         ]);
 
-        $labelValues = (new LabelValueAction())->execute($inputs, new DataContainer([
+        $container = new DataContainer([
             'model' => $model,
-        ]));
+        ]);
+        
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $output = (new LabelValueAction($container))->execute($input, $output);
+        }
 
-        $this->assertEquals($modifierData->trueLabel, $labelValues['Accept Terms']);
+        $this->assertEquals($modifierData->trueLabel, $output->{$accept->getLabel()});
 
     }
 }
