@@ -39,14 +39,10 @@ class Filter extends Action implements ActionInterface
         $recipe = $input->getRecipe(static::class);
         $value = $data[$name] ?? null;
 
-        if ($this->ignoreIfEmpty($value, $recipe)) {
-            return $output;
-        }
-
         if (\is_callable($recipe)) {
             $output = $recipe($input, $params, $output);
         } elseif (!isset($recipe['filter']) || !$recipe['filter']) {
-            $outputData[$name] = $data[$name];
+            $outputData[$name] = $value;
             $output->data = $outputData;
         }
 
