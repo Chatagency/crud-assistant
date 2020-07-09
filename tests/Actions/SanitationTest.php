@@ -27,8 +27,11 @@ class SanitationTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new Sanitation();
-        $rules = $sanitation->execute($inputs, $container);
+        $sanitation = new Sanitation($container);
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $output = $sanitation->execute($input, $output);
+        }
 
         $this->assertNotEquals($container->requestArray['name'], $rules['name']);
         $this->assertNotEquals($container->requestArray['email'], $rules['email']);
