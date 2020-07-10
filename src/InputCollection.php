@@ -16,7 +16,7 @@ use IteratorAggregate;
 /**
  * Input Collection Class.
  */
-class InputCollection implements InputCollectionInterface, IteratorAggregate, Countable
+class InputCollection extends Input implements InputCollectionInterface, IteratorAggregate, Countable
 {
     /**
      * Inputs array.
@@ -38,19 +38,6 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
      * @var ActionFactory
      */
     protected $actionFactory;
-
-    /**
-     * Constructor.
-     *
-     * @return self
-     */
-    public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
-    {
-        $this->setInputs($inputsArray);
-        $this->actionFactory = $actionFactory ?? new ActionFactory();
-
-        return $this;
-    }
 
     /**
      * Sets inputs array.
@@ -223,6 +210,7 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     public function execute(ActionInterface $action, DataContainer $output = null)
     {
         $output = $output ?? new DataContainer();
+        
         foreach($this->getInputs() as $input) {
             $output = $input->execute($action, $output);
         }

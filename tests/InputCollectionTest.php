@@ -63,7 +63,8 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
 
-        $form = new InputCollection([$name, $email]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email]);
 
         $model = new DataContainer([
             'name' => 'John',
@@ -87,7 +88,8 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
 
-        $form = new InputCollection([$name, $email]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email]);
         $names = $form->getInputNames();
 
         $this->assertCount(2, $names);
@@ -101,7 +103,8 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
 
-        $form = new InputCollection([$name, $email]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email]);
         $labels = $form->getInputLabels();
 
         $this->assertCount(2, $labels);
@@ -116,7 +119,8 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
 
         $this->assertCount(3, $form->getInputNames());
 
@@ -133,7 +137,9 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
+
         $form->setPartialCollection(['name', 'email']);
 
         $this->assertCount(2, $form->getPartialCollection());
@@ -147,7 +153,8 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
 
         $this->assertCount(3, $form->getInputNames());
 
@@ -175,7 +182,9 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
+
         $form->setPartialCollection(['name', 'email']);
         $form->removeInput('name');
 
@@ -191,7 +200,8 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
         
         foreach($form as $inputName => $input) {
             $this->assertInstanceOf(InputInterface::class, $input);

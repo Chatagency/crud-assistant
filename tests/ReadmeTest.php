@@ -27,10 +27,13 @@ class ReadmeTest extends TestCase
 
         $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
 
-        $hobby->setSubElements(new InputCollection([
+        $hobbies = new InputCollection();
+        $hobbies->setInputs([
             new OptionInput('Read'),
             new OptionInput('Watch movies'),
-        ]));
+        ]);
+        
+        $hobby->setSubElements($hobbies);
     }
 
     /** 
@@ -53,7 +56,8 @@ class ReadmeTest extends TestCase
         $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
         $email->setType('email');
 
-        $collection = new InputCollection([$name, $email]);
+        $collection = new InputCollection();
+        $collection->setInputs([$name, $email]);
 
         $data = new DataContainer([
             'requestArray' => []
@@ -76,7 +80,8 @@ class ReadmeTest extends TestCase
             'max:250'
         ]);
 
-        $collection = new InputCollection([$name]);
+        $collection = new InputCollection();
+        $collection->setInputs([$name]);
 
         // sanitizes values
         $sanitized = $collection->execute(new Sanitation(

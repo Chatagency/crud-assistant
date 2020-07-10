@@ -125,11 +125,13 @@ class InputTest extends TestCase
     public function sub_elements_can_be_added_to_an_input_class()
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
-        $hobbies = new InputCollection([
+        $hobbies = new InputCollection();
+        $hobbies->setInputs([
             new OptionInput('watch_tv'), 
             new OptionInput('play_pokemon go'), 
             new OptionInput('drink_wine'),
         ]);
+
         $input->setSubElements($hobbies);
 
         $this->assertCount(3, $input->getSubElements());
@@ -140,7 +142,8 @@ class InputTest extends TestCase
     public function sub_elements_are_an_input_collection_with_inputs()
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
-        $hobbies = new InputCollection([
+        $hobbies = new InputCollection();
+        $hobbies->setInputs([
             new OptionInput('watch_tv'),
         ]);
         $input->setSubElements($hobbies);

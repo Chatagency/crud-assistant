@@ -80,14 +80,16 @@ $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
 $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
 $email->setType('email');
 
-$collection = new InputCollection([$name, $email]);
+$collection = new InputCollection();
+$collection->setInputs([$name, $email]);   
 ```
 An action can be called on an `InputCollection` using the execute method:
 
 ```php
 $data = new DataContainer([
-  'requestArray' => []
-]);
+    'requestArray' => []
+  ]);
+
 $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\Sanitation($data));
 ```
 
@@ -109,7 +111,8 @@ $name->setRecipe(Filter::class, [
     'max:250'
 ]);
 
-$collection = new InputCollection([$name]);
+$collection = new InputCollection();
+$collection->setInputs([$name]);
 
 // sanitizes values
 $sanitized = $collection->execute(new Sanitation(
