@@ -210,6 +210,24 @@ class InputCollectionTest extends TestCase
         foreach($form as $inputName => $input) {
             $this->assertInstanceOf(InputInterface::class, $input);
         }
+    }
 
+    /** @test */
+    public function an_input_collection_can_contain_another_input_collection()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'address');
+
+        $collection = new InputCollection('secondary_info');
+        $collection->setInputs([
+            new TextInput('age', 'Your age'),
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address, $collection]);
+
+        $this->assertCount(4, $form);
+        $this->assertInstanceOf(InputCollection::class, $form->getInput('secondary_info'));
     }
 }
