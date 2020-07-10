@@ -70,14 +70,35 @@ class ReadmeTest extends TestCase
      * @test 
      * @doesNotPerformAssertions 
      */
+    public function docs_collection_three_test()
+    {
+        $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
+        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+        $email->setType('email');
+
+        $collection = new InputCollection('sub_information');
+        $collection->setInputs([
+            new TextInput('age', 'Your Age'),
+            new TextInput('zip_code', 'Your Zip Code'),
+        ]);
+
+        $inputs = [$name, $email, $collection];
+
+        $collection = new InputCollection();
+        $collection->setInputs($inputs);
+    }
+
+    /** 
+     * @test 
+     * @doesNotPerformAssertions 
+     */
     public function  docs_action_one_test()
     {
         // Input
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
         $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
         $name->setRecipe(Filter::class, [
-            'required',
-            'max:250'
+            'filter' => true
         ]);
 
         $collection = new InputCollection();
@@ -89,7 +110,7 @@ class ReadmeTest extends TestCase
                 'requestArray' => []
             ])
         ));
-        // returns Laravel validation rules
+        // returns filtered values
         $rules = $collection->execute(new Filter(
             new DataContainer([
                 'data' => []
