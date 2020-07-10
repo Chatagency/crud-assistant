@@ -41,13 +41,15 @@ class CrudAssistantTest extends TestCase
 
         $manager = new CrudAssistant([$name]);
 
-        $sanitation = $manager->execute(new Sanitation(
+        $output = $manager->execute(new Sanitation(
             new DataContainer([
                 'requestArray' => [
                     'name' => 'John Smith',
                 ],
             ])
         ));
+
+        $sanitation = $output->requestArray;
 
         $this->assertEquals('John Smith', $sanitation['name']);
         $this->assertCount(2, $sanitation);
