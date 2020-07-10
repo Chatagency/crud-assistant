@@ -220,11 +220,11 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
      * 
      * @return DataContainer
      */
-    public function execute(ActionInterface $action, DataContainer $output)
+    public function execute(ActionInterface $action, DataContainer $output = null)
     {
         $output = $output ?? new DataContainer();
         foreach($this->getInputs() as $input) {
-            $output = $input->execute($input, $output);
+            $output = $input->execute($action, $output);
         }
         
         return $output;
