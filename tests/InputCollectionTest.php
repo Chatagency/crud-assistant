@@ -186,6 +186,10 @@ class InputCollectionTest extends TestCase
         $form->setInputs([$name, $email, $address]);
 
         $form->setPartialCollection(['name', 'email']);
+
+        $this->assertCount(3, $form->getInputs(true));
+        $this->assertCount(2, $form->getInputs());
+
         $form->removeInput('name');
 
         $this->assertCount(2, $form->getInputs(true));
