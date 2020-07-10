@@ -33,9 +33,11 @@ class SanitationTest extends TestCase
             $output = $sanitation->execute($input, $output);
         }
 
-        $this->assertNotEquals($container->requestArray['name'], $rules['name']);
-        $this->assertNotEquals($container->requestArray['email'], $rules['email']);
-        $this->assertEquals($container->requestArray['name'], html_entity_decode($rules['name'], ENT_QUOTES));
+        $requestArray = $output->requestArray;
+
+        $this->assertNotEquals($container->requestArray['name'], $requestArray['name']);
+        $this->assertNotEquals($container->requestArray['email'], $requestArray['email']);
+        $this->assertEquals($container->requestArray['name'], html_entity_decode($requestArray['name'], ENT_QUOTES));
     }
 
     /** @test */
@@ -52,11 +54,16 @@ class SanitationTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new Sanitation();
-        $rules = $sanitation->execute($inputs, $container);
+        $sanitation = new Sanitation($container);
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $output = $sanitation->execute($input, $output);
+        }
 
-        $this->assertNotEquals($container->requestArray['name'], $rules['name']);
-        $this->assertEquals($container->requestArray['name'], $rules['name_raw']);
+        $requestArray = $output->requestArray;
+
+        $this->assertNotEquals($container->requestArray['name'], $requestArray['name']);
+        $this->assertEquals($container->requestArray['name'], $requestArray['name_raw']);
     }
 
     /** @test */
@@ -64,9 +71,8 @@ class SanitationTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
         $name->setRecipe(Sanitation::class, [
-            'rules' => [
-                FILTER_SANITIZE_SPECIAL_CHARS,
-                FILTER_SANITIZE_MAGIC_QUOTES,
+            [
+                'id' => FILTER_SANITIZE_SPECIAL_CHARS
             ],
         ]);
 
@@ -78,10 +84,15 @@ class SanitationTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new Sanitation();
-        $rules = $sanitation->execute($inputs, $container);
+        $sanitation = new Sanitation($container);
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $output = $sanitation->execute($input, $output);
+        }
 
-        $this->assertNotEquals($container->requestArray['name'], $rules['name']);
+        $requestArray = $output->requestArray;
+
+        $this->assertNotEquals($container->requestArray['name'], $requestArray['name']);
     }
 
     /** @test */
@@ -101,37 +112,16 @@ class SanitationTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new Sanitation();
-        $rules = $sanitation->execute($inputs, $container);
+        $sanitation = new Sanitation($container);
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $output = $sanitation->execute($input, $output);
+        }
 
-        $this->assertNotEquals($container->requestArray['name'][0], $rules['name'][0]);
-        $this->assertEquals($container->requestArray['name'][0], $rules['name_raw'][0]);
+        $requestArray = $output->requestArray;
+
+        $this->assertNotEquals($container->requestArray['name'][0], $requestArray['name'][0]);
+        $this->assertEquals($container->requestArray['name'][0], $requestArray['name_raw'][0]);
     }
     
-    /** @test */
-    public function an_input_can_be_ignored_by_the_sanitation_action()
-    {
-        $name = new TextInput('name', 'Name');
-        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
-
-        $email = new TextInput('email', 'Email');
-        $email->setRecipe(Sanitation::class, [
-            'ignore' => true
-        ]);
-
-        $inputs = [$name, $email];
-
-        $container = new DataContainer();
-        $container->requestArray = [
-            'name' => "Victor O'Reilly",
-            'email' => 'not_""an_email',
-            'title' => 'Supervisor',
-        ];
-
-        $sanitation = new Sanitation();
-        $rules = $sanitation->execute($inputs, $container);
-        
-        $this->assertTrue(isset($rules['name_raw']));
-        $this->assertFalse(isset($rules['email_raw']));
-    }
 }

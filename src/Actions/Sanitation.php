@@ -24,27 +24,34 @@ class Sanitation extends Action implements ActionInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output)
     {
-        $params = $params ?? $this->getParams();
+        $params = $this->getParams();
+
+        if(!isset($output->requestArray)) {
+            $output->requestArray = $params->requestArray;
+        }
 
         $this->checkRequiredParams($params, ['requestArray']);
 
-        $rule = $input->getRecipe(static::class);
-        $requestArray = $params->requestArray;
-        $name = $input->getName();
+        $recipe = $input->getRecipe(static::class);
+        $requestArray = $output->requestArray;
+        $inputName = $input->getName();
       
-        if (isset($requestArray[$input])) {
-            if (\is_array($rule) && isset($rule['rules']) && \is_array($rule['rules'])) {
-                $options = isset($rule['options']) && \is_array($rule['options']) ? $rule['options'] : [];
-                foreach ($rule['rules'] as $val) {
-                    $requestArray = $this->applyFilter($name, $val, $requestArray, $options);
+        if (isset($requestArray[$inputName]) && $recipe) {
+            if (\is_array($recipe)) {
+                $requestArray[$inputName.'_raw'] = $requestArray[$inputName];
+                foreach ($recipe as $filter) {
+                    $id = $filter['id'] ?? null;
+                    $options = $filter['options'] ?? [];
+                    $requestArray = $this->applyFilter($inputName, $id, $requestArray, $options);
                 }
-                $requestArray[$name.'_raw'] = $requestArray[$name];
             } else {
-                $requestArray = $this->applyFilter($name, $rule, $requestArray);
+                $requestArray = $this->applyFilter($inputName, $recipe, $requestArray);
             }
         }
+
+        $output->requestArray = $requestArray;
         
-        return $requestArray;
+        return $output;
     }
 
     /**
@@ -52,16 +59,16 @@ class Sanitation extends Action implements ActionInterface
      *
      * @return array
      */
-    protected function applyFilter(string $input, int $rule, array $requestArray, array $options = [])
+    protected function applyFilter(string $inputName, int $id, array $requestArray, array $options = [])
     {
-        if (\is_array($requestArray[$input])) {
-            foreach ($requestArray[$input] as $key => $singleInput) {
-                $requestArray[$input.'_raw'][$key] = $singleInput;
-                $requestArray[$input][$key] = filter_var($singleInput, $rule, $options);
+        if (\is_array($requestArray[$inputName])) {
+            foreach ($requestArray[$inputName] as $key => $singleInput) {
+                $requestArray[$inputName.'_raw'][$key] = $singleInput;
+                $requestArray[$inputName][$key] = filter_var($singleInput, $id, $options);
             }
         } else {
-            $requestArray[$input.'_raw'] = $requestArray[$input];
-            $requestArray[$input] = filter_var($requestArray[$input], $rule, $options);
+            $requestArray[$inputName.'_raw'] = $requestArray[$inputName];
+            $requestArray[$inputName] = filter_var($requestArray[$inputName], $id, $options);
         }
 
         return $requestArray;
