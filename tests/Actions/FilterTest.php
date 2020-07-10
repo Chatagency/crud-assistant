@@ -50,11 +50,9 @@ class FilterTest extends TestCase
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(Filter::class, function($input, $params, $output){
-            $data = $output->data;
+        $email->setRecipe(Filter::class, function($input, $params, $data){
             unset($data[$input->getName()]);
-            $output->data = $data;
-            return $output;
+            return $data;
         });
         
         $description = new TextInput('description', 'Description');
@@ -77,6 +75,37 @@ class FilterTest extends TestCase
         
         $this->assertCount(2, $filtered->data);
         $this->assertFalse(isset($filtered->data[$email->getName()]));
+    }
+
+    /** @test */
+    public function if_ignore_if_empty_is_passed_to_the_filter_action_that_item_is_also_filtered()
+    {
+        $name = new TextInput('name', 'Name');
+        
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(Filter::class, [
+            'ignoreIfEmpty' => true
+        ]);
+        
+        $description = new TextInput('description', 'Description');
+        
+        $inputs = [$name, $email, $description];
+        
+        $container = new DataContainer();
+        $container->data = [
+            'name' => "Victor Sánchez",
+            'email' => '',
+            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+        ];
+
+        $filter = new Filter($container);
+
+        $filtered = new DataContainer;
+        foreach($inputs as $input) {
+            $filtered = $filter->execute($input, $filtered);
+        }
+
+        $this->assertCount(2, $filtered->data);
     }
 
 }
