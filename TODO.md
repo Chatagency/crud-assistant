@@ -14,6 +14,6 @@
 - ✅ Move all Laravel dependent actions and modifiers to the `Extras` package
 - ✅ Refactor `Input::setSubElements()` to use an `InputCollection` instead of and array
 - ✅ Add partial inputs (sub form) support to `InputCollection`
-- ☐ Refactor input collection into a composite in order to have recursive forms
+- ✅ Refactor input collection into a composite in order to have recursive forms
+- ✅ Rethink action parameters (specific `DataContainer` classes)
 - ☐ Rethink recipes parameters (new Recipe class)
-- ☐ Rethink action parameters (specific `DataContainer` classes)
