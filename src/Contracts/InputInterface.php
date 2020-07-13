@@ -16,7 +16,7 @@ interface InputInterface
      *
      * @return self
      */
-    public function __construct(string $name = null, string $label = null, int $version = 1);
+    public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null);
     
     /**
      * Sets input name.

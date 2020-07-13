@@ -21,11 +21,11 @@ class ReadmeTest extends TestCase
      */
     public function  docs_inputs_one_test()
     {
-        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
         $email->setType('email');
         $email->setAttribute('required', 'required');
 
-        $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
+        $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies');
 
         $hobbies = new InputCollection();
         $hobbies->setInputs([
@@ -53,7 +53,7 @@ class ReadmeTest extends TestCase
     public function  docs_collection_two_test()
     {
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
         $email->setType('email');
 
         $collection = new InputCollection();
@@ -73,7 +73,7 @@ class ReadmeTest extends TestCase
     public function docs_collection_three_test()
     {
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
         $email->setType('email');
 
         $collection = new InputCollection('sub_information');

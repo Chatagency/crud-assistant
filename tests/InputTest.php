@@ -26,25 +26,13 @@ class InputTest extends TestCase
     }
 
     /** @test */
-    public function an_input_can_be_created_with_name_label_version_and_type()
-    {
-        $input = new TextInput('email', 'Add your email', 2);
-        $input->setType('email');
-
-        $this->assertEquals('email', $input->getName());
-        $this->assertEquals('Add your email', $input->getLabel());
-        $this->assertEquals(2, $input->getVersion());
-        $this->assertEquals('email', $input->getType());
-    }
-
-    /** @test */
     public function an_action_recipe_can_can_be_added_to_an_input()
     {
         $value  = [
             'label' => 'This is an email',
         ];
 
-        $input = new TextInput('email', 'Email', 1);
+        $input = new TextInput('email', 'Email');
         $input->setType('email');
         $input->setRecipe(LabelValueAction::class, $value);
 
@@ -56,7 +44,7 @@ class InputTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $input = new TextInput('email', 'Email', 1);
+        $input = new TextInput('email', 'Email');
         $input->setType('email');
         
         $input->setRecipe(CrudAssistant::class, 1);
@@ -68,7 +56,7 @@ class InputTest extends TestCase
     /** @test */
     public function if_recipe_does_not_exist_in_class_null_is_returned()
     {
-        $input = new TextInput('email', 'Email', 1);
+        $input = new TextInput('email', 'Email');
         $input->setType('email');
 
         $this->assertNull($input->getRecipe(LabelValueAction::class));

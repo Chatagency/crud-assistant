@@ -41,18 +41,18 @@ There are different types of `Inputs`, loosely associated with form input types:
 
 Other input types can be easily created.
 
-`Inputs` area containers that hold the main description of the data but also the instructions/transformations that data might experience. It can hold: `name`, `type`, `label`, `version` (to manage change over time), `attributes` and, when it make cases,  `subElements`:
+`Inputs` area containers that hold the main description of the data but also the instructions/transformations that data might experience. It can hold: `name`, `type`, `label`, `version`, `attributes` and, when it make cases,  `subElements`:
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 
-$email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+$email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
 $email->setType('email');
 $email->setAttribute('required', 'required');
 
-$hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
+$hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies');
 
 $hobby->setSubElements(new InputCollection([
     new OptionInput('Read'),
@@ -77,7 +77,7 @@ use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\DataContainer;
 
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+$email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
 $email->setType('email');
 
 $collection = new InputCollection();
@@ -100,7 +100,7 @@ use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\InputCollection;
 
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+$email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
 $email->setType('email');
 
 $collection = new InputCollection('sub_information');

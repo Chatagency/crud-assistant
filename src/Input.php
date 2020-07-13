@@ -34,7 +34,7 @@ abstract class Input implements InputInterface
      *
      * @var bool
      */
-    protected $version;
+    protected $version = 1;
 
     /**
      * Input attributes.
@@ -72,11 +72,10 @@ abstract class Input implements InputInterface
     /**
      * @return self
      */
-    public function __construct(string $name = null, string $label = null, int $version = 1, ActionFactoryInterface $actionFactory = null)
+    public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null)
     {
         $this->name = $name;
         $this->label = $label ? $label : $name;
-        $this->version = $version ? $version : 1;
 
         $this->actionFactory = $actionFactory ?? new ActionFactory();
 
