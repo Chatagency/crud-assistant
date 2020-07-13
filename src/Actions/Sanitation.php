@@ -15,18 +15,15 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 class Sanitation extends Action implements ActionInterface
 {
     /**
-     * Execute action on input
+     * Execute action on input.
      *
-     * @param InputInterface $input
-     * @param DataContainerInterface $output
-     * 
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output)
     {
         $params = $this->getParams();
 
-        if(!isset($output->requestArray)) {
+        if (!isset($output->requestArray)) {
             $output->requestArray = $params->requestArray;
         }
 
@@ -35,7 +32,7 @@ class Sanitation extends Action implements ActionInterface
         $recipe = $input->getRecipe(static::class);
         $requestArray = $output->requestArray;
         $inputName = $input->getName();
-      
+
         if (isset($requestArray[$inputName]) && $recipe) {
             if (\is_array($recipe)) {
                 $requestArray[$inputName.'_raw'] = $requestArray[$inputName];
@@ -50,7 +47,7 @@ class Sanitation extends Action implements ActionInterface
         }
 
         $output->requestArray = $requestArray;
-        
+
         return $output;
     }
 

@@ -12,9 +12,6 @@ interface ActionInterface
     /**
      * Execute action on input.
      *
-     * @param InputInterface $input
-     * @param DataContainerInterface $output
-     * 
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output);

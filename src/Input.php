@@ -275,17 +275,16 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * Executes Action
+     * Executes Action.
      *
-     * @param ActionInterface $action
      * @param DataContainer $output
-     * 
+     *
      * @return DataContainer
      */
     public function execute(ActionInterface $action, DataContainer $output = null)
     {
         $output = $output ?? new DataContainer();
+
         return $action->execute($this, $output);
     }
-
 }

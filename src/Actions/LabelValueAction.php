@@ -15,11 +15,8 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 class LabelValueAction extends Action implements ActionInterface
 {
     /**
-     * Execute action on input
+     * Execute action on input.
      *
-     * @param InputInterface $input
-     * @param DataContainerInterface $output
-     * 
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output)

@@ -15,11 +15,8 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 class Filter extends Action implements ActionInterface
 {
     /**
-     * Execute action on input
+     * Execute action on input.
      *
-     * @param InputInterface $input
-     * @param DataContainerInterface $output
-     * 
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output)
@@ -28,7 +25,7 @@ class Filter extends Action implements ActionInterface
 
         $this->checkRequiredParams($params, ['data']);
 
-        if(!isset($output->data)) {
+        if (!isset($output->data)) {
             $output->data = $params->data;
         }
 
@@ -38,7 +35,7 @@ class Filter extends Action implements ActionInterface
         $recipe = $input->getRecipe(static::class);
         $value = $data[$name] ?? null;
 
-        if($this->ignoreIfEmpty($value, $recipe)) {
+        if ($this->ignoreIfEmpty($value, $recipe)) {
             unset($data[$name]);
         }
 

@@ -42,7 +42,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     /**
      * Sets inputs array.
      *
-     * @param array $inputsArray
      * @return self
      */
     public function setInputs(array $inputsArray)
@@ -202,19 +201,18 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     /**
      * Executes Action.
      *
-     * @param ActionInterface $action
      * @param DataContainer $output
-     * 
+     *
      * @return DataContainer
      */
     public function execute(ActionInterface $action, DataContainer $output = null)
     {
         $output = $output ?? new DataContainer();
-        
-        foreach($this->getInputs() as $input) {
+
+        foreach ($this->getInputs() as $input) {
             $output = $input->execute($action, $output);
         }
-        
+
         return $output;
     }
 

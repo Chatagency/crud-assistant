@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
-use Chatagency\CrudAssistant\ActionFactory;
-use Chatagency\CrudAssistant\DataContainer;
-
 /**
  * Input Collection Interface.
  */
@@ -15,7 +12,6 @@ interface InputCollectionInterface
     /**
      * Sets inputs array.
      *
-     * @param array $inputsArray
      * @return self
      */
     public function setInputs(array $inputsArray);
@@ -90,5 +86,4 @@ interface InputCollectionInterface
      * @return array
      */
     public function getInputLabels();
-
 }

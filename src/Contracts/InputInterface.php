@@ -17,7 +17,7 @@ interface InputInterface
      * @return self
      */
     public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null);
-    
+
     /**
      * Sets input name.
      *
@@ -34,6 +34,8 @@ interface InputInterface
 
     /**
      * Sets input attributes.
+     *
+     * @param mixed $value
      */
     public function setAttribute(string $name, $value);
 
@@ -124,11 +126,10 @@ interface InputInterface
     public function getRecipe(string $type);
 
     /**
-     * Executes Action
+     * Executes Action.
      *
-     * @param ActionInterface $action
      * @param DataContainer $output
-     * 
+     *
      * @return DataContainer
      */
     public function execute(ActionInterface $action, DataContainer $output = null);
