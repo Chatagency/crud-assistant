@@ -59,9 +59,9 @@ class CrudAssistant
      *
      * @return self
      */
-    public static function make(array $inputs = [])
+    public static function make(... $args)
     {
-        return new static($inputs);
+        return new static(... $args);
     }
 
     /**

@@ -42,7 +42,7 @@ class InputCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $form = new InputCollection();
-        $name = $form->getInput('name');
+        $form->getInput('name');
     }
 
     /** @test */

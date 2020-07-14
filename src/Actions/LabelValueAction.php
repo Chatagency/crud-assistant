@@ -21,7 +21,7 @@ class LabelValueAction extends Action implements ActionInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output)
     {
-        $params = $params ?? $this->getParams();
+        $params = $this->getParams();
 
         $this->checkRequiredParams($params, ['model']);
 
