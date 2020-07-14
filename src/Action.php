@@ -20,6 +20,8 @@ abstract class Action
      */
     protected $params;
 
+    protected $output;
+
     /**
      * Construct.
      *
@@ -28,11 +30,27 @@ abstract class Action
     public function __construct(DataContainerInterface $params = null)
     {
         $this->params = $params ?? new DataContainer();
+        $this->output = new DataContainer();
 
         return $this;
     }
 
-    public function getParams()
+    /**
+     * Returns output
+     *
+     * @return DataContainerInterface
+     */
+    public function getOutput()
+    {
+        return $this->output;
+    }
+
+    /**
+     * Returns runtime args
+     *
+     * @return DataContainerInterface
+     */
+    protected function getParams()
     {
         return $this->params;
     }
@@ -44,7 +62,7 @@ abstract class Action
      *
      * @return bool
      */
-    public function ignore($recipe)
+    protected function ignore($recipe)
     {
         if (!\is_array($recipe)) {
             return false;

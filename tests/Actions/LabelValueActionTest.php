@@ -27,10 +27,12 @@ class LabelValueActionTest extends TestCase
             'model' => $model,
         ]);
         
-        $output = new DataContainer();
+        $action =  (new LabelValueAction($container));
         foreach($inputs as $input) {
-            $output = (new LabelValueAction($container))->execute($input, $output);
+            $action->execute($input);
         }
+
+        $output = $action->getOutput();
 
         $emailName = $email->getName();
         $emailLabel = $email->getLabel();

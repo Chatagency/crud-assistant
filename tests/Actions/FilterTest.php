@@ -34,9 +34,8 @@ class FilterTest extends TestCase
 
         $filter = new Filter($container);
 
-        $filtered = new DataContainer;
         foreach($inputs as $input) {
-            $filtered = $filter->execute($input, $filtered);
+            $filtered = $filter->execute($input);
         }
 
         $this->assertCount(2, $filtered->data);
@@ -68,11 +67,12 @@ class FilterTest extends TestCase
 
         $filter = new Filter($container);
 
-        $filtered = new DataContainer;
         foreach($inputs as $input) {
-            $filtered = $filter->execute($input, $filtered);
+            $filter->execute($input);
         }
-        
+
+        $filtered = $filter->getOutput();
+
         $this->assertCount(2, $filtered->data);
         $this->assertFalse(isset($filtered->data[$email->getName()]));
     }
@@ -100,10 +100,11 @@ class FilterTest extends TestCase
 
         $filter = new Filter($container);
 
-        $filtered = new DataContainer;
         foreach($inputs as $input) {
-            $filtered = $filter->execute($input, $filtered);
+            $filter->execute($input);
         }
+
+        $filtered = $filter->getOutput();
 
         $this->assertCount(2, $filtered->data);
     }

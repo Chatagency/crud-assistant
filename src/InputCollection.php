@@ -205,15 +205,13 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action, DataContainer $output = null)
+    public function execute(ActionInterface $action)
     {
-        $output = $output ?? new DataContainer();
-
         foreach ($this->getInputs() as $input) {
-            $output = $input->execute($action, $output);
+            $input->execute($action);
         }
 
-        return $output;
+        return $action->getOutput();
     }
 
     /**
