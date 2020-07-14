@@ -215,6 +215,18 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     }
 
     /**
+     * Pass whole collection to the action.
+     *
+     * @param DataContainer $output
+     *
+     * @return DataContainer
+     */
+    public function executeAll(ActionInterface $action)
+    {
+        return $action->execute($this);
+    }
+
+    /**
      * Get an iterator for the items.
      *
      * @return \ArrayIterator

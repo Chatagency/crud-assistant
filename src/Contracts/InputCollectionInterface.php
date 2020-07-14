@@ -86,4 +86,13 @@ interface InputCollectionInterface
      * @return array
      */
     public function getInputLabels();
+
+    /**
+     * Pass whole collection to the action.
+     *
+     * @param DataContainer $output
+     *
+     * @return DataContainer
+     */
+    public function executeAll(ActionInterface $action);
 }
