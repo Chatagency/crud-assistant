@@ -37,6 +37,7 @@ class InputTest extends TestCase
         $input->setRecipe(LabelValueAction::class, $value);
 
         $this->assertEquals($input->getRecipe(LabelValueAction::class), $value);
+
     }
 
     /** @test */
@@ -63,7 +64,7 @@ class InputTest extends TestCase
     }
     
     /** @test */
-    public function the_name_label_and_version_can_be_set_after_the_input_has_been_instantiated()
+    public function the_name_label_version_and_type_can_be_set_after_the_input_has_been_instantiated()
     {
         $input = new TextInput('email');
 
@@ -74,6 +75,7 @@ class InputTest extends TestCase
 
         $this->assertEquals('new_email', $input->getName());
         $this->assertEquals('Add your email', $input->getLabel());
+        $this->assertEquals('email', $input->getType());
         $this->assertEquals(2, $input->getVersion());
     }
 
