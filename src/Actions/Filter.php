@@ -8,6 +8,7 @@ use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\CrudAssistant;
 
 /**
  * Filter action.
@@ -20,6 +21,29 @@ class Filter extends Action implements ActionInterface
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input)
+    {
+        if(CrudAssistant::isInputCollection($input)) {
+            foreach($input as $val) {
+                if(CrudAssistant::isInputCollection($val)) {
+                    $this->execute($val);
+                }
+                $this->executeOne($val);
+            }
+            return $this->output;
+        }
+
+        return $this->executeOne($input);
+
+    }
+
+    /**
+     * Executes single input
+     *
+     * @param InputInterface $input
+     * 
+     * @return DataContainerInterface
+     */
+    protected function executeOne(InputInterface $input)
     {
         $params = $this->getParams();
         $output = $this->output;
@@ -50,4 +74,5 @@ class Filter extends Action implements ActionInterface
 
         return $output;
     }
+
 }

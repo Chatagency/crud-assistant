@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use BadMethodCallException;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
  * Crud Assistant Manager.
@@ -14,7 +15,7 @@ class CrudAssistant
     /**
      * Input collection.
      *
-     * @var InputCollection
+     * @var InputCollectionInterface
      */
     protected $collection;
 
@@ -67,10 +68,23 @@ class CrudAssistant
     /**
      * Returns input collection.
      *
-     * @return InputCollection
+     * @return InputCollectionInterface
      */
     public function getCollection()
     {
         return $this->collection;
     }
+
+    /**
+     * Verifies if object is an input collection
+     *
+     * @param InputInterface $input
+     * 
+     * @return boolean
+     */
+    public static function isInputCollection(InputInterface $input)
+    {
+        return is_a($input, InputCollectionInterface::class);
+    }
+
 }

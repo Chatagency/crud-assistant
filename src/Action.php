@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
 
@@ -99,7 +100,7 @@ abstract class Action
      *
      * @return bool
      */
-    protected function checkRequiredParams(DataContainer $data, array $checks)
+    protected function checkRequiredParams(DataContainerInterface $data, array $checks)
     {
         if ($missing = $data->missing($checks)) {
             throw new InvalidArgumentException('The argument '.$missing.' is missing for the '.static::class.' action', 500);
@@ -139,7 +140,7 @@ abstract class Action
      * Executes single modifier.
      *
      * @param $value
-     * @param mixed|null $model
+     * @param mixed $model
      *
      * @return mixed
      */
@@ -159,4 +160,5 @@ abstract class Action
     {
         return '' == $value || null === $value;
     }
+
 }
