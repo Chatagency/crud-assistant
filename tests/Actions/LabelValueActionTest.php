@@ -28,11 +28,11 @@ class LabelValueActionTest extends TestCase
         ]);
         
         $action =  (new LabelValueAction($container));
+        
+        $output = new DataContainer();
         foreach($inputs as $input) {
-            $action->execute($input);
+            $output = $action->execute($input, $output);
         }
-
-        $output = $action->getOutput();
 
         $emailName = $email->getName();
         $emailLabel = $email->getLabel();
@@ -51,9 +51,11 @@ class LabelValueActionTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
 
-        $output = new DataContainer;
+        $action =  new LabelValueAction(new DataContainer());
+        
+        $output = new DataContainer();
         foreach($inputs as $input) {
-            (new LabelValueAction(new DataContainer))->execute($input, $output);
+            $output = $action->execute($input, $output);
         }
     }
 
@@ -76,9 +78,11 @@ class LabelValueActionTest extends TestCase
             'model' => $model,
         ]);
         
+        $action =  new LabelValueAction($container);
+        
         $output = new DataContainer();
         foreach($inputs as $input) {
-            $output = (new LabelValueAction($container))->execute($input, $output);
+            $output = $action->execute($input, $output);
         }
 
         $this->assertCount(1, $output);
@@ -112,10 +116,12 @@ class LabelValueActionTest extends TestCase
         $container = new DataContainer([
             'model' => $model,
         ]);
+
+        $action =  new LabelValueAction($container);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
-            $output = (new LabelValueAction($container))->execute($input, $output);
+            $output = $action->execute($input, $output);
         }
 
         $this->assertEquals($modifierData->trueLabel, $output->{$accept->getLabel()});

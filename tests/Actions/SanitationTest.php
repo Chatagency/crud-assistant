@@ -29,11 +29,11 @@ class SanitationTest extends TestCase
 
         $sanitation = new Sanitation($container);
         
+        $output = new DataContainer();
         foreach($inputs as $input) {
-            $sanitation->execute($input);
+            $output = $sanitation->execute($input,  $output);
         }
-
-        $output = $sanitation->getOutput();
+        
         $requestArray = $output->requestArray;
 
         $this->assertNotEquals($container->requestArray['name'], $requestArray['name']);
@@ -57,11 +57,11 @@ class SanitationTest extends TestCase
 
         $sanitation = new Sanitation($container);
         
+        $output = new DataContainer();
         foreach($inputs as $input) {
-            $output = $sanitation->execute($input);
+            $output = $sanitation->execute($input, $output);
         }
 
-        $output = $sanitation->getOutput();
         $requestArray = $output->requestArray;
 
         $this->assertNotEquals($container->requestArray['name'], $requestArray['name']);
@@ -88,8 +88,9 @@ class SanitationTest extends TestCase
 
         $sanitation = new Sanitation($container);
         
+        $output = new DataContainer();
         foreach($inputs as $input) {
-            $output = $sanitation->execute($input);
+            $output = $sanitation->execute($input, $output);
         }
 
         $requestArray = $output->requestArray;
@@ -116,11 +117,11 @@ class SanitationTest extends TestCase
 
         $sanitation = new Sanitation($container);
         
+        $output = new DataContainer();
         foreach($inputs as $input) {
-            $output = $sanitation->execute($input);
+            $output = $sanitation->execute($input, $output);
         }
 
-        $output = $sanitation->getOutput();
         $requestArray = $output->requestArray;
 
         $this->assertNotEquals($container->requestArray['name'][0], $requestArray['name'][0]);
