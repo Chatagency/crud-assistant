@@ -208,7 +208,12 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     public function execute(ActionInterface $action)
     {
         foreach ($this->getInputs() as $input) {
-            $input->execute($action);
+            if(CrudAssistant::isInputCollection($input)) {
+                $this->execute($input);
+            }
+            else {
+                $input->execute($action);
+            }
         }
 
         return $action->getOutput();

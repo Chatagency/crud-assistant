@@ -27,7 +27,9 @@ class Filter extends Action implements ActionInterface
                 if(CrudAssistant::isInputCollection($val)) {
                     $this->execute($val);
                 }
-                $this->executeOne($val);
+                else {
+                    $this->executeOne($val);
+                }
             }
             return $this->output;
         }
