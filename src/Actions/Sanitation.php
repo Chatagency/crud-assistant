@@ -19,10 +19,9 @@ class Sanitation extends Action implements ActionInterface
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input)
+    public function execute(InputInterface $input, DataContainerInterface $output)
     {
         $params = $this->getParams();
-        $output = $this->output;
 
         if (!isset($output->requestArray)) {
             $output->requestArray = $params->requestArray;

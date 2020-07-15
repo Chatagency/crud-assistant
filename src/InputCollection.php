@@ -6,6 +6,7 @@ namespace Chatagency\CrudAssistant;
 
 use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Countable;
@@ -205,18 +206,15 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action)
+    public function execute(ActionInterface $action, DataContainerInterface $output = null)
     {
+        $output = $output ?? new DataContainer();
+
         foreach ($this->getInputs() as $input) {
-            if(CrudAssistant::isInputCollection($input)) {
-                $this->execute($input);
-            }
-            else {
-                $input->execute($action);
-            }
+            $output = $input->execute($action, $output);
         }
 
-        return $action->getOutput();
+        return $output;
     }
 
     /**
@@ -228,7 +226,9 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      */
     public function executeAll(ActionInterface $action)
     {
-        return $action->execute($this);
+        $output = $output ?? new DataContainer();
+        
+        return $action->execute($this, $output);
     }
 
     /**

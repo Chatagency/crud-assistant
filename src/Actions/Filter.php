@@ -20,21 +20,21 @@ class Filter extends Action implements ActionInterface
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input)
+    public function execute(InputInterface $input, DataContainerInterface $output)
     {
         if(CrudAssistant::isInputCollection($input)) {
             foreach($input as $val) {
                 if(CrudAssistant::isInputCollection($val)) {
-                    $this->execute($val);
+                    $this->execute($val, $output);
                 }
                 else {
-                    $this->executeOne($val);
+                    $this->executeOne($val, $output);
                 }
             }
-            return $this->output;
+            return $output;
         }
 
-        return $this->executeOne($input);
+        return $this->executeOne($input, $output);
 
     }
 
@@ -45,10 +45,10 @@ class Filter extends Action implements ActionInterface
      * 
      * @return DataContainerInterface
      */
-    protected function executeOne(InputInterface $input)
+    protected function executeOne(InputInterface $input, DataContainerInterface $output)
     {
         $params = $this->getParams();
-        $output = $this->output;
+        $output = $output;
 
         $this->checkRequiredParams($params, ['data']);
 

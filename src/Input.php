@@ -6,6 +6,7 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
@@ -281,8 +282,10 @@ abstract class Input implements InputInterface
      *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action)
+    public function execute(ActionInterface $action, DataContainerInterface $output = null)
     {
-        return $action->execute($this);
+        $output = $output ?? new DataContainer();
+
+        return $action->execute($this, $output);
     }
 }

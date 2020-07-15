@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
-use Chatagency\CrudAssistant\DataContainer;
-
 /**
  * Input Collection Interface.
  */
@@ -132,5 +130,5 @@ interface InputInterface
      *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action);
+    public function execute(ActionInterface $action, DataContainerInterface $output = null);
 }

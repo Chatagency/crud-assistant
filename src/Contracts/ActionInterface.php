@@ -21,5 +21,5 @@ interface ActionInterface
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input);
+    public function execute(InputInterface $input, DataContainerInterface $output);
 }
