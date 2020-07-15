@@ -72,9 +72,7 @@ class InputCollectionTest extends TestCase
         ]);
 
         $labelValue = $form->execute(new LabelValueAction(
-            new DataContainer([
-                'model' => $model
-            ])
+            new DataContainer(['model' => $model])
         ));
 
         $this->assertCount(2, $labelValue);
