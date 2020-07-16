@@ -291,4 +291,46 @@ class InputCollectionTest extends TestCase
 
         $form->execute(new LabelValueAction($runtime));
     }
+
+
+    /** @test */
+    public function an_action_can_take_control_of_the_whole_execution_using_execute_all()
+    {
+        /**
+         * executeAll() must be implemented in the action execute
+         * method. The whole input collection will be passed to 
+         * the action. See the Filter action for details
+         */
+
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'Your Address');
+        $address->setRecipe(Filter::class, [
+            'filter' => true
+        ]);
+
+        $internal = new InputCollection('secondary_info');
+        $internal->setInputs([
+            new TextInput('age', 'Your age'),
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address, $internal,]);
+        
+        $runtime = new DataContainer([
+            'data' => [
+                'name' => "Victor Sánchez",
+                'email' => 'email@email.com',
+                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+                'age' => 35,
+            ]
+        ]);
+
+        $output = $form->executeAll(new Filter($runtime));
+
+        $this->assertCount(3, $output->data);
+        $this->assertContains($runtime->data['name'], $output->data);
+        $this->assertNotContains($runtime->data['address'], $output->data);
+    }
+
 }

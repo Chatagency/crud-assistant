@@ -23,7 +23,7 @@ class Filter extends Action implements ActionInterface
     public function execute(InputInterface $input, DataContainerInterface $output)
     {
         $params = $this->getParams();
-
+        
         $this->checkRequiredParams($params, ['data']);
 
         if (!isset($output->data)) {
@@ -31,6 +31,7 @@ class Filter extends Action implements ActionInterface
         }
 
         if(CrudAssistant::isInputCollection($input)) {
+            
             foreach($input as $val) {
                 if(CrudAssistant::isInputCollection($val)) {
                     $output = $this->execute($val, $output);
