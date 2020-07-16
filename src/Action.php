@@ -21,8 +21,6 @@ abstract class Action
      */
     protected $params;
 
-    protected $output;
-
     /**
      * Construct.
      *
@@ -31,19 +29,8 @@ abstract class Action
     public function __construct(DataContainerInterface $params = null)
     {
         $this->params = $params ?? new DataContainer();
-        $this->output = new DataContainer();
 
         return $this;
-    }
-
-    /**
-     * Returns output
-     *
-     * @return DataContainerInterface
-     */
-    public function getOutput()
-    {
-        return $this->output;
     }
 
     /**

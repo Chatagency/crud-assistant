@@ -2,6 +2,7 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
+use Chatagency\CrudAssistant\Actions\Filter;
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\DataContainer;
@@ -76,8 +77,6 @@ class InputCollectionTest extends TestCase
         ));
 
         $this->assertCount(2, $labelValue);
-
-
     }
 
     /** @test */
@@ -211,7 +210,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_can_contain_another_input_collection()
+    public function an_input_collection_can_contain_one_or_more_input_collection()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -227,5 +226,36 @@ class InputCollectionTest extends TestCase
 
         $this->assertCount(4, $form);
         $this->assertInstanceOf(InputCollection::class, $form->getInput('secondary_info'));
+    }
+
+    /** @test */
+    public function an_input_collection_with_internal_collections_save_action_output_in_tree_format_by_default()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'Your Address');
+
+        $internal = new InputCollection('secondary_info');
+        $internal->setInputs([
+            new TextInput('age', 'Your age'),
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address, $internal,]);
+        
+        $runtime = new DataContainer([
+            'model' => new DataContainer([
+                'name' => "Victor Sánchez",
+                'email' => 'email@email.com',
+                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+                'age' => 35,
+            ])
+        ]);
+
+        $output = $form->execute(new LabelValueAction($runtime));
+        
+        $this->assertCount(4, $output);
+        $this->assertInstanceOf(DataContainer::class, $output->secondary_info);
+        $this->assertCount(1, $output->secondary_info);
     }
 }

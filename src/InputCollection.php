@@ -211,7 +211,19 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         $output = $output ?? new DataContainer();
 
         foreach ($this->getInputs() as $input) {
-            $output = $input->execute($action, $output);
+            
+            if(CrudAssistant::isInputCollection($input)) {
+                $collectionName = $input->getName();
+                
+                if(!$collectionName) {
+                    throw new Exception('All internal collections must have a name', 500);
+                }
+
+                $output->$collectionName = $input->execute($action, new DataContainer());
+            }
+            else {
+                $input->execute($action, $output);
+            }
         }
 
         return $output;
@@ -224,7 +236,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      *
      * @return DataContainer
      */
-    public function executeAll(ActionInterface $action)
+    public function executeAll(ActionInterface $action, DataContainerInterface $output = null)
     {
         $output = $output ?? new DataContainer();
         
