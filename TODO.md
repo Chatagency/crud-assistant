@@ -17,3 +17,4 @@
 - ✅ Refactor input collection into a composite in order to have recursive forms
 - ✅ Rethink action parameters (specific `DataContainer` classes)
 - ☐ Rethink recipes parameters (new Recipe class)
+- ☐ Add `flat` option for recursive forms output
