@@ -81,6 +81,11 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
         unset($this->data[$name]);
     }
 
+    public function __toString()
+    {
+        return json_encode($this->data);
+    }
+
     /**
      * Get an iterator for the items.
      *
