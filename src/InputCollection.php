@@ -214,7 +214,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
             
             if(CrudAssistant::isInputCollection($input)) {
                 $collectionName = $input->getName();
-                
+
                 if(!$collectionName) {
                     throw new Exception('All internal collections must have a name', 500);
                 }
