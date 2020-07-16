@@ -107,4 +107,16 @@ class DataContainerTest extends TestCase
         $this->assertEquals($newArray, $container->all());
         
     }
+
+    /** @test */
+    public function a_data_container_outputs_json_when_echoed()
+    {
+        $container = new DataContainer();
+        $container->dollars = '$10.00';
+        $container->new = 'look';
+        $container->hobbies = ['run', 'play pokemon go', 'drink wine'];
+        
+        $this->assertStringContainsString('$10.00', $container);
+
+    }
 }
