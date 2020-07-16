@@ -257,6 +257,7 @@ class InputCollectionTest extends TestCase
         $this->assertCount(4, $output);
         $this->assertInstanceOf(DataContainer::class, $output->secondary_info);
         $this->assertCount(1, $output->secondary_info);
+        $this->assertEquals($runtime->model->age, $output->secondary_info->{$internal->getInput('age')->getLabel()});
     }
 
     /** @test */
