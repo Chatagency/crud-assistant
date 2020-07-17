@@ -112,7 +112,7 @@ abstract class Action
             return $value;
         }
 
-        $modifiers = $recipe['modifiers'] ?? [];
+        $modifiers = $recipe['modifiers'] ?? null;
 
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier) {
