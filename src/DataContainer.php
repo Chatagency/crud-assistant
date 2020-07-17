@@ -8,11 +8,12 @@ use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Countable;
 use IteratorAggregate;
+use ArrayAccess;
 
 /**
  * DataContainer.
  */
-class DataContainer implements DataContainerInterface, IteratorAggregate, Countable
+class DataContainer implements DataContainerInterface, IteratorAggregate, Countable, ArrayAccess
 {
     /**
      * Arbitrary data.
@@ -150,5 +151,35 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     public function all()
     {
         return $this->data;
+    }
+
+    public function offsetSet($offset, $value) {        
+        if (is_null($offset)) {
+            $this->data[] = $value;
+        } else {
+            $this->data[$offset] = $value;
+        }
+    }
+
+    public function offsetExists($offset) {
+        return isset($this->data[$offset]);
+    }
+
+    public function offsetUnset($offset) {
+        unset($this->data[$offset]);
+    }
+
+    public function offsetGet($offset) {
+        if (!\array_key_exists($offset, $this->data)) {
+            $trace = debug_backtrace();
+            trigger_error(
+                'Undefined property via __get(): '.$offset.
+                ' in '.$trace[0]['file'].
+                ' on line '.$trace[0]['line'],
+                E_USER_NOTICE
+            );
+        }
+
+        return $this->data[$offset];
     }
 }
