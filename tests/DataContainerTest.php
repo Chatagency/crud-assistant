@@ -17,6 +17,17 @@ class DataContainerTest extends TestCase
     }
 
     /** @test */
+    public function a_container_can_be_fill_after_it_has_been_instantiated()
+    {
+        $container = new DataContainer();
+        $container->fill([
+            'key' => 'value'
+        ]);
+
+        $this->assertEquals('value', $container->key);
+    }
+
+    /** @test */
     public function if_a_non_existing_value_is_accessed_a_php_notice_is_triggered()
     {
         $container = new DataContainer();

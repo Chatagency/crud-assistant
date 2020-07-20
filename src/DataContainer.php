@@ -82,9 +82,29 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
         unset($this->data[$name]);
     }
 
+    /**
+     * To string method
+     *
+     * @return string
+     */
     public function __toString()
     {
         return json_encode($this->data);
+    }
+
+    /**
+     * Fills the container. It replaces
+     * the current data array with
+     * the one provided
+     *
+     * @param array $data
+     * @return self
+     */
+    public function fill(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
     }
 
     /**
@@ -128,7 +148,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      * Verifies if any of the keys
      * in an array is missing in
      * the container. Returns
-     * first key missing.
+     * first missing key.
      *
      * @return bool|string
      */
@@ -152,7 +172,14 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     {
         return $this->data;
     }
-
+    
+    /**
+     * Offset set
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     * @return void
+     */
     public function offsetSet($offset, $value) {        
         if (is_null($offset)) {
             $this->data[] = $value;
@@ -161,14 +188,32 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
         }
     }
 
+    /**
+     * Offset exists
+     *
+     * @param mixed $offset
+     * @return void
+     */
     public function offsetExists($offset) {
         return isset($this->data[$offset]);
     }
 
+    /**
+     * Offset unset
+     *
+     * @param mixed $offset
+     * @return void
+     */
     public function offsetUnset($offset) {
         unset($this->data[$offset]);
     }
 
+    /**
+     * Offset set get
+     *
+     * @param mixed $offset
+     * @return void
+     */
     public function offsetGet($offset) {
         if (!\array_key_exists($offset, $this->data)) {
             $trace = debug_backtrace();
