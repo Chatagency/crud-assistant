@@ -23,7 +23,7 @@ class FilterTest extends TestCase
         
         $description = new TextInput('description', 'Description');
         
-        $inputs = [$name, $email, $description];
+        $inputs = [$email, $name, $description];
         
         $container = new DataContainer();
         $container->data = [
@@ -32,23 +32,26 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filtered = $filter->execute($inputs, $container);
-        
-        $this->assertCount(2, $filtered);
-        $this->assertFalse(isset($filtered[$email->getName()]));
+        $filter = new Filter($container);
+
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $filtered = $filter->execute($input, $output);
+        }
+
+        $this->assertCount(2, $filtered->data);
+        $this->assertFalse(isset($filtered->data[$email->getName()]));
 
     }
     
     /** @test */
     public function a_closure_can_be_passed_as_a_value_instead_of_an_array_to_the_filter_action()
     {
-        $filter = new Filter();
-
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
         $email->setRecipe(Filter::class, function($input, $params, $data){
-            unset($data[$input->getname()]);
+            unset($data[$input->getName()]);
             return $data;
         });
         
@@ -63,17 +66,20 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filtered = $filter->execute($inputs, $container);
-        
-        $this->assertCount(2, $filtered);
-        $this->assertFalse(isset($filtered[$email->getName()]));
+        $filter = new Filter($container);
+
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $filtered = $filter->execute($input, $output);
+        }
+
+        $this->assertCount(2, $filtered->data);
+        $this->assertFalse(isset($filtered->data[$email->getName()]));
     }
 
     /** @test */
-    public function the_filter_action_can_ignore_empty_values()
+    public function if_ignore_if_empty_is_passed_to_the_filter_action_that_item_is_also_filtered()
     {
-        $filter = new Filter();
-
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
@@ -92,9 +98,14 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filtered = $filter->execute($inputs, $container);
-        
-        $this->assertCount(3, $filtered);
-        $this->assertTrue(isset($filtered[$email->getName()]));
+        $filter = new Filter($container);
+
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $filtered = $filter->execute($input, $output);
+        }
+
+        $this->assertCount(2, $filtered->data);
     }
+
 }

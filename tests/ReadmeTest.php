@@ -21,16 +21,19 @@ class ReadmeTest extends TestCase
      */
     public function  docs_inputs_one_test()
     {
-        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
         $email->setType('email');
         $email->setAttribute('required', 'required');
 
-        $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies', $inputVersion = 1);
+        $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies');
 
-        $hobby->setSubElements(new InputCollection([
+        $hobbies = new InputCollection();
+        $hobbies->setInputs([
             new OptionInput('Read'),
             new OptionInput('Watch movies'),
-        ]));
+        ]);
+        
+        $hobby->setSubElements($hobbies);
     }
 
     /** 
@@ -50,10 +53,11 @@ class ReadmeTest extends TestCase
     public function  docs_collection_two_test()
     {
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email', $inputVersion = 1);
+        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
         $email->setType('email');
 
-        $collection = new InputCollection([$name, $email]);
+        $collection = new InputCollection();
+        $collection->setInputs([$name, $email]);
 
         $data = new DataContainer([
             'requestArray' => []
@@ -66,17 +70,39 @@ class ReadmeTest extends TestCase
      * @test 
      * @doesNotPerformAssertions 
      */
+    public function docs_collection_three_test()
+    {
+        $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
+        $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
+        $email->setType('email');
+
+        $collection = new InputCollection('sub_information');
+        $collection->setInputs([
+            new TextInput('age', 'Your Age'),
+            new TextInput('zip_code', 'Your Zip Code'),
+        ]);
+
+        $inputs = [$name, $email, $collection];
+
+        $collection = new InputCollection();
+        $collection->setInputs($inputs);
+    }
+
+    /** 
+     * @test 
+     * @doesNotPerformAssertions 
+     */
     public function  docs_action_one_test()
     {
         // Input
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
         $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
         $name->setRecipe(Filter::class, [
-            'required',
-            'max:250'
+            'filter' => true
         ]);
 
-        $collection = new InputCollection([$name]);
+        $collection = new InputCollection();
+        $collection->setInputs([$name]);
 
         // sanitizes values
         $sanitized = $collection->execute(new Sanitation(
@@ -84,7 +110,7 @@ class ReadmeTest extends TestCase
                 'requestArray' => []
             ])
         ));
-        // returns Laravel validation rules
+        // returns filtered values
         $rules = $collection->execute(new Filter(
             new DataContainer([
                 'data' => []

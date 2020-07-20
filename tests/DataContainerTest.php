@@ -17,6 +17,17 @@ class DataContainerTest extends TestCase
     }
 
     /** @test */
+    public function a_container_can_be_fill_after_it_has_been_instantiated()
+    {
+        $container = new DataContainer();
+        $container->fill([
+            'key' => 'value'
+        ]);
+
+        $this->assertEquals('value', $container->key);
+    }
+
+    /** @test */
     public function if_a_non_existing_value_is_accessed_a_php_notice_is_triggered()
     {
         $container = new DataContainer();
@@ -25,7 +36,7 @@ class DataContainerTest extends TestCase
     }
 
     /** @test */
-    public function isset_can_be_used_to_verifiy_if_value_exists()
+    public function isset_can_be_used_to_verify_if_value_exists()
     {
         $container = new DataContainer();
         $container->dollars = '$10.00';
@@ -57,7 +68,7 @@ class DataContainerTest extends TestCase
     }
     
     /** @test */
-    public function the_missing_method_can_be_used_to_verfify_if_multiple_keys_have_not_been_set()
+    public function the_missing_method_can_be_used_to_verify_if_multiple_keys_have_not_been_set()
     {
         $values = ['new' => 'look', 'old' => 'story'];
         $container = new DataContainer($values);
@@ -90,7 +101,39 @@ class DataContainerTest extends TestCase
         $this->assertCount(3, $container);
         
     }
+
     
+    /** @test */
+    public function a_data_container_can_also_be_treated_as_an_array()
+    {
+        $container = new DataContainer();
+        $container['dollars'] = '$10.00';
+        $container['new'] = 'look';
+        $container['hobbies'] = ['run', 'play pokemon go', 'drink wine'];
+        $container[] = 'Yo';
+
+        $this->assertEquals('$10.00', $container['dollars']);
+        $this->assertEquals('look', $container['new']);
+        $this->assertEquals(['run', 'play pokemon go', 'drink wine'], $container['hobbies']);
+        $this->assertEquals('Yo', $container[0]);
+        $this->assertTrue(isset($container['dollars']));
+
+        unset($container['dollars']);
+
+        $this->assertFalse(isset($container['dollars']));
+
+    }
+    
+    /** @test */
+    public function if_a_non_existing_value_is_accessed_as_an_array_a_php_notice_is_triggered()
+    {
+        $container = new DataContainer();
+        
+        $this->expectException(Notice::class);
+
+        $container['nope'];
+    }
+
     /** @test */
     public function a_data_container_object_can_be_iterated_over()
     {
@@ -107,4 +150,18 @@ class DataContainerTest extends TestCase
         $this->assertEquals($newArray, $container->all());
         
     }
+
+    /** @test */
+    public function a_data_container_outputs_json_when_echoed()
+    {
+        $container = new DataContainer();
+        $container->dollars = '$10.00';
+        $container->new = 'look';
+        $container->hobbies = ['run', 'play pokemon go', 'drink wine'];
+        
+        $this->assertStringContainsString('$10.00', $container);
+
+    }
+
+
 }

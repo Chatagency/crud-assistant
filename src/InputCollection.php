@@ -6,6 +6,7 @@ namespace Chatagency\CrudAssistant;
 
 use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Countable;
@@ -16,7 +17,7 @@ use IteratorAggregate;
 /**
  * Input Collection Class.
  */
-class InputCollection implements InputCollectionInterface, IteratorAggregate, Countable
+class InputCollection extends Input implements InputCollectionInterface, IteratorAggregate, Countable
 {
     /**
      * Inputs array.
@@ -40,17 +41,15 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     protected $actionFactory;
 
     /**
-     * Constructor.
+     * Sets inputs array.
      *
      * @return self
      */
-    public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
+    public function setInputs(array $inputsArray)
     {
         foreach ($inputsArray as $input) {
             $this->addInput($input);
         }
-
-        $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
     }
@@ -159,7 +158,7 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
      */
     public function getInputs(bool $all = false)
     {
-        $partialCollection = $this->getpartialCollection();
+        $partialCollection = $this->getPartialCollection();
 
         if (!empty($partialCollection) && !$all) {
             return $partialCollection;
@@ -201,11 +200,47 @@ class InputCollection implements InputCollectionInterface, IteratorAggregate, Co
     }
 
     /**
-     * Execute actions.
+     * Executes Action.
+     *
+     * @param DataContainer $output
+     *
+     * @return DataContainer
      */
-    public function execute(ActionInterface $action)
+    public function execute(ActionInterface $action, DataContainerInterface $output = null)
     {
-        return $action->execute($this->getInputs());
+        $output = $output ?? new DataContainer();
+
+        foreach ($this->getInputs() as $input) {
+            
+            if(CrudAssistant::isInputCollection($input)) {
+                $collectionName = $input->getName();
+
+                if(!$collectionName) {
+                    throw new Exception('All internal collections must have a name', 500);
+                }
+
+                $output->$collectionName = $input->execute($action, new DataContainer());
+            }
+            else {
+                $input->execute($action, $output);
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * Pass whole collection to the action.
+     *
+     * @param DataContainer $output
+     *
+     * @return DataContainer
+     */
+    public function executeAll(ActionInterface $action, DataContainerInterface $output = null)
+    {
+        $output = $output ?? new DataContainer();
+        
+        return $action->execute($this, $output);
     }
 
     /**

@@ -25,7 +25,10 @@
     "autoload": {
         "psr-4": {
             "Chatagency\\CrudAssistant\\": "src"
-        }
+        },
+        "files": [
+          "helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

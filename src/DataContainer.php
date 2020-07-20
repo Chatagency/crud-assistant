@@ -8,11 +8,12 @@ use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Countable;
 use IteratorAggregate;
+use ArrayAccess;
 
 /**
  * DataContainer.
  */
-class DataContainer implements DataContainerInterface, IteratorAggregate, Countable
+class DataContainer implements DataContainerInterface, IteratorAggregate, Countable, ArrayAccess
 {
     /**
      * Arbitrary data.
@@ -82,6 +83,31 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     }
 
     /**
+     * To string method
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode($this->data);
+    }
+
+    /**
+     * Fills the container. It replaces
+     * the current data array with
+     * the one provided
+     *
+     * @param array $data
+     * @return self
+     */
+    public function fill(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
      * Get an iterator for the items.
      *
      * @return \ArrayIterator
@@ -122,7 +148,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      * Verifies if any of the keys
      * in an array is missing in
      * the container. Returns
-     * first key missing.
+     * first missing key.
      *
      * @return bool|string
      */
@@ -145,5 +171,60 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     public function all()
     {
         return $this->data;
+    }
+    
+    /**
+     * Offset set
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     * @return void
+     */
+    public function offsetSet($offset, $value) {        
+        if (is_null($offset)) {
+            $this->data[] = $value;
+        } else {
+            $this->data[$offset] = $value;
+        }
+    }
+
+    /**
+     * Offset exists
+     *
+     * @param mixed $offset
+     * @return void
+     */
+    public function offsetExists($offset) {
+        return isset($this->data[$offset]);
+    }
+
+    /**
+     * Offset unset
+     *
+     * @param mixed $offset
+     * @return void
+     */
+    public function offsetUnset($offset) {
+        unset($this->data[$offset]);
+    }
+
+    /**
+     * Offset set get
+     *
+     * @param mixed $offset
+     * @return void
+     */
+    public function offsetGet($offset) {
+        if (!\array_key_exists($offset, $this->data)) {
+            $trace = debug_backtrace();
+            trigger_error(
+                'Undefined property via __get(): '.$offset.
+                ' in '.$trace[0]['file'].
+                ' on line '.$trace[0]['line'],
+                E_USER_NOTICE
+            );
+        }
+
+        return $this->data[$offset];
     }
 }

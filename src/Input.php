@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
 
 /**
  * Input Base Class.
  */
-abstract class Input
+abstract class Input implements InputInterface
 {
     /**
      * Name.
@@ -32,7 +35,7 @@ abstract class Input
      *
      * @var bool
      */
-    protected $version;
+    protected $version = 1;
 
     /**
      * Input attributes.
@@ -70,11 +73,10 @@ abstract class Input
     /**
      * @return self
      */
-    public function __construct(string $name, string $label = null, int $version = 1, ActionFactoryInterface $actionFactory = null)
+    public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null)
     {
         $this->name = $name;
         $this->label = $label ? $label : $name;
-        $this->version = $version ? $version : 1;
 
         $this->actionFactory = $actionFactory ?? new ActionFactory();
 
@@ -262,7 +264,7 @@ abstract class Input
     /**
      * Returns recipe by type.
      *
-     * @return string|null
+     * @return mixed
      */
     public function getRecipe(string $recipe)
     {
@@ -274,15 +276,16 @@ abstract class Input
     }
 
     /**
-     * Get recipe alias.
+     * Executes Action.
      *
-     * @return string|null
+     * @param DataContainer $output
      *
-     * @deprecated on version 0.1.1
-     * @see getRecipe()
+     * @return DataContainer
      */
-    public function getAction(string $recipe)
+    public function execute(ActionInterface $action, DataContainerInterface $output = null)
     {
-        return $this->getRecipe($recipe);
+        $output = $output ?? new DataContainer();
+
+        return $action->execute($this, $output);
     }
 }

@@ -26,29 +26,18 @@ class InputTest extends TestCase
     }
 
     /** @test */
-    public function an_input_can_be_created_with_name_label_version_and_type()
-    {
-        $input = new TextInput('email', 'Add your email', 2);
-        $input->setType('email');
-
-        $this->assertEquals('email', $input->getName());
-        $this->assertEquals('Add your email', $input->getLabel());
-        $this->assertEquals(2, $input->getVersion());
-        $this->assertEquals('email', $input->getType());
-    }
-
-    /** @test */
     public function an_action_recipe_can_can_be_added_to_an_input()
     {
         $value  = [
             'label' => 'This is an email',
         ];
 
-        $input = new TextInput('email', 'Email', 1);
+        $input = new TextInput('email', 'Email');
         $input->setType('email');
         $input->setRecipe(LabelValueAction::class, $value);
 
-        $this->assertEquals($input->getAction(LabelValueAction::class), $value);
+        $this->assertEquals($input->getRecipe(LabelValueAction::class), $value);
+
     }
 
     /** @test */
@@ -56,7 +45,7 @@ class InputTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $input = new TextInput('email', 'Email', 1);
+        $input = new TextInput('email', 'Email');
         $input->setType('email');
         
         $input->setRecipe(CrudAssistant::class, 1);
@@ -68,14 +57,14 @@ class InputTest extends TestCase
     /** @test */
     public function if_recipe_does_not_exist_in_class_null_is_returned()
     {
-        $input = new TextInput('email', 'Email', 1);
+        $input = new TextInput('email', 'Email');
         $input->setType('email');
 
-        $this->assertNull($input->getAction(LabelValueAction::class));
+        $this->assertNull($input->getRecipe(LabelValueAction::class));
     }
     
     /** @test */
-    public function the_name_label_and_version_can_be_set_after_the_input_has_been_instantiated()
+    public function the_name_label_version_and_type_can_be_set_after_the_input_has_been_instantiated()
     {
         $input = new TextInput('email');
 
@@ -86,6 +75,7 @@ class InputTest extends TestCase
 
         $this->assertEquals('new_email', $input->getName());
         $this->assertEquals('Add your email', $input->getLabel());
+        $this->assertEquals('email', $input->getType());
         $this->assertEquals(2, $input->getVersion());
     }
 
@@ -125,11 +115,13 @@ class InputTest extends TestCase
     public function sub_elements_can_be_added_to_an_input_class()
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
-        $hobbies = new InputCollection([
+        $hobbies = new InputCollection();
+        $hobbies->setInputs([
             new OptionInput('watch_tv'), 
             new OptionInput('play_pokemon go'), 
             new OptionInput('drink_wine'),
         ]);
+
         $input->setSubElements($hobbies);
 
         $this->assertCount(3, $input->getSubElements());
@@ -140,7 +132,8 @@ class InputTest extends TestCase
     public function sub_elements_are_an_input_collection_with_inputs()
     {
         $input = new SelectInput('hobbies', 'Your Hobbies');
-        $hobbies = new InputCollection([
+        $hobbies = new InputCollection();
+        $hobbies->setInputs([
             new OptionInput('watch_tv'),
         ]);
         $input->setSubElements($hobbies);

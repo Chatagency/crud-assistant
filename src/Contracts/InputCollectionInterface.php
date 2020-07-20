@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
-use Chatagency\CrudAssistant\ActionFactory;
-use Chatagency\CrudAssistant\DataContainer;
-
 /**
  * Input Collection Interface.
  */
 interface InputCollectionInterface
 {
     /**
-     * Constructor.
+     * Sets inputs array.
      *
      * @return self
      */
-    public function __construct(array $inputsArray, ActionFactory $actionFactory = null);
+    public function setInputs(array $inputsArray);
 
     /**
      * Adds input to the array.
@@ -34,6 +31,22 @@ interface InputCollectionInterface
      * @return self
      */
     public function removeInput(string $key);
+
+    /**
+     * Sets the array of partial inputs.
+     *
+     * @throws Exception
+     *
+     * @return self
+     */
+    public function setPartialCollection(array $partialCollection);
+
+    /**
+     * Returns the array of partial inputs.
+     *
+     * @return array
+     */
+    public function getPartialCollection();
 
     /**
      * Returns inputs array count.
@@ -53,10 +66,12 @@ interface InputCollectionInterface
 
     /**
      * Returns inputs array.
+     * If partial inputs have been set
+     * it returns partial inputs.
      *
      * @return array
      */
-    public function getInputs();
+    public function getInputs(bool $all = false);
 
     /**
      * Returns Input Names.
@@ -66,9 +81,18 @@ interface InputCollectionInterface
     public function getInputNames();
 
     /**
-     * Execute actions.
+     * Returns Input Labels.
+     *
+     * @return array
+     */
+    public function getInputLabels();
+
+    /**
+     * Pass whole collection to the action.
+     *
+     * @param DataContainer $output
      *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action);
+    public function executeAll(ActionInterface $action);
 }

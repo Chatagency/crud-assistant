@@ -12,12 +12,16 @@ interface InputInterface
     /**
      * Class construct.
      *
-     * @param string $label
-     * @param string $label
+     * @return self
+     */
+    public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null);
+
+    /**
+     * Sets input name.
      *
      * @return self
      */
-    public function __construct(string $name, string $label = null, int $version = 1);
+    public function setName(string $name);
 
     /**
      * Sets input label.
@@ -29,7 +33,7 @@ interface InputInterface
     /**
      * Sets input attributes.
      *
-     * @param string $value
+     * @param mixed $value
      */
     public function setAttribute(string $name, $value);
 
@@ -115,7 +119,16 @@ interface InputInterface
     /**
      * Returns recipe by type.
      *
-     * @return string|null
+     * @return mixed
      */
     public function getRecipe(string $type);
+
+    /**
+     * Executes Action.
+     *
+     * @param DataContainer $output
+     *
+     * @return DataContainer
+     */
+    public function execute(ActionInterface $action, DataContainerInterface $output = null);
 }

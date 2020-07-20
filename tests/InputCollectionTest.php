@@ -2,6 +2,7 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
+use Chatagency\CrudAssistant\Actions\Filter;
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\DataContainer;
@@ -42,7 +43,7 @@ class InputCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $form = new InputCollection();
-        $name = $form->getInput('name');
+        $form->getInput('name');
     }
 
     /** @test */
@@ -63,7 +64,8 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
 
-        $form = new InputCollection([$name, $email]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email]);
 
         $model = new DataContainer([
             'name' => 'John',
@@ -71,14 +73,10 @@ class InputCollectionTest extends TestCase
         ]);
 
         $labelValue = $form->execute(new LabelValueAction(
-            new DataContainer([
-                'model' => $model
-            ])
+            new DataContainer(['model' => $model])
         ));
 
         $this->assertCount(2, $labelValue);
-
-
     }
 
     /** @test */
@@ -87,7 +85,8 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
 
-        $form = new InputCollection([$name, $email]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email]);
         $names = $form->getInputNames();
 
         $this->assertCount(2, $names);
@@ -101,7 +100,8 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
 
-        $form = new InputCollection([$name, $email]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email]);
         $labels = $form->getInputLabels();
 
         $this->assertCount(2, $labels);
@@ -116,7 +116,8 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
 
         $this->assertCount(3, $form->getInputNames());
 
@@ -133,7 +134,9 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
+
         $form->setPartialCollection(['name', 'email']);
 
         $this->assertCount(2, $form->getPartialCollection());
@@ -147,7 +150,8 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
 
         $this->assertCount(3, $form->getInputNames());
 
@@ -175,8 +179,14 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
+
         $form->setPartialCollection(['name', 'email']);
+
+        $this->assertCount(3, $form->getInputs(true));
+        $this->assertCount(2, $form->getInputs());
+
         $form->removeInput('name');
 
         $this->assertCount(2, $form->getInputs(true));
@@ -191,11 +201,136 @@ class InputCollectionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'address');
 
-        $form = new InputCollection([$name, $email, $address]);
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address]);
         
         foreach($form as $inputName => $input) {
             $this->assertInstanceOf(InputInterface::class, $input);
         }
-
     }
+
+    /** @test */
+    public function an_input_collection_can_contain_one_or_more_input_collection()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'address');
+
+        $collection = new InputCollection('secondary_info');
+        $collection->setInputs([
+            new TextInput('age', 'Your age'),
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address, $collection]);
+
+        $this->assertCount(4, $form);
+        $this->assertInstanceOf(InputCollection::class, $form->getInput('secondary_info'));
+    }
+
+    /** @test */
+    public function an_input_collection_with_internal_collections_save_action_output_in_tree_format_by_default()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'Your Address');
+
+        $internal = new InputCollection('secondary_info');
+        $internal->setInputs([
+            new TextInput('age', 'Your age'),
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address, $internal,]);
+        
+        $runtime = new DataContainer([
+            'model' => new DataContainer([
+                'name' => "Victor Sánchez",
+                'email' => 'email@email.com',
+                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+                'age' => 35,
+            ])
+        ]);
+
+        $output = $form->execute(new LabelValueAction($runtime));
+        
+        $this->assertCount(4, $output);
+        $this->assertInstanceOf(DataContainer::class, $output->secondary_info);
+        $this->assertCount(1, $output->secondary_info);
+        $this->assertEquals($runtime->model->age, $output->secondary_info->{$internal->getInput('age')->getLabel()});
+    }
+
+    /** @test */
+    public function if_an_internal_collection_does_not_have_a_name_an_exception_is_thrown()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'Your Address');
+
+        /**
+         * Collection has no name
+         */
+        $internal = new InputCollection();
+        $internal->setInputs([
+            new TextInput('age', 'Your age'),
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address, $internal,]);
+        
+        $runtime = new DataContainer([
+            'model' => new DataContainer([
+                'name' => "Victor Sánchez",
+                'email' => 'email@email.com',
+                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+                'age' => 35,
+            ])
+        ]);
+
+        $this->expectException(\Exception::class);
+
+        $form->execute(new LabelValueAction($runtime));
+    }
+
+
+    /** @test */
+    public function an_action_can_take_control_of_the_whole_execution_using_execute_all()
+    {
+        /**
+         * executeAll() must be implemented in the action execute
+         * method. The whole input collection will be passed to 
+         * the action. See the Filter action for details
+         */
+
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'Your Address');
+        $address->setRecipe(Filter::class, [
+            'filter' => true
+        ]);
+
+        $internal = new InputCollection('secondary_info');
+        $internal->setInputs([
+            new TextInput('age', 'Your age'),
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address, $internal,]);
+        
+        $runtime = new DataContainer([
+            'data' => [
+                'name' => "Victor Sánchez",
+                'email' => 'email@email.com',
+                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+                'age' => 35,
+            ]
+        ]);
+
+        $output = $form->executeAll(new Filter($runtime));
+
+        $this->assertCount(3, $output->data);
+        $this->assertContains($runtime->data['name'], $output->data);
+        $this->assertNotContains($runtime->data['address'], $output->data);
+    }
+
 }
