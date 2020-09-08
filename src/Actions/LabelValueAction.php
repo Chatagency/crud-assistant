@@ -34,8 +34,18 @@ class LabelValueAction extends Action implements ActionInterface
         }
 
         $name = $input->getName() ?? null;
+       
         $label = $recipe['label'] ?? $input->getLabel() ?? null;
+
+        if(is_callable($label)) {
+            $label = $label($input, $params);
+        }
+
         $value = $recipe['value'] ?? $model->$name ?? null;
+
+        if(is_callable($value)) {
+            $value = $value($input, $params);
+        }
 
         $value = $this->modifiers($value, $input, $model);
 
