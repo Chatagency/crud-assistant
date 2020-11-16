@@ -229,7 +229,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_with_internal_collections_save_action_output_in_tree_format_by_default()
+    public function an_input_collection_with_internal_collections_save_action_output_in_tree_if_the_is_tree_option_is_true()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');

@@ -14,6 +14,15 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
  */
 class LabelValueAction extends Action implements ActionInterface
 {
+    
+    /**
+     * Result is a tree instead
+     * of flat
+     *
+     * @var boolean
+     */
+    protected $isTree = true;
+    
     /**
      * Execute action on input.
      *
