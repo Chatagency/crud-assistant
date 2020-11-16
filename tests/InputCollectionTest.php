@@ -291,15 +291,15 @@ class InputCollectionTest extends TestCase
 
         $form->execute(new LabelValueAction($runtime));
     }
-
-
+    
     /** @test */
     public function an_action_can_take_control_of_the_whole_execution_using_execute_all()
     {
         /**
-         * executeAll() must be implemented in the action execute
-         * method. The whole input collection will be passed to 
-         * the action. See the Filter action for details
+         * If the action must take control of the whole
+         * execution the method executeAll must be 
+         * used or the option controlsExecution
+         * must be set to true
          */
 
         $name = new TextInput('name', 'Name');
