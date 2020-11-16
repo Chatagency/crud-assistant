@@ -16,6 +16,14 @@ use Chatagency\CrudAssistant\CrudAssistant;
 class Filter extends Action implements ActionInterface
 {
     /**
+     * Action control the 
+     * whole execution
+     *
+     * @var boolean
+     */
+    protected $controlsExecution = true;
+    
+    /**
      * Execute action on input.
      *
      * @return DataContainerInterface

@@ -327,6 +327,9 @@ class InputCollectionTest extends TestCase
         ]);
 
         $output = $form->executeAll(new Filter($runtime));
+        $output2 = $form->execute(new Filter($runtime));
+
+        $this->assertEquals($output, $output2);
 
         $this->assertCount(3, $output->data);
         $this->assertContains($runtime->data['name'], $output->data);
