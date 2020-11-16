@@ -15,4 +15,24 @@ interface ActionInterface
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output);
+
+    /**
+     * Notifies the collection the 
+     * output result must be in a 
+     * tree format instead of a
+     * flat output 
+     *
+     * @return boolean
+     */
+    public function isTree();
+
+    /**
+     * Notifies the collection the action
+     * will take control of the whole
+     * execution. This triggers the 
+     * method executeAll()
+     *
+     * @return boolean
+     */
+    public function controlsExecution();
 }

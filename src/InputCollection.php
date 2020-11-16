@@ -208,11 +208,16 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      */
     public function execute(ActionInterface $action, DataContainerInterface $output = null)
     {
+        if($action->controlsExecution()) {
+            return $this->executeAll($action, $output);
+        }
+
         $output = $output ?? new DataContainer();
 
         foreach ($this->getInputs() as $input) {
             
-            if(CrudAssistant::isInputCollection($input)) {
+            if(CrudAssistant::isInputCollection($input) && $action->isTree()) {
+                
                 $collectionName = $input->getName();
 
                 if(!$collectionName) {
@@ -220,10 +225,12 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
                 }
 
                 $output->$collectionName = $input->execute($action, new DataContainer());
+
+                continue;
+                
             }
-            else {
-                $input->execute($action, $output);
-            }
+
+            $input->execute($action, $output);
         }
 
         return $output;

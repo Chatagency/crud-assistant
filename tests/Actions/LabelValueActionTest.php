@@ -4,6 +4,7 @@ namespace Chatagency\CrudAssistant\Tests\Actions;
 
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Modifiers\BooleanModifier;
 use InvalidArgumentException;
@@ -91,6 +92,54 @@ class LabelValueActionTest extends TestCase
     }
 
     /** @test */
+    public function a_closure_can_be_used_to_alter_the_label_on_the_label_value_action()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+
+        $nameFormat = "The %s is";
+        $name->setRecipe(LabelValueAction::class, [
+            'label' => function(Input $input, DataContainer $params) use ($nameFormat) {
+                return sprintf($nameFormat, $input->getLabel());
+            }
+        ]);
+
+        $emailFormat = "The address is %s";
+        $email->setRecipe(LabelValueAction::class, [
+            'value' => function(Input $input, DataContainer $params) use ($emailFormat) {
+                $model = $params->model;
+                return sprintf($emailFormat, $model->email);
+            }
+        ]);
+
+        $inputs = [$name, $email];
+
+        $model = new DataContainer([
+            'name' => 'John Doe',
+            'email' => 'john@email.com',
+        ]);
+        
+        $container = new DataContainer([
+            'model' => $model,
+        ]);
+        
+        $action =  (new LabelValueAction($container));
+        
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $output = $action->execute($input, $output);
+        }
+
+        $nameLabel = sprintf($nameFormat, $name->getLabel());
+        $emailLabel = $email->getLabel();
+
+        $this->assertCount(2, $output);
+        $this->assertEquals($output->$nameLabel, $model->name);
+        $this->assertNotEquals($output->$emailLabel, $model->email);
+        
+    }
+    
+    /** @test */
     public function modifiers_can_be_added_to_the_label_value_action_recipe()
     {
         $name = new TextInput('name', 'Name');
@@ -127,4 +176,5 @@ class LabelValueActionTest extends TestCase
         $this->assertEquals($modifierData->trueLabel, $output->{$accept->getLabel()});
 
     }
+    
 }

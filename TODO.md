@@ -16,5 +16,5 @@
 - ✅ Add partial inputs (sub form) support to `InputCollection`
 - ✅ Refactor input collection into a composite in order to have recursive forms
 - ✅ Rethink action parameters (specific `DataContainer` classes)
+- ✅ Add `tree` option for recursive forms output
 - ☐ Rethink recipes parameters (new Recipe class)
-- ☐ Add `flat` option for recursive forms output

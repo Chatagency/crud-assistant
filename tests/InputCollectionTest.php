@@ -229,7 +229,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_with_internal_collections_save_action_output_in_tree_format_by_default()
+    public function an_input_collection_with_internal_collections_save_action_output_in_tree_if_the_is_tree_option_is_true()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -291,15 +291,15 @@ class InputCollectionTest extends TestCase
 
         $form->execute(new LabelValueAction($runtime));
     }
-
-
+    
     /** @test */
     public function an_action_can_take_control_of_the_whole_execution_using_execute_all()
     {
         /**
-         * executeAll() must be implemented in the action execute
-         * method. The whole input collection will be passed to 
-         * the action. See the Filter action for details
+         * If the action must take control of the whole
+         * execution the method executeAll must be 
+         * used or the option controlsExecution
+         * must be set to true
          */
 
         $name = new TextInput('name', 'Name');
@@ -327,6 +327,9 @@ class InputCollectionTest extends TestCase
         ]);
 
         $output = $form->executeAll(new Filter($runtime));
+        $output2 = $form->execute(new Filter($runtime));
+
+        $this->assertEquals($output, $output2);
 
         $this->assertCount(3, $output->data);
         $this->assertContains($runtime->data['name'], $output->data);

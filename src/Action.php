@@ -22,6 +22,22 @@ abstract class Action
     protected $params;
 
     /**
+     * Result is a tree instead
+     * of flat
+     *
+     * @var boolean
+     */
+    protected $isTree = false;
+
+    /**
+     * Action control the 
+     * whole execution
+     *
+     * @var boolean
+     */
+    protected $controlsExecution = false;
+
+    /**
      * Construct.
      *
      * @param DataContainerInterface $params
@@ -31,6 +47,32 @@ abstract class Action
         $this->params = $params ?? new DataContainer();
 
         return $this;
+    }
+
+    /**
+     * Notifies the collection the 
+     * output result must be in a 
+     * tree format instead of a
+     * flat output 
+     *
+     * @return boolean
+     */
+    public function isTree()
+    {
+        return $this->isTree;
+    }
+
+    /**
+     * Notifies the collection the action
+     * will take control of the whole
+     * execution. This triggers the 
+     * method executeAll()
+     *
+     * @return boolean
+     */
+    public function controlsExecution()
+    {
+        return $this->controlsExecution;
     }
 
     /**
