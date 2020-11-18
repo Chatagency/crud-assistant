@@ -6,6 +6,7 @@ namespace Chatagency\CrudAssistant;
 
 use BadMethodCallException;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
@@ -69,7 +70,7 @@ class CrudAssistant
     /**
      * Returns input collection.
      *
-     * @return InputCollectionInterface
+     * @return InputCollection
      */
     public function getCollection()
     {
