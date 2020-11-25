@@ -139,7 +139,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      * @param string $key
      * @return bool
      */
-    public function issetInput(string $key)
+    public function isset(string $key)
     {
         return isset($this->inputsArray[$key]);
     }
