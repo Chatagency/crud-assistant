@@ -43,7 +43,7 @@ interface DataContainerInterface
     public function __unset(string $name);
 
     /**
-     * To string method
+     * To string method.
      *
      * @return string
      */
@@ -52,9 +52,8 @@ interface DataContainerInterface
     /**
      * Fills the container. It replaces
      * the current data array with
-     * the one provided
+     * the one provided.
      *
-     * @param array $data
      * @return self
      */
     public function fill(array $data);
@@ -84,38 +83,40 @@ interface DataContainerInterface
      */
     public function all();
 
-    
     /**
-     * Offset set
+     * Offset set.
      *
      * @param mixed $offset
      * @param mixed $value
+     *
      * @return void
      */
     public function offsetSet($offset, $value);
 
     /**
-     * Offset exists
+     * Offset exists.
      *
      * @param mixed $offset
+     *
      * @return void
      */
     public function offsetExists($offset);
 
     /**
-     * Offset unset
+     * Offset unset.
      *
      * @param mixed $offset
+     *
      * @return void
      */
     public function offsetUnset($offset);
 
     /**
-     * Offset set get
+     * Offset set get.
      *
      * @param mixed $offset
+     *
      * @return void
      */
     public function offsetGet($offset);
-    
 }

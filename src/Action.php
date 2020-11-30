@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
-use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
 
@@ -23,17 +22,17 @@ abstract class Action
 
     /**
      * Result is a tree instead
-     * of flat
+     * of flat.
      *
-     * @var boolean
+     * @var bool
      */
     protected $isTree = false;
 
     /**
-     * Action control the 
-     * whole execution
+     * Action control the
+     * whole execution.
      *
-     * @var boolean
+     * @var bool
      */
     protected $controlsExecution = false;
 
@@ -50,12 +49,12 @@ abstract class Action
     }
 
     /**
-     * Notifies the collection the 
-     * output result must be in a 
+     * Notifies the collection the
+     * output result must be in a
      * tree format instead of a
-     * flat output 
+     * flat output.
      *
-     * @return boolean
+     * @return bool
      */
     public function isTree()
     {
@@ -65,10 +64,10 @@ abstract class Action
     /**
      * Notifies the collection the action
      * will take control of the whole
-     * execution. This triggers the 
-     * method executeAll()
+     * execution. This triggers the
+     * method executeAll().
      *
-     * @return boolean
+     * @return bool
      */
     public function controlsExecution()
     {
@@ -76,7 +75,7 @@ abstract class Action
     }
 
     /**
-     * Returns runtime args
+     * Returns runtime args.
      *
      * @return DataContainerInterface
      */
@@ -189,5 +188,4 @@ abstract class Action
     {
         return '' == $value || null === $value;
     }
-
 }

@@ -17,22 +17,22 @@ interface ActionInterface
     public function execute(InputInterface $input, DataContainerInterface $output);
 
     /**
-     * Notifies the collection the 
-     * output result must be in a 
+     * Notifies the collection the
+     * output result must be in a
      * tree format instead of a
-     * flat output 
+     * flat output.
      *
-     * @return boolean
+     * @return bool
      */
     public function isTree();
 
     /**
      * Notifies the collection the action
      * will take control of the whole
-     * execution. This triggers the 
-     * method executeAll()
+     * execution. This triggers the
+     * method executeAll().
      *
-     * @return boolean
+     * @return bool
      */
     public function controlsExecution();
 }

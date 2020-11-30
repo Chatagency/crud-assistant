@@ -39,6 +39,18 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
+    public function isset_can_be_used_to_check_if_an_input_exists()
+    {
+        $form = new InputCollection();
+
+        $form->addInput(new TextInput('name', 'Name'));
+        $form->addInput(new TextInput('email', 'Email'));
+
+        $this->assertTrue($form->isset('name'));
+        $this->assertFalse($form->isset('does_no_exist'));
+    }
+
+    /** @test */
     public function an_exception_is_thrown_if_a_non_existing_input_is_accessed()
     {
         $this->expectException(InvalidArgumentException::class);

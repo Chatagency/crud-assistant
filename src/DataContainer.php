@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use ArrayAccess;
 use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Countable;
 use IteratorAggregate;
-use ArrayAccess;
 
 /**
  * DataContainer.
@@ -83,7 +83,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     }
 
     /**
-     * To string method
+     * To string method.
      *
      * @return string
      */
@@ -95,9 +95,8 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     /**
      * Fills the container. It replaces
      * the current data array with
-     * the one provided
+     * the one provided.
      *
-     * @param array $data
      * @return self
      */
     public function fill(array $data)
@@ -172,16 +171,18 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     {
         return $this->data;
     }
-    
+
     /**
-     * Offset set
+     * Offset set.
      *
      * @param mixed $offset
      * @param mixed $value
+     *
      * @return void
      */
-    public function offsetSet($offset, $value) {        
-        if (is_null($offset)) {
+    public function offsetSet($offset, $value)
+    {
+        if (null === $offset) {
             $this->data[] = $value;
         } else {
             $this->data[$offset] = $value;
@@ -189,32 +190,38 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     }
 
     /**
-     * Offset exists
+     * Offset exists.
      *
      * @param mixed $offset
+     *
      * @return void
      */
-    public function offsetExists($offset) {
+    public function offsetExists($offset)
+    {
         return isset($this->data[$offset]);
     }
 
     /**
-     * Offset unset
+     * Offset unset.
      *
      * @param mixed $offset
+     *
      * @return void
      */
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         unset($this->data[$offset]);
     }
 
     /**
-     * Offset set get
+     * Offset set get.
      *
      * @param mixed $offset
+     *
      * @return void
      */
-    public function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         if (!\array_key_exists($offset, $this->data)) {
             $trace = debug_backtrace();
             trigger_error(

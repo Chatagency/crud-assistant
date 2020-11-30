@@ -14,15 +14,14 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
  */
 class LabelValueAction extends Action implements ActionInterface
 {
-    
     /**
      * Result is a tree instead
-     * of flat
+     * of flat.
      *
-     * @var boolean
+     * @var bool
      */
     protected $isTree = true;
-    
+
     /**
      * Execute action on input.
      *
@@ -43,16 +42,16 @@ class LabelValueAction extends Action implements ActionInterface
         }
 
         $name = $input->getName() ?? null;
-       
+
         $label = $recipe['label'] ?? $input->getLabel() ?? null;
 
-        if(is_callable($label)) {
+        if (\is_callable($label)) {
             $label = $label($input, $params);
         }
 
         $value = $recipe['value'] ?? $model->$name ?? null;
 
-        if(is_callable($value)) {
+        if (\is_callable($value)) {
             $value = $value($input, $params);
         }
 
