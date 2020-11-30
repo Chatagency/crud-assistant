@@ -6,7 +6,6 @@ namespace Chatagency\CrudAssistant;
 
 use BadMethodCallException;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
-use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
@@ -60,11 +59,13 @@ class CrudAssistant
     /**
      * Creates new instance of this class.
      *
+     * @param array $args
+     *
      * @return self
      */
-    public static function make(... $args)
+    public static function make(...$args)
     {
-        return new static(... $args);
+        return new static(...$args);
     }
 
     /**
@@ -78,15 +79,12 @@ class CrudAssistant
     }
 
     /**
-     * Verifies if object is an input collection
+     * Verifies if object is an input collection.
      *
-     * @param InputInterface $input
-     * 
-     * @return boolean
+     * @return bool
      */
     public static function isInputCollection(InputInterface $input)
     {
         return is_a($input, InputCollectionInterface::class);
     }
-
 }

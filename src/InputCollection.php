@@ -134,9 +134,8 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     }
 
     /**
-     * Checks if input exists
+     * Checks if input exists.
      *
-     * @param string $key
      * @return bool
      */
     public function isset(string $key)
@@ -219,26 +218,23 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      */
     public function execute(ActionInterface $action, DataContainerInterface $output = null)
     {
-        if($action->controlsExecution()) {
+        if ($action->controlsExecution()) {
             return $this->executeAll($action, $output);
         }
 
         $output = $output ?? new DataContainer();
 
         foreach ($this->getInputs() as $input) {
-            
-            if(CrudAssistant::isInputCollection($input) && $action->isTree()) {
-                
+            if (CrudAssistant::isInputCollection($input) && $action->isTree()) {
                 $collectionName = $input->getName();
 
-                if(!$collectionName) {
+                if (!$collectionName) {
                     throw new Exception('All internal collections must have a name', 500);
                 }
 
                 $output->$collectionName = $input->execute($action, new DataContainer());
 
                 continue;
-                
             }
 
             $input->execute($action, $output);
@@ -257,7 +253,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     public function executeAll(ActionInterface $action, DataContainerInterface $output = null)
     {
         $output = $output ?? new DataContainer();
-        
+
         return $action->execute($this, $output);
     }
 

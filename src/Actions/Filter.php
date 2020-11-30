@@ -16,13 +16,13 @@ use Chatagency\CrudAssistant\CrudAssistant;
 class Filter extends Action implements ActionInterface
 {
     /**
-     * Action control the 
-     * whole execution
+     * Action control the
+     * whole execution.
      *
-     * @var boolean
+     * @var bool
      */
     protected $controlsExecution = true;
-    
+
     /**
      * Execute action on input.
      *
@@ -31,35 +31,31 @@ class Filter extends Action implements ActionInterface
     public function execute(InputInterface $input, DataContainerInterface $output)
     {
         $params = $this->getParams();
-        
+
         $this->checkRequiredParams($params, ['data']);
 
         if (!isset($output->data)) {
             $output->data = $params->data;
         }
 
-        if(CrudAssistant::isInputCollection($input)) {
-            
-            foreach($input as $val) {
-                if(CrudAssistant::isInputCollection($val)) {
+        if (CrudAssistant::isInputCollection($input)) {
+            foreach ($input as $val) {
+                if (CrudAssistant::isInputCollection($val)) {
                     $output = $this->execute($val, $output);
-                }
-                else {
+                } else {
                     $output = $this->executeOne($val, $output);
                 }
             }
+
             return $output;
         }
 
         return $this->executeOne($input, $output);
-
     }
 
     /**
-     * Executes single input
+     * Executes single input.
      *
-     * @param InputInterface $input
-     * 
      * @return DataContainerInterface
      */
     protected function executeOne(InputInterface $input, DataContainerInterface $output)
@@ -86,5 +82,4 @@ class Filter extends Action implements ActionInterface
 
         return $output;
     }
-
 }
