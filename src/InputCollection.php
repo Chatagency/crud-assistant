@@ -134,6 +134,17 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     }
 
     /**
+     * Checks if input exists
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function isset(string $key)
+    {
+        return isset($this->inputsArray[$key]);
+    }
+
+    /**
      * Returns inputs array.
      *
      * @throws InvalidArgumentException
