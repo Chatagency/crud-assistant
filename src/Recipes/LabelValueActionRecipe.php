@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Chatagency\Recipes;
+namespace Chatagency\CrudAssistant\Recipes;
 
-use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
-class FilterRecipe extends Recipe implements RecipeInterface
+class LabelValueActionRecipe extends Recipe implements RecipeInterface
 {
     /**
      * Returns recipe identifier
      *
-     * @return void
+     * @return string
      */
     public function getIdentifier()
     {
-        return Filter::class;
+        return LabelValueAction::class;
     }
 }
