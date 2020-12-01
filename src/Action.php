@@ -84,43 +84,6 @@ abstract class Action
     }
 
     /**
-     * Checks for value is to be ignored.
-     *
-     * @param $recipe
-     *
-     * @return bool
-     */
-    protected function ignore($recipe)
-    {
-        if (!\is_array($recipe)) {
-            return false;
-        }
-
-        return $recipe['ignore'] ?? false;
-    }
-
-    /**
-     * Ignore if value is empty.
-     *
-     * @param $value
-     * @param $recipe
-     *
-     * @return bool
-     */
-    protected function ignoreIfEmpty($value, $recipe)
-    {
-        if (!\is_array($recipe)) {
-            return false;
-        }
-
-        if (!$this->isEmpty($value)) {
-            return false;
-        }
-
-        return $recipe['ignoreIfEmpty'] ?? false;
-    }
-
-    /**
      * Checks params integrity.
      *
      * @throws InvalidArgumentException
@@ -148,11 +111,11 @@ abstract class Action
     {
         $recipe = $input->getRecipe(static::class);
 
-        if (!\is_array($recipe)) {
+        if (!$recipe) {
             return $value;
         }
 
-        $modifiers = $recipe['modifiers'] ?? null;
+        $modifiers = $recipe->getModifiers() ?? null;
 
         if (\is_array($modifiers)) {
             foreach ($modifiers as $modifier) {
@@ -183,7 +146,7 @@ abstract class Action
      *
      * @return bool
      */
-    protected function isEmpty($value)
+    public function isEmpty($value)
     {
         return '' == $value || null === $value;
     }
