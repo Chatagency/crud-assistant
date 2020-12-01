@@ -261,7 +261,7 @@ abstract class Input implements InputInterface
     /**
      * Returns recipe by type.
      *
-     * @return Recipe
+     * @return Recipe|null
      */
     public function getRecipe(string $recipe)
     {
