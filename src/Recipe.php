@@ -91,6 +91,16 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     }
 
     /**
+     * Returns modifiers array
+     *
+     * @return array
+     */
+    public function getModifiers()
+    {
+        return $this->modifiers;
+    }
+
+    /**
      * Checks if input is ignored
      *
      * @return boolean
