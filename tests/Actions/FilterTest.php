@@ -5,6 +5,8 @@ namespace Chatagency\CrudAssistant\Tests\Actions;
 use Chatagency\CrudAssistant\Actions\Filter;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Recipe;
+use Chatagency\Recipes\FilterRecipe;
 use PHPUnit\Framework\TestCase;
 
 class FilterTest extends TestCase
@@ -17,9 +19,11 @@ class FilterTest extends TestCase
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(Filter::class, [
-            'filter' => true
-        ]);
+
+        $recipe = new FilterRecipe();
+        $recipe->filter = true;
+        
+        $email->setRecipe($recipe);
         
         $description = new TextInput('description', 'Description');
         
@@ -50,10 +54,14 @@ class FilterTest extends TestCase
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(Filter::class, function($input, $params, $data){
+        
+        $recipe = new FilterRecipe();
+        $recipe->closure = function($input, $params, $data){
             unset($data[$input->getName()]);
             return $data;
-        });
+        };
+
+        $email->setRecipe($recipe);
         
         $description = new TextInput('description', 'Description');
         
@@ -83,9 +91,11 @@ class FilterTest extends TestCase
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(Filter::class, [
-            'ignoreIfEmpty' => true
-        ]);
+
+        $recipe = (new FilterRecipe())
+            ->ignore();
+        
+        $email->setRecipe($recipe);
         
         $description = new TextInput('description', 'Description');
         

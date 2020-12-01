@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Exception;
+use InvalidArgumentException;
 
 /**
  * the recipe class stores input
  * information and instructions 
  * for the action
  */
-abstract class Recipe extends DataContainer
+abstract class Recipe extends DataContainer implements RecipeInterface
 {
     /**
      * Ignore input
@@ -34,6 +36,16 @@ abstract class Recipe extends DataContainer
      * @var array
      */
     protected $setters = [];
+
+    /**
+     * Returns recipe identifier
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return null;
+    }
 
     /**
      * Sets the ignore value
