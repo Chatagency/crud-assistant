@@ -13,7 +13,7 @@ use Chatagency\CrudAssistant\CrudAssistant;
 /**
  * Filter action.
  */
-class Filter extends Action implements ActionInterface
+class FilterAction extends Action implements ActionInterface
 {
     /**
      * Action control the
@@ -67,13 +67,15 @@ class Filter extends Action implements ActionInterface
         $name = $input->getName();
         $recipe = $input->getRecipe(static::class);
         $value = $data[$name] ?? null;
+        $ignoreIfEmpty = $recipe->ignoreIfEmpty ?? null;
+        $callback = $recipe->callback ?? null;
 
-        if ($this->ignoreIfEmpty($value, $recipe)) {
+        if ($ignoreIfEmpty && $this->isEmpty($value)) {
             unset($data[$name]);
         }
 
-        if (\is_callable($recipe)) {
-            $data = $recipe($input, $params, $data);
+        if (\is_callable($callback)) {
+            $data = $callback($input, $params, $data);
         } elseif (isset($recipe['filter']) && $recipe['filter']) {
             unset($data[$name]);
         }

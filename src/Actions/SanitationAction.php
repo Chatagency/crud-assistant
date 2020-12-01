@@ -12,7 +12,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 /**
  * Sanitation action.
  */
-class Sanitation extends Action implements ActionInterface
+class SanitationAction extends Action implements ActionInterface
 {
     /**
      * Execute action on input.
@@ -32,17 +32,18 @@ class Sanitation extends Action implements ActionInterface
         $recipe = $input->getRecipe(static::class);
         $requestArray = $output->requestArray;
         $inputName = $input->getName();
+        $type = $recipe['type'] ?? null;
 
-        if (isset($requestArray[$inputName]) && $recipe) {
-            if (\is_array($recipe)) {
+        if (isset($requestArray[$inputName]) && $type) {
+            if (\is_array($type)) {
                 $requestArray[$inputName.'_raw'] = $requestArray[$inputName];
-                foreach ($recipe as $filter) {
+                foreach ($type as $filter) {
                     $id = $filter['id'] ?? null;
                     $options = $filter['options'] ?? [];
                     $requestArray = $this->applyFilter($inputName, $id, $requestArray, $options);
                 }
             } else {
-                $requestArray = $this->applyFilter($inputName, $recipe, $requestArray);
+                $requestArray = $this->applyFilter($inputName, $type, $requestArray);
             }
         }
 
