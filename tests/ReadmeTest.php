@@ -64,7 +64,7 @@ class ReadmeTest extends TestCase
 
         $data = new DataContainer([
             'requestArray' => []
-          ]);
+        ]);
         
         $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\SanitationAction($data));
     }
