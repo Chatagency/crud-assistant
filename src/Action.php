@@ -49,10 +49,9 @@ abstract class Action
     }
 
     /**
-     * Notifies the collection the
-     * output result must be in a
-     * tree format instead of a
-     * flat output.
+     * Notifies the collection the output 
+     * result must be in a tree format 
+     * instead of a flat output.
      *
      * @return bool
      */
