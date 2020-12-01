@@ -7,23 +7,39 @@ namespace Chatagency\CrudAssistant;
 use Exception;
 
 /**
- * Recipe.
+ * the recipe class stores input
+ * information and instructions 
+ * for the action
  */
 abstract class Recipe extends DataContainer
 {
+    /**
+     * Ignore input
+     *
+     * @var boolean
+     */
     protected $ignored = false;
 
+    /**
+     * Input value modifiers
+     *
+     * @var array
+     */
     protected $modifiers = [];
 
+    /**
+     * Allowed setters.
+     * Ignored if empty.
+     *
+     * @var array
+     */
     protected $setters = [];
 
-    public function __construct(array $data = [])
-    {
-        
-        
-        return parent::__construct($data);
-    }
-    
+    /**
+     * Sets the ignore value
+     * 
+     * @return self
+     */
     public function ignore($ignore = true)
     {
         $this->ignored = $ignore;
@@ -31,16 +47,42 @@ abstract class Recipe extends DataContainer
         return $this;
     }
 
+    /**
+     * Adds modifier to the array
+     *
+     * @param Modifier $modifier
+     * 
+     * @return self
+     */
     public function setModifier(Modifier $modifier)
     {
         $this->modifiers[] = $modifier;
+
+        return $this;
     }
 
+    /**
+     * Adds multiple modifiers to the 
+     * modifiers array
+     *
+     * @param array $modifiers
+     * 
+     * @return self
+     */
     public function setModifiers(array $modifiers)
     {
-        $this->modifiers = array_merge($this->modifiers, $modifiers);
+        foreach($modifiers as $modifier) {
+            $this->setModifier($modifier);
+        }
+
+        return $this;
     }
 
+    /**
+     * Checks if input is ignored
+     *
+     * @return boolean
+     */
     public function isIgnored()
     {
         return $this->ignored;
@@ -54,19 +96,11 @@ abstract class Recipe extends DataContainer
         /**
          * Check if in setters array
          */
-        if(!empty($this->setters)) {
-            if(!isset($this->setters[$name])) {
-                throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
-            }
-            
+        if(!empty($this->setters) && !isset($this->setters[$name])) {
+            throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
         }
 
         return parent::__set($name, $value);
-    }
-
-    public function validateSetter(string $name)
-    {
-        
     }
 
 }
