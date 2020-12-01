@@ -47,6 +47,7 @@ Other input types can be easily created.
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
+use Chatagency\CrudAssistant\InputCollection;
 
 $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
 $email->setType('email');
@@ -54,17 +55,24 @@ $email->setAttribute('required', 'required');
 
 $hobby = new SelectInput($inputName = 'hobbies', $inputLabel = 'Your Hobbies');
 
-$hobby->setSubElements(new InputCollection([
+$hobbies = new InputCollection();
+$hobbies->setInputs([
     new OptionInput('Read'),
     new OptionInput('Watch movies'),
-]));
+]);
+
+$hobby->setSubElements($hobbies);
 ```
 This way we can group all descriptions/instructions in one place. But (arguably) more important, it can hold `Recipes` for `Actions`.
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->setRecipe(\Chatagency\CrudAssistant\Actions\Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+$name->setRecipe(new SanitationActionRecipe([
+    'type' => FILTER_SANITIZE_SPECIAL_CHARS
+]));
 ```
 
 ### InputCollection - [docs link]
@@ -81,16 +89,13 @@ $email = new TextInput($inputName = 'email', $inputLabel = 'Your Email');
 $email->setType('email');
 
 $collection = new InputCollection();
-$collection->setInputs([$name, $email]);   
-```
-An action can be called on an `InputCollection` using the execute method:
+$collection->setInputs([$name, $email]);
 
-```php
 $data = new DataContainer([
-  'requestArray' => []
+    'requestArray' => []
 ]);
 
-$actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\Sanitation($data));
+$actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\SanitationAction($data));
 ```
 
 An `InputCollection` can also hold other collections.
@@ -112,7 +117,7 @@ $collection->setInputs([
 $inputs = [$name, $email, $collection];
 
 $collection = new InputCollection();
-$collection->setInputs($inputs);   
+$collection->setInputs($inputs); 
 ```
 
 ### Actions - [docs link]
@@ -124,27 +129,30 @@ If runtime parameters must be passed to the action a `DataContainer` must be use
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Actions\Sanitation;
-use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\Actions\SanitationAction;
+use Chatagency\CrudAssistant\Actions\FilterAction;
+use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
 
 // Input
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
-$name->setRecipe(Filter::class, [
+$name->setRecipe(new SanitationActionRecipe([
+    'type' => FILTER_SANITIZE_SPECIAL_CHARS
+]));
+$name->setRecipe(new FilterActionRecipe([
     'filter' => true
-]);
+]) );
 
 $collection = new InputCollection();
 $collection->setInputs([$name]);
 
 // sanitizes values
-$sanitized = $collection->execute(new Sanitation(
+$sanitized = $collection->execute(new SanitationAction(
     new DataContainer([
         'requestArray' => []
     ])
 ));
 // returns filtered values
-$rules = $collection->execute(new Filter(
+$rules = $collection->execute(new FilterAction(
     new DataContainer([
         'data' => []
     ])
@@ -176,22 +184,23 @@ It also doubles as a `InputCollection` facade:
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\Actions\FilterAction;
+use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
 
 $name = new TextInput('name');
-  $name->setRecipe(Filter::class, [
-      'filter' => true
-  ]);
-  
-  $manager = CrudAssistant::make([$name]);
-  
-  $rules = $manager->execute(new Filter(
-      new DataContainer([
-          'data' => [
-              'name' => 'John Doe'
-          ]
-      ])
-  ));
+$name->setRecipe(new FilterActionRecipe([
+    'filter' => true
+]));
+
+$manager = CrudAssistant::make([$name]);
+
+$rules = $manager->execute(new FilterAction(
+    new DataContainer([
+        'data' => [
+            'name' => 'John Doe'
+        ]
+    ])
+));
 ```
 
 ## License
