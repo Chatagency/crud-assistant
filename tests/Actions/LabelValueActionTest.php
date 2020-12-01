@@ -156,7 +156,9 @@ class LabelValueActionTest extends TestCase
         ]);
 
         $recipe = new LabelValueActionRecipe();
-        $recipe->setModifier(new BooleanModifier($modifierData));
+        $recipe->setModifiers([
+            new BooleanModifier($modifierData)
+        ]);
         $accept->setRecipe($recipe);
 
         $inputs = [$name, $accept];
