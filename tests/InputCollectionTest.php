@@ -2,12 +2,13 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
-use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -317,9 +318,9 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'Your Address');
-        $address->setRecipe(Filter::class, [
+        $address->setRecipe(new FilterActionRecipe([
             'filter' => true
-        ]);
+        ]));
 
         $internal = new InputCollection('secondary_info');
         $internal->setInputs([
@@ -338,8 +339,8 @@ class InputCollectionTest extends TestCase
             ]
         ]);
 
-        $output = $form->executeAll(new Filter($runtime));
-        $output2 = $form->execute(new Filter($runtime));
+        $output = $form->executeAll(new FilterAction($runtime));
+        $output2 = $form->execute(new FilterAction($runtime));
 
         $this->assertEquals($output, $output2);
 

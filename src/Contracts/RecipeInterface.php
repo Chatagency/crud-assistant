@@ -14,7 +14,7 @@ interface RecipeInterface
     /**
      * Returns recipe identifier
      *
-     * @return void
+     * @return string
      */
     public function getIdentifier();
 
@@ -36,6 +36,13 @@ interface RecipeInterface
      * @return self
      */
     public function setModifiers(array $modifiers);
+
+    /**
+     * Returns modifiers array
+     *
+     * @return array
+     */
+    public function getModifiers();
 
     /**
      * Checks if input is ignored

@@ -10,6 +10,7 @@ use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Recipes\LabelValueActionRecipe;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -34,26 +35,12 @@ class InputTest extends TestCase
 
         $input = new TextInput('email', 'Email');
         $input->setType('email');
-        $input->setRecipe(LabelValueAction::class, $value);
+        $input->setRecipe(new LabelValueActionRecipe($value));
 
-        $this->assertEquals($input->getRecipe(LabelValueAction::class), $value);
-
-    }
-
-    /** @test */
-    public function if_a_recipe_with_invalid_action_is_set_an_exception_is_throw()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $input = new TextInput('email', 'Email');
-        $input->setType('email');
-        
-        $input->setRecipe(CrudAssistant::class, 1);
-
-        $this->assertNull($input->getRecipe(CrudAssistant::class));
+        $this->assertEquals($input->getRecipe(LabelValueAction::class)->all(), $value);
 
     }
-    
+
     /** @test */
     public function if_recipe_does_not_exist_in_class_null_is_returned()
     {

@@ -3,11 +3,12 @@
 namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Chatagency\CrudAssistant\Actions\Sanitation;
+use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\DataContainer;
 use BadMethodCallException;
+use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
 
 class CrudAssistantTest extends TestCase
 {
@@ -37,11 +38,13 @@ class CrudAssistantTest extends TestCase
     public function actions_can_be_executed_using_the_execute_method_from_the_input_collection()
     {
         $name = new TextInput('name');
-        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $name->setRecipe(new SanitationActionRecipe([
+            'type' => FILTER_SANITIZE_SPECIAL_CHARS
+        ]));
 
         $manager = new CrudAssistant([$name]);
 
-        $output = $manager->execute(new Sanitation(
+        $output = $manager->execute(new SanitationAction(
             new DataContainer([
                 'requestArray' => [
                     'name' => 'John Smith',
