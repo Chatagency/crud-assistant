@@ -125,7 +125,7 @@ abstract class Recipe extends DataContainer implements RecipeInterface
         /**
          * Check if in setters array
          */
-        if(!empty($this->setters) && !isset($this->setters[$name])) {
+        if(!empty($this->setters) && !in_array($name, $this->setters)) {
             throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
         }
 
