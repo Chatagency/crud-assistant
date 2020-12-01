@@ -2,21 +2,26 @@
 
 namespace Chatagency\CrudAssistant\Tests\Actions;
 
-use Chatagency\CrudAssistant\Actions\Sanitation;
+use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
 use PHPUnit\Framework\TestCase;
 
-class SanitationTest extends TestCase
+class SanitationActionTest extends TestCase
 {
     /** @test */
     public function the_sanitation_action_is_used_to_sanitize_the_request()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $nameRecipe = new SanitationActionRecipe();
+        $nameRecipe->type = FILTER_SANITIZE_SPECIAL_CHARS;
+        $name->setRecipe($nameRecipe);
 
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(Sanitation::class, FILTER_SANITIZE_EMAIL);
+        $emailRecipe = new SanitationActionRecipe();
+        $emailRecipe->type = FILTER_SANITIZE_EMAIL;
+        $email->setRecipe($emailRecipe);
 
         $inputs = [$name, $email];
 
@@ -27,7 +32,7 @@ class SanitationTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new Sanitation($container);
+        $sanitation = new SanitationAction($container);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -45,7 +50,9 @@ class SanitationTest extends TestCase
     public function the_raw_values_can_be_accessed_with_the_sufix_underscore_raw()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $name->setRecipe(new SanitationActionRecipe([
+            'type' => FILTER_SANITIZE_SPECIAL_CHARS
+        ]));
 
         $inputs = [$name];
 
@@ -55,7 +62,7 @@ class SanitationTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new Sanitation($container);
+        $sanitation = new SanitationAction($container);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -72,11 +79,11 @@ class SanitationTest extends TestCase
     public function an_array_can_be_passed_as_a_value_to_the_action_with_multiple_rules()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(Sanitation::class, [
-            [
-                'id' => FILTER_SANITIZE_SPECIAL_CHARS
+        $name->setRecipe(new SanitationActionRecipe([
+            'type' => [
+                ['id' => FILTER_SANITIZE_SPECIAL_CHARS]
             ],
-        ]);
+        ]));
 
         $inputs = [$name];
 
@@ -86,7 +93,7 @@ class SanitationTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new Sanitation($container);
+        $sanitation = new SanitationAction($container);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -102,7 +109,9 @@ class SanitationTest extends TestCase
     public function if_one_of_the_values_of_the_request_is_an_array_the_filter_is_applied_to_all_values()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(Sanitation::class, FILTER_SANITIZE_SPECIAL_CHARS);
+        $name->setRecipe(new SanitationActionRecipe([
+            'type' => FILTER_SANITIZE_SPECIAL_CHARS
+        ]));
 
         $inputs = [$name];
 
@@ -115,7 +124,7 @@ class SanitationTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new Sanitation($container);
+        $sanitation = new SanitationAction($container);
         
         $output = new DataContainer();
         foreach($inputs as $input) {

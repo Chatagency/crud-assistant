@@ -2,25 +2,24 @@
 
 namespace Chatagency\CrudAssistant\Tests\Actions;
 
-use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipe;
-use Chatagency\Recipes\FilterRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
 use PHPUnit\Framework\TestCase;
 
-class FilterTest extends TestCase
+class FilterActionTest extends TestCase
 {
     /** @test */
     public function a_filter_action_is_used_to_exclude_input_data_from_dataset()
     {
-        $filter = new Filter();
+        $filter = new FilterAction();
 
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
 
-        $recipe = new FilterRecipe();
+        $recipe = new FilterActionRecipe();
         $recipe->filter = true;
         
         $email->setRecipe($recipe);
@@ -36,7 +35,7 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filter = new Filter($container);
+        $filter = new FilterAction($container);
 
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -55,8 +54,8 @@ class FilterTest extends TestCase
         
         $email = new TextInput('email', 'Email');
         
-        $recipe = new FilterRecipe();
-        $recipe->closure = function($input, $params, $data){
+        $recipe = new FilterActionRecipe();
+        $recipe->callback = function($input, $params, $data){
             unset($data[$input->getName()]);
             return $data;
         };
@@ -74,7 +73,7 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filter = new Filter($container);
+        $filter = new FilterAction($container);
 
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -92,8 +91,8 @@ class FilterTest extends TestCase
         
         $email = new TextInput('email', 'Email');
 
-        $recipe = (new FilterRecipe())
-            ->ignore();
+        $recipe = (new FilterActionRecipe());
+        $recipe->ignoreIfEmpty = true;
         
         $email->setRecipe($recipe);
         
@@ -108,7 +107,7 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filter = new Filter($container);
+        $filter = new FilterAction($container);
 
         $output = new DataContainer();
         foreach($inputs as $input) {
