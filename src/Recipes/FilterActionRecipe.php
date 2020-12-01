@@ -8,15 +8,16 @@ use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
+/**
+ * Filter Action Recipe
+ */
 class FilterActionRecipe extends Recipe implements RecipeInterface
 {
     /**
-     * Returns recipe identifier
+     * Recipe identifier
      *
-     * @return string
+     * @var string
      */
-    public function getIdentifier()
-    {
-        return FilterAction::class;
-    }
+    protected $identifier = FilterAction::class;
+    
 }

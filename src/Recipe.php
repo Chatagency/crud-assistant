@@ -16,6 +16,13 @@ use InvalidArgumentException;
 abstract class Recipe extends DataContainer implements RecipeInterface
 {
     /**
+     * Recipe identifier
+     *
+     * @var string
+     */
+    protected $identifier;
+    
+    /**
      * Ignore input
      *
      * @var boolean
@@ -44,7 +51,7 @@ abstract class Recipe extends DataContainer implements RecipeInterface
      */
     public function getIdentifier()
     {
-        return null;
+        return $this->identifier;
     }
 
     /**

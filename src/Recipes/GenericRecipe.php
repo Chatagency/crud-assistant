@@ -7,8 +7,16 @@ namespace Chatagency\CrudAssistant\Recipes;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
+/**
+ * Generic Recipe
+ */
 class GenericRecipe extends Recipe implements RecipeInterface
 {
+    /**
+     * Recipe identifier
+     *
+     * @var string
+     */
     protected $identifier;
     
     /**
@@ -24,13 +32,4 @@ class GenericRecipe extends Recipe implements RecipeInterface
         return $this;
     }
     
-    /**
-     * Returns recipe identifier
-     *
-     * @return string
-     */
-    public function getIdentifier()
-    {
-        return $this->identifier;
-    }
 }

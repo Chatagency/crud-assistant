@@ -8,15 +8,16 @@ use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
+/**
+ * Label Value Action Recipe
+ */
 class LabelValueActionRecipe extends Recipe implements RecipeInterface
 {
     /**
-     * Returns recipe identifier
+     * Recipe identifier
      *
-     * @return string
+     * @var string
      */
-    public function getIdentifier()
-    {
-        return LabelValueAction::class;
-    }
+    protected $identifier = LabelValueAction::class;
+    
 }

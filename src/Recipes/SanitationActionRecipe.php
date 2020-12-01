@@ -8,15 +8,16 @@ use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
+/**
+ * Sanitation Action Recipe
+ */
 class SanitationActionRecipe extends Recipe implements RecipeInterface
 {
     /**
-     * Returns recipe identifier
+     * Recipe identifier
      *
-     * @return string
+     * @var string
      */
-    public function getIdentifier()
-    {
-        return SanitationAction::class;
-    }
+    protected $identifier = SanitationAction::class;
+    
 }
