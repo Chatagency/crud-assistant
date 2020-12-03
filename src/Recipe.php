@@ -164,10 +164,9 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     /**
      * Checks if a setter is valid
      *
-     * @param string $setter
      * @return void
      */
-    protected function validateSetter(string $setter)
+    protected function validateSetter($setter)
     {
         /**
          * Check if in setters array
