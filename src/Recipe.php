@@ -118,18 +118,63 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     }
 
     /**
-     * Magic set method.
+     * {@inheritdoc}
      */
     public function __set(string $name, $value)
+    {
+        $this->validateSetter($name);
+
+        return parent::__set($name, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fill(array $data)
+    {
+        $this->validateSetters($data);
+
+        return parent::fill($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function add(array $data)
+    {
+        $this->validateSetters($data);
+        
+        return parent::add($data);
+    }
+
+    /**
+     * Validates if a key/value
+     * array has valid setters
+     *
+     * @param array $data
+     * @return void
+     */
+    public function validateSetters(array $data)
+    {
+        foreach($data as $setter => $value) {
+            $this->validateSetter($setter);
+        }
+    }
+
+    /**
+     * Checks if a setter is valid
+     *
+     * @param string $setter
+     * @return void
+     */
+    protected function validateSetter(string $setter)
     {
         /**
          * Check if in setters array
          */
-        if(!empty($this->setters) && !in_array($name, $this->setters)) {
-            throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
+        if(!empty($this->setters) && !in_array($setter, $this->setters)) {
+            throw new Exception('The setter "'.$setter.'" is not available on this recipe', 500);
         }
-
-        return parent::__set($name, $value);
     }
 
 }
