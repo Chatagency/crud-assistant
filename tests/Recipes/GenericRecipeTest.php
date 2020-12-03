@@ -26,19 +26,32 @@ class GenericRecipeTest extends TestCase
 
         $collection = (CrudAssistant::make([$name, $email]))->getCollection();
 
-        $output = $collection->execute(new FilterAction(
-            new DataContainer([
-                'data' => [
-                    'name' => 'John',
-                    'email' => 'john@john.com'
-                ]
-            ])
-        ));
+        $params = new DataContainer([
+            'data' => [
+                'name' => 'John',
+                'email' => 'john@john.com'
+            ]
+        ]);
+
+        $output = $collection->execute(new FilterAction($params));
 
         $data = $output->data;
 
         $this->assertCount(1, $data);
         $this->assertArrayNotHasKey('name', $data);
+
+        $genericRecipe2 = new GenericRecipe();
+        $genericRecipe2->setIdentifier(FilterAction::class);
+
+        $genericRecipe2->add([
+            'filter' => true
+        ]);
+
+        $email->setRecipe($genericRecipe2);
+
+        $output2 = $collection->execute(new FilterAction($params));
+
+        $this->assertCount(0, $output2->data);
         
     }
 
@@ -60,7 +73,23 @@ class GenericRecipeTest extends TestCase
          */
         $genericRecipe->notASetter = true;
 
+    }
 
+    /** @test */
+    public function setters_are_also_validated_when_the_method_all_is_used()
+    {
+        $name = new TextInput('name');
+        $email = (new TextInput('email'))->setType('email');
 
+        $genericRecipe = new GenericRecipe();
+        $genericRecipe->setIdentifier(FilterAction::class);
+        $genericRecipe->setSetters(['filter']);
+        $genericRecipe->filter = true;
+
+        $this->expectException(Exception::class);
+
+        $genericRecipe->add([
+            'notASetter' => true
+        ]);
     }
 }

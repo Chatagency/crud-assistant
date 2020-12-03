@@ -28,6 +28,20 @@ class DataContainerTest extends TestCase
     }
 
     /** @test */
+    public function values_can_be_added_to_the_container_after_it_has_been_instantiated()
+    {
+        $container = new DataContainer([
+            'key' => 'value'
+        ]);
+        $container->add([
+            'another' => 'day'
+        ]);
+
+        $this->assertCount(2, $container);
+        $this->assertEquals('day', $container->another);
+    }
+
+    /** @test */
     public function if_a_non_existing_value_is_accessed_a_php_notice_is_triggered()
     {
         $container = new DataContainer();
@@ -87,7 +101,24 @@ class DataContainerTest extends TestCase
         $container->new = 'look';
         $container->hobbies = ['run', 'play pokemon go', 'drink wine'];
 
-        $this->assertCount(3, $container->all());
+        $content = $container->all();
+
+        $this->assertIsArray($content);
+        $this->assertCount(3, $content);
+    }
+
+    /** @test */
+    public function all_values_can_also_be_access_using_the_to_array_method()
+    {
+        $container = new DataContainer();
+        $container->dollars = '$10.00';
+        $container->new = 'look';
+        $container->hobbies = ['run', 'play pokemon go', 'drink wine'];
+
+        $content = $container->toArray();
+
+        $this->assertIsArray($content);
+        $this->assertCount(3, $content);
     }
     
     /** @test */
