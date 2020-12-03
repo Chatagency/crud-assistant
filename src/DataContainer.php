@@ -29,7 +29,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      */
     public function __construct(array $data = [])
     {
-        $this->data = $data;
+        $this->fill($data);
 
         return $this;
     }
@@ -107,6 +107,18 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     }
 
     /**
+     * Adds values to the data array
+     *
+     * @return self
+     */
+    public function add(array $data)
+    {
+        $this->data = array_merge($this->data, $data);
+
+        return $this;
+    }
+
+    /**
      * Get an iterator for the items.
      *
      * @return \ArrayIterator
@@ -170,6 +182,16 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     public function all()
     {
         return $this->data;
+    }
+
+    /**
+     * all() method alias.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->all();
     }
 
     /**

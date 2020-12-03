@@ -59,6 +59,13 @@ interface DataContainerInterface
     public function fill(array $data);
 
     /**
+     * Adds values to the data array
+     *
+     * @return self
+     */
+    public function add(array $data);
+
+    /**
      * Verifies that all keys in an
      * array are set.
      *
