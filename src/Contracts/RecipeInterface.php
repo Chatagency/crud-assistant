@@ -45,6 +45,13 @@ interface RecipeInterface
     public function getModifiers();
 
     /**
+     * Sets the ignore value
+     * 
+     * @return self
+     */
+    public function ignore($ignore = true);
+
+    /**
      * Checks if input is ignored
      *
      * @return boolean
