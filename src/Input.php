@@ -10,7 +10,6 @@ use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use InvalidArgumentException;
 
 /**
  * Input Base Class.
