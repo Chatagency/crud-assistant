@@ -43,6 +43,29 @@ interface DataContainerInterface
     public function __unset(string $name);
 
     /**
+     * To string method.
+     *
+     * @return string
+     */
+    public function __toString();
+
+    /**
+     * Fills the container. It replaces
+     * the current data array with
+     * the one provided.
+     *
+     * @return self
+     */
+    public function fill(array $data);
+
+    /**
+     * Adds values to the data array.
+     *
+     * @return self
+     */
+    public function add(array $data);
+
+    /**
      * Verifies that all keys in an
      * array are set.
      *
@@ -54,7 +77,7 @@ interface DataContainerInterface
      * Verifies if any of the keys
      * in an array is missing in
      * the container. Returns
-     * first key missing.
+     * first missing key.
      *
      * @return bool|string
      */
@@ -66,4 +89,41 @@ interface DataContainerInterface
      * @return array
      */
     public function all();
+
+    /**
+     * Offset set.
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value);
+
+    /**
+     * Offset exists.
+     *
+     * @param mixed $offset
+     *
+     * @return void
+     */
+    public function offsetExists($offset);
+
+    /**
+     * Offset unset.
+     *
+     * @param mixed $offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset);
+
+    /**
+     * Offset set get.
+     *
+     * @param mixed $offset
+     *
+     * @return void
+     */
+    public function offsetGet($offset);
 }

@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use InvalidArgumentException;
+use Countable;
 use Exception;
+use InvalidArgumentException;
+use IteratorAggregate;
 
 /**
  * Input Collection Class.
  */
-class InputCollection implements InputCollectionInterface
+class InputCollection extends Input implements InputCollectionInterface, IteratorAggregate, Countable
 {
     /**
      * Inputs array.
@@ -23,7 +27,7 @@ class InputCollection implements InputCollectionInterface
     protected $inputsArray = [];
 
     /**
-     * Partial Inputs
+     * Partial Inputs.
      *
      * @var array
      */
@@ -37,17 +41,15 @@ class InputCollection implements InputCollectionInterface
     protected $actionFactory;
 
     /**
-     * Constructor.
+     * Sets inputs array.
      *
      * @return self
      */
-    public function __construct(array $inputsArray = [], ActionFactory $actionFactory = null)
+    public function setInputs(array $inputsArray)
     {
-        foreach($inputsArray as $input) {
+        foreach ($inputsArray as $input) {
             $this->addInput($input);
         }
-        
-        $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
     }
@@ -86,36 +88,33 @@ class InputCollection implements InputCollectionInterface
     }
 
     /**
-     * Sets the array of partial inputs
+     * Sets the array of partial inputs.
      *
-     * @param array $partialCollection
-     * 
-     * @return self
-     * 
      * @throws Exception
+     *
+     * @return self
      */
     public function setPartialCollection(array $partialCollection)
     {
-        if(empty($partialCollection)) {
-            throw new Exception("The array passed to ".__METHOD__. " is empty", 500);
-        }
-        
-        $inputs = $this->getInputs();
-        
-        if(empty($inputs)) {
-            throw new Exception("This collection cannot add partial inputs because it has no inputs", 500);
+        if (empty($partialCollection)) {
+            throw new Exception('The array passed to '.__METHOD__.' is empty', 500);
         }
 
-        foreach($partialCollection as $inputName) {
+        $inputs = $this->getInputs();
+
+        if (empty($inputs)) {
+            throw new Exception('This collection cannot add partial inputs because it has no inputs', 500);
+        }
+
+        foreach ($partialCollection as $inputName) {
             $this->partialCollection[$inputName] = $this->getInput($inputName);
         }
 
         return $this;
-
     }
 
     /**
-     * Returns the array of partial inputs
+     * Returns the array of partial inputs.
      *
      * @return array
      */
@@ -131,7 +130,17 @@ class InputCollection implements InputCollectionInterface
      */
     public function count()
     {
-        return \count($this->inputsArray);
+        return \count($this->getInputs());
+    }
+
+    /**
+     * Checks if input exists.
+     *
+     * @return bool
+     */
+    public function isset(string $key)
+    {
+        return isset($this->inputsArray[$key]);
     }
 
     /**
@@ -153,18 +162,16 @@ class InputCollection implements InputCollectionInterface
     /**
      * Returns inputs array.
      * If partial inputs have been set
-     * it returns partial inputs
-     * 
-     * @param bool $all
+     * it returns partial inputs.
      *
      * @return array
      */
     public function getInputs(bool $all = false)
     {
-        $partialCollection = $this->getpartialCollection();
+        $partialCollection = $this->getPartialCollection();
 
-        if(!empty($partialCollection) && !$all) {
-           return $partialCollection;
+        if (!empty($partialCollection) && !$all) {
+            return $partialCollection;
         }
 
         return $this->inputsArray;
@@ -203,10 +210,60 @@ class InputCollection implements InputCollectionInterface
     }
 
     /**
-     * Execute actions.
+     * Executes Action.
+     *
+     * @param DataContainer $output
+     *
+     * @return DataContainer
      */
-    public function execute(ActionInterface $action)
+    public function execute(ActionInterface $action, DataContainerInterface $output = null)
     {
-        return $action->execute($this->getInputs());
+        if ($action->controlsExecution()) {
+            return $this->executeAll($action, $output);
+        }
+
+        $output = $output ?? new DataContainer();
+
+        foreach ($this->getInputs() as $input) {
+            if (CrudAssistant::isInputCollection($input) && $action->isTree()) {
+                $collectionName = $input->getName();
+
+                if (!$collectionName) {
+                    throw new Exception('All internal collections must have a name', 500);
+                }
+
+                $output->$collectionName = $input->execute($action, new DataContainer());
+
+                continue;
+            }
+
+            $input->execute($action, $output);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Pass whole collection to the action.
+     *
+     * @param DataContainer $output
+     *
+     * @return DataContainer
+     */
+    public function executeAll(ActionInterface $action, DataContainerInterface $output = null)
+    {
+        $output = $output ?? new DataContainer();
+
+        return $action->execute($this, $output);
+    }
+
+    /**
+     * Get an iterator for the items.
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->getInputs());
     }
 }

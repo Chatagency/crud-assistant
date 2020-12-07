@@ -10,9 +10,11 @@
 - ✅ Enable passing versions of the field to `MigrationAction` when setting recipe
 - ✅ Change Action calling to composition
 - ✅ Eliminate config file and change action factory
-- ✅Validate action exists when setting a recipe
-- ☐ Add sub form functionality to `InputCollection`
-- ☐ Refactor input collection into a composite
-- ☐ Refactor `Input::setSubElements()` to use an `InputCollection` instead of and array
-- ☐ Rethink recipes parameters (new Recipe class)
-- ☐ Rethink action parameters (specific `DataContainer` classes)
+- ✅ Validate action exists when setting a recipe
+- ✅ Move all Laravel dependent actions and modifiers to the `Extras` package
+- ✅ Refactor `Input::setSubElements()` to use an `InputCollection` instead of and array
+- ✅ Add partial inputs (sub form) support to `InputCollection`
+- ✅ Refactor input collection into a composite in order to have recursive forms
+- ✅ Rethink action parameters (specific `DataContainer` classes)
+- ✅ Add `tree` option for recursive forms output
+- ✅ Rethink recipes parameters (new Recipe class)

@@ -2,28 +2,31 @@
 
 namespace Chatagency\CrudAssistant\Tests\Actions;
 
-use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
 use PHPUnit\Framework\TestCase;
 
-class FilterTest extends TestCase
+class FilterActionTest extends TestCase
 {
     /** @test */
     public function a_filter_action_is_used_to_exclude_input_data_from_dataset()
     {
-        $filter = new Filter();
+        $filter = new FilterAction();
 
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(Filter::class, [
-            'filter' => true
-        ]);
+
+        $recipe = new FilterActionRecipe();
+        $recipe->filter = true;
+        
+        $email->setRecipe($recipe);
         
         $description = new TextInput('description', 'Description');
         
-        $inputs = [$name, $email, $description];
+        $inputs = [$email, $name, $description];
         
         $container = new DataContainer();
         $container->data = [
@@ -32,25 +35,32 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filtered = $filter->execute($inputs, $container);
-        
-        $this->assertCount(2, $filtered);
-        $this->assertFalse(isset($filtered[$email->getName()]));
+        $filter = new FilterAction($container);
+
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $filtered = $filter->execute($input, $output);
+        }
+
+        $this->assertCount(2, $filtered->data);
+        $this->assertFalse(isset($filtered->data[$email->getName()]));
 
     }
     
     /** @test */
     public function a_closure_can_be_passed_as_a_value_instead_of_an_array_to_the_filter_action()
     {
-        $filter = new Filter();
-
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(Filter::class, function($input, $params, $data){
-            unset($data[$input->getname()]);
+        
+        $recipe = new FilterActionRecipe();
+        $recipe->callback = function($input, $params, $data){
+            unset($data[$input->getName()]);
             return $data;
-        });
+        };
+
+        $email->setRecipe($recipe);
         
         $description = new TextInput('description', 'Description');
         
@@ -63,23 +73,28 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filtered = $filter->execute($inputs, $container);
-        
-        $this->assertCount(2, $filtered);
-        $this->assertFalse(isset($filtered[$email->getName()]));
+        $filter = new FilterAction($container);
+
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $filtered = $filter->execute($input, $output);
+        }
+
+        $this->assertCount(2, $filtered->data);
+        $this->assertFalse(isset($filtered->data[$email->getName()]));
     }
 
     /** @test */
-    public function the_filter_action_can_ignore_empty_values()
+    public function if_ignore_if_empty_is_passed_to_the_filter_action_that_item_is_also_filtered()
     {
-        $filter = new Filter();
-
         $name = new TextInput('name', 'Name');
         
         $email = new TextInput('email', 'Email');
-        $email->setRecipe(Filter::class, [
-            'ignoreIfEmpty' => true
-        ]);
+
+        $recipe = (new FilterActionRecipe());
+        $recipe->ignoreIfEmpty = true;
+        
+        $email->setRecipe($recipe);
         
         $description = new TextInput('description', 'Description');
         
@@ -92,9 +107,24 @@ class FilterTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         ];
 
-        $filtered = $filter->execute($inputs, $container);
-        
-        $this->assertCount(3, $filtered);
-        $this->assertTrue(isset($filtered[$email->getName()]));
+        $filter = new FilterAction($container);
+
+        $output = new DataContainer();
+        foreach($inputs as $input) {
+            $filtered = $filter->execute($input, $output);
+        }
+
+        $this->assertCount(2, $filtered->data);
     }
+
+    /** @test */
+    public function if_an_invalid_value_is_passed_to_the_recipe_an_exception_is_thrown()
+    {
+        $this->expectException(\Exception::class);
+        
+        $recipe = (new FilterActionRecipe());
+        $recipe->NotValid = true;
+        
+    }
+
 }

@@ -1,0 +1,95 @@
+<?php
+
+namespace Chatagency\CrudAssistant\Tests\Recipes;
+
+use Chatagency\CrudAssistant\Actions\FilterAction;
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Recipes\GenericRecipe;
+use Exception;
+use PHPUnit\Framework\TestCase;
+
+class GenericRecipeTest extends TestCase
+{
+    /** @test */
+    public function a_generic_recipe_can_can_be_passed_to_actions()
+    {
+        $name = new TextInput('name');
+        $email = (new TextInput('email'))->setType('email');
+
+        $genericRecipe = new GenericRecipe();
+        $genericRecipe->setIdentifier(FilterAction::class);
+        $genericRecipe->filter = true;
+
+        $name->setRecipe($genericRecipe);
+
+        $collection = (CrudAssistant::make([$name, $email]))->getCollection();
+
+        $params = new DataContainer([
+            'data' => [
+                'name' => 'John',
+                'email' => 'john@john.com'
+            ]
+        ]);
+
+        $output = $collection->execute(new FilterAction($params));
+
+        $data = $output->data;
+
+        $this->assertCount(1, $data);
+        $this->assertArrayNotHasKey('name', $data);
+
+        $genericRecipe2 = new GenericRecipe();
+        $genericRecipe2->setIdentifier(FilterAction::class);
+
+        $genericRecipe2->add([
+            'filter' => true
+        ]);
+
+        $email->setRecipe($genericRecipe2);
+
+        $output2 = $collection->execute(new FilterAction($params));
+
+        $this->assertCount(0, $output2->data);
+        
+    }
+
+    /** @test */
+    public function setters_can_be_used_with_the_generic_recipe_to_make_setters_more_strict()
+    {
+        $name = new TextInput('name');
+        $email = (new TextInput('email'))->setType('email');
+
+        $genericRecipe = new GenericRecipe();
+        $genericRecipe->setIdentifier(FilterAction::class);
+        $genericRecipe->setSetters(['filter']);
+        $genericRecipe->filter = true;
+
+        $this->expectException(Exception::class);
+
+        /**
+         * If setter not available
+         */
+        $genericRecipe->notASetter = true;
+
+    }
+
+    /** @test */
+    public function setters_are_also_validated_when_the_method_all_is_used()
+    {
+        $name = new TextInput('name');
+        $email = (new TextInput('email'))->setType('email');
+
+        $genericRecipe = new GenericRecipe();
+        $genericRecipe->setIdentifier(FilterAction::class);
+        $genericRecipe->setSetters(['filter']);
+        $genericRecipe->filter = true;
+
+        $this->expectException(Exception::class);
+
+        $genericRecipe->add([
+            'notASetter' => true
+        ]);
+    }
+}

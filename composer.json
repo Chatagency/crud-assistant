@@ -16,18 +16,19 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0"
+        "php": "^7.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
-        "orchestra/testbench": "3.8.*",
         "phpunit/phpunit": "^7.0"
     },
     "autoload": {
         "psr-4": {
             "Chatagency\\CrudAssistant\\": "src"
-        }
+        },
+        "files": [
+          "helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -41,12 +42,5 @@
     },
     "config": {
         "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Chatagency\\CrudAssistant\\CrudAssistantServiceProvider"
-            ]
-        }
     }
 }

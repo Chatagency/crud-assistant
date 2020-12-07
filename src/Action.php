@@ -21,6 +21,22 @@ abstract class Action
     protected $params;
 
     /**
+     * Result is a tree instead
+     * of flat.
+     *
+     * @var bool
+     */
+    protected $isTree = false;
+
+    /**
+     * Action control the
+     * whole execution.
+     *
+     * @var bool
+     */
+    protected $controlsExecution = false;
+
+    /**
      * Construct.
      *
      * @param DataContainerInterface $params
@@ -32,46 +48,51 @@ abstract class Action
         return $this;
     }
 
-    public function getParams()
-    {
-        return $this->params;
-    }
-
     /**
-     * Checks for value is to be ignored.
-     *
-     * @param $recipe
+     * Notifies the collection the output
+     * result must be in a tree format
+     * instead of a flat output.
      *
      * @return bool
      */
-    public function ignore($recipe)
+    public function isTree()
     {
-        if (!\is_array($recipe)) {
-            return false;
-        }
-
-        return $recipe['ignore'] ?? false;
+        return $this->isTree;
     }
 
     /**
-     * Ignore if value is empty.
+     * Notifies the collection the action
+     * will take control of the whole
+     * execution. This triggers the
+     * method executeAll().
+     *
+     * @return bool
+     */
+    public function controlsExecution()
+    {
+        return $this->controlsExecution;
+    }
+
+    /**
+     * Checks if the value is empty.
      *
      * @param $value
-     * @param $recipe
      *
      * @return bool
      */
-    protected function ignoreIfEmpty($value, $recipe)
+    public function isEmpty($value)
     {
-        if (!\is_array($recipe)) {
-            return false;
-        }
+        return '' == $value || null === $value;
+    }
 
-        if (!$this->isEmpty($value)) {
-            return false;
-        }
-
-        return $recipe['ignoreIfEmpty'] ?? false;
+    /**
+     * Returns runtime args.
+     *
+     * @return DataContainerInterface
+     */
+    protected function getParams()
+    {
+        return $this->params;
     }
 
     /**
@@ -81,7 +102,7 @@ abstract class Action
      *
      * @return bool
      */
-    protected function checkRequiredParams(DataContainer $data, array $checks)
+    protected function checkRequiredParams(DataContainerInterface $data, array $checks)
     {
         if ($missing = $data->missing($checks)) {
             throw new InvalidArgumentException('The argument '.$missing.' is missing for the '.static::class.' action', 500);
@@ -102,19 +123,15 @@ abstract class Action
     {
         $recipe = $input->getRecipe(static::class);
 
-        if (!\is_array($recipe)) {
+        if (!$recipe) {
             return $value;
         }
 
-        $modifiers = $recipe['modifiers'] ?? [];
+        $modifiers = $recipe->getModifiers() ?? null;
 
         if (\is_array($modifiers)) {
-            foreach ($modifiers as $modifier => $data) {
-                if (is_a($data, Modifier::class)) {
-                    $value = $data->modify($value, $data->getData(), $model);
-                    continue;
-                }
-                $value = (ModifierFactory::make($modifier))->modify($value, $data, $model);
+            foreach ($modifiers as $modifier) {
+                $value = $this->executeModifier($modifier, $value, $model);
             }
         }
 
@@ -122,14 +139,15 @@ abstract class Action
     }
 
     /**
-     * Checks if the value is empty.
+     * Executes single modifier.
      *
      * @param $value
+     * @param mixed $model
      *
-     * @return bool
+     * @return mixed
      */
-    protected function isEmpty($value)
+    protected function executeModifier(Modifier $modifier, $value, $model = null)
     {
-        return '' == $value || null === $value;
+        return $modifier->modify($value, $modifier->getData(), $model);
     }
 }

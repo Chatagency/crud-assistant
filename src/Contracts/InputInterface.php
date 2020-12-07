@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
+use Chatagency\CrudAssistant\Recipe;
+
 /**
  * Input Collection Interface.
  */
@@ -12,12 +14,16 @@ interface InputInterface
     /**
      * Class construct.
      *
-     * @param string $label
-     * @param string $label
+     * @return self
+     */
+    public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null);
+
+    /**
+     * Sets input name.
      *
      * @return self
      */
-    public function __construct(string $name, string $label = null, int $version = 1);
+    public function setName(string $name);
 
     /**
      * Sets input label.
@@ -29,7 +35,7 @@ interface InputInterface
     /**
      * Sets input attributes.
      *
-     * @param string $value
+     * @param mixed $value
      */
     public function setAttribute(string $name, $value);
 
@@ -38,7 +44,7 @@ interface InputInterface
      *
      * @return self
      */
-    public function setSubElements(array $subElements);
+    public function setSubElements(InputCollectionInterface $subElements);
 
     /**
      * Sets input version.
@@ -99,23 +105,30 @@ interface InputInterface
     /**
      * Returns input sub elements.
      *
-     * @return array
+     * @return InputCollectionInterface
      */
     public function getSubElements();
 
     /**
      * Sets Recipe.
      *
-     * @param $value
-     *
      * @return self
      */
-    public function setRecipe(string $type, $value);
+    public function setRecipe(RecipeInterface $recipe);
 
     /**
      * Returns recipe by type.
      *
-     * @return string|null
+     * @return Recipe
      */
     public function getRecipe(string $type);
+
+    /**
+     * Executes Action.
+     *
+     * @param DataContainer $output
+     *
+     * @return DataContainer
+     */
+    public function execute(ActionInterface $action, DataContainerInterface $output = null);
 }

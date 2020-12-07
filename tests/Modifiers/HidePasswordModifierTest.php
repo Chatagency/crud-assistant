@@ -14,23 +14,23 @@ class HidePasswordModifierTest extends TestCase
   {
     $password = 'secure_password';
 
-    $modifer = new HidePasswordModifier();
+    $modifier = new HidePasswordModifier();
 
-    $modifiedPassword = $modifer->modify($password, new DataContainer());
+    $modifiedPassword = $modifier->modify($password, new DataContainer());
 
     $this->assertNotEquals($password, $modifiedPassword);
-    $this->assertEquals($modifiedPassword, $modifer->getDefaultValue());
+    $this->assertEquals($modifiedPassword, $modifier->getDefaultValue());
   }
 
   /** @test */
-  public function a_modifer_value_can_be_passed_to_the_modifier () 
+  public function a_modifier_value_can_be_passed_to_the_modifier () 
   {
     $password = 'secure_password';
     $value = '000000';
 
-    $modifer = new HidePasswordModifier();
+    $modifier = new HidePasswordModifier();
 
-    $modifiedPassword = $modifer->modify($password, new DataContainer([
+    $modifiedPassword = $modifier->modify($password, new DataContainer([
       'value' => $value,
     ]));
 
