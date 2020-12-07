@@ -107,7 +107,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     }
 
     /**
-     * Adds values to the data array
+     * Adds values to the data array.
      *
      * @return self
      */

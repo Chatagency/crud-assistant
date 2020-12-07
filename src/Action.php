@@ -49,8 +49,8 @@ abstract class Action
     }
 
     /**
-     * Notifies the collection the output 
-     * result must be in a tree format 
+     * Notifies the collection the output
+     * result must be in a tree format
      * instead of a flat output.
      *
      * @return bool
@@ -71,6 +71,18 @@ abstract class Action
     public function controlsExecution()
     {
         return $this->controlsExecution;
+    }
+
+    /**
+     * Checks if the value is empty.
+     *
+     * @param $value
+     *
+     * @return bool
+     */
+    public function isEmpty($value)
+    {
+        return '' == $value || null === $value;
     }
 
     /**
@@ -137,17 +149,5 @@ abstract class Action
     protected function executeModifier(Modifier $modifier, $value, $model = null)
     {
         return $modifier->modify($value, $modifier->getData(), $model);
-    }
-
-    /**
-     * Checks if the value is empty.
-     *
-     * @param $value
-     *
-     * @return bool
-     */
-    public function isEmpty($value)
-    {
-        return '' == $value || null === $value;
     }
 }

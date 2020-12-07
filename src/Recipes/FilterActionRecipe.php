@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
 /**
- * Filter Action Recipe
+ * Filter Action Recipe.
  */
 class FilterActionRecipe extends Recipe implements RecipeInterface
 {
@@ -19,13 +19,12 @@ class FilterActionRecipe extends Recipe implements RecipeInterface
      *
      * @var array
      */
-    protected $setters = ['filter', 'ignoreIfEmpty','callback'];
-    
+    protected $setters = ['filter', 'ignoreIfEmpty', 'callback'];
+
     /**
-     * Recipe identifier
+     * Recipe identifier.
      *
      * @var string
      */
     protected $identifier = FilterAction::class;
-    
 }
