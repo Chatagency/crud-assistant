@@ -59,7 +59,7 @@ interface DataContainerInterface
     public function fill(array $data);
 
     /**
-     * Adds values to the data array
+     * Adds values to the data array.
      *
      * @return self
      */

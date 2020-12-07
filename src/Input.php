@@ -246,8 +246,6 @@ abstract class Input implements InputInterface
     /**
      * Sets Recipe.
      *
-     * @param RecipeInterface $recipe
-     *
      * @return self
      */
     public function setRecipe(RecipeInterface $recipe)

@@ -8,14 +8,13 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
 /**
- * Generic Recipe
+ * Generic Recipe.
  */
 class GenericRecipe extends Recipe implements RecipeInterface
 {
     /**
-     * Sets recipe identifier
+     * Sets recipe identifier.
      *
-     * @param string $identifier
      * @return self
      */
     public function setIdentifier(string $identifier)
@@ -26,9 +25,8 @@ class GenericRecipe extends Recipe implements RecipeInterface
     }
 
     /**
-     * Sets setters array
+     * Sets setters array.
      *
-     * @param array $setters
      * @return self
      */
     public function setSetters(array $setters)
@@ -37,5 +35,4 @@ class GenericRecipe extends Recipe implements RecipeInterface
 
         return $this;
     }
-    
 }

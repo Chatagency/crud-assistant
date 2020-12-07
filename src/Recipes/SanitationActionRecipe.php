@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
 /**
- * Sanitation Action Recipe
+ * Sanitation Action Recipe.
  */
 class SanitationActionRecipe extends Recipe implements RecipeInterface
 {
@@ -20,12 +20,11 @@ class SanitationActionRecipe extends Recipe implements RecipeInterface
      * @var array
      */
     protected $setters = ['type'];
-    
+
     /**
-     * Recipe identifier
+     * Recipe identifier.
      *
      * @var string
      */
     protected $identifier = SanitationAction::class;
-    
 }

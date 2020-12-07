@@ -55,6 +55,8 @@ class SanitationAction extends Action implements ActionInterface
     /**
      * Applies Filter.
      *
+     * @param mixed $id
+     *
      * @return array
      */
     protected function applyFilter(string $inputName, $id, array $requestArray, array $options = [])

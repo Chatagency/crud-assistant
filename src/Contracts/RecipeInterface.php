@@ -12,50 +12,47 @@ use Chatagency\CrudAssistant\Modifier;
 interface RecipeInterface
 {
     /**
-     * Returns recipe identifier
+     * Returns recipe identifier.
      *
      * @return string
      */
     public function getIdentifier();
 
     /**
-     * Adds modifier to the array
+     * Adds modifier to the array.
      *
-     * @param Modifier $modifier
-     * 
      * @return self
      */
     public function setModifier(Modifier $modifier);
 
     /**
-     * Adds multiple modifiers to the 
-     * modifiers array
+     * Adds multiple modifiers to the
+     * modifiers array.
      *
-     * @param array $modifiers
-     * 
      * @return self
      */
     public function setModifiers(array $modifiers);
 
     /**
-     * Returns modifiers array
+     * Returns modifiers array.
      *
      * @return array
      */
     public function getModifiers();
 
     /**
-     * Sets the ignore value
-     * 
+     * Sets the ignore value.
+     *
+     * @param mixed $ignore
+     *
      * @return self
      */
     public function ignore($ignore = true);
 
     /**
-     * Checks if input is ignored
+     * Checks if input is ignored.
      *
-     * @return boolean
+     * @return bool
      */
     public function isIgnored();
-
 }

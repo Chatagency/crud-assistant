@@ -9,27 +9,27 @@ use Exception;
 
 /**
  * the recipe class stores input
- * information and instructions 
- * for the action
+ * information and instructions
+ * for the action.
  */
 abstract class Recipe extends DataContainer implements RecipeInterface
 {
     /**
-     * Recipe identifier
+     * Recipe identifier.
      *
      * @var string
      */
     protected $identifier;
-    
+
     /**
-     * Ignore input
+     * Ignore input.
      *
-     * @var boolean
+     * @var bool
      */
     protected $ignored = false;
 
     /**
-     * Input value modifiers
+     * Input value modifiers.
      *
      * @var array
      */
@@ -44,7 +44,17 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     protected $setters = [];
 
     /**
-     * Returns recipe identifier
+     * {@inheritdoc}
+     */
+    public function __set(string $name, $value)
+    {
+        $this->validateSetter($name);
+
+        return parent::__set($name, $value);
+    }
+
+    /**
+     * Returns recipe identifier.
      *
      * @return string
      */
@@ -54,8 +64,10 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     }
 
     /**
-     * Sets the ignore value
-     * 
+     * Sets the ignore value.
+     *
+     * @param mixed $ignore
+     *
      * @return self
      */
     public function ignore($ignore = true)
@@ -66,10 +78,8 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     }
 
     /**
-     * Adds modifier to the array
+     * Adds modifier to the array.
      *
-     * @param Modifier $modifier
-     * 
      * @return self
      */
     public function setModifier(Modifier $modifier)
@@ -80,16 +90,14 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     }
 
     /**
-     * Adds multiple modifiers to the 
-     * modifiers array
+     * Adds multiple modifiers to the
+     * modifiers array.
      *
-     * @param array $modifiers
-     * 
      * @return self
      */
     public function setModifiers(array $modifiers)
     {
-        foreach($modifiers as $modifier) {
+        foreach ($modifiers as $modifier) {
             $this->setModifier($modifier);
         }
 
@@ -97,7 +105,7 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     }
 
     /**
-     * Returns modifiers array
+     * Returns modifiers array.
      *
      * @return array
      */
@@ -107,23 +115,13 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     }
 
     /**
-     * Checks if input is ignored
+     * Checks if input is ignored.
      *
-     * @return boolean
+     * @return bool
      */
     public function isIgnored()
     {
         return $this->ignored;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __set(string $name, $value)
-    {
-        $this->validateSetter($name);
-
-        return parent::__set($name, $value);
     }
 
     /**
@@ -142,37 +140,35 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     public function add(array $data)
     {
         $this->validateSetters($data);
-        
+
         return parent::add($data);
     }
 
     /**
      * Validates if a key/value
-     * array has valid setters
+     * array has valid setters.
      *
-     * @param array $data
      * @return void
      */
     public function validateSetters(array $data)
     {
-        foreach($data as $setter => $value) {
+        foreach ($data as $setter => $value) {
             $this->validateSetter($setter);
         }
     }
 
     /**
-     * Checks if a setter is valid
+     * Checks if a setter is valid.
+     *
+     * @param mixed $setter
      *
      * @return void
      */
     protected function validateSetter($setter)
     {
-        /**
-         * Check if in setters array
-         */
-        if(!empty($this->setters) && !in_array($setter, $this->setters)) {
+        // Check if in setters array
+        if (!empty($this->setters) && !\in_array($setter, $this->setters)) {
             throw new Exception('The setter "'.$setter.'" is not available on this recipe', 500);
         }
     }
-
 }

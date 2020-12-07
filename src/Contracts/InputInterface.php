@@ -11,7 +11,6 @@ use Chatagency\CrudAssistant\Recipe;
  */
 interface InputInterface
 {
-    
     /**
      * Class construct.
      *
@@ -112,8 +111,6 @@ interface InputInterface
 
     /**
      * Sets Recipe.
-     *
-     * @param RecipeInterface $recipe
      *
      * @return self
      */

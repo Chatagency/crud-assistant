@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Chatagency\CrudAssistant\Recipe;
 
 /**
- * Label Value Action Recipe
+ * Label Value Action Recipe.
  */
 class LabelValueActionRecipe extends Recipe implements RecipeInterface
 {
@@ -20,12 +20,11 @@ class LabelValueActionRecipe extends Recipe implements RecipeInterface
      * @var array
      */
     protected $setters = ['label', 'value'];
-    
+
     /**
-     * Recipe identifier
+     * Recipe identifier.
      *
      * @var string
      */
     protected $identifier = LabelValueAction::class;
-    
 }
