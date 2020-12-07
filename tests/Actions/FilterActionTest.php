@@ -117,4 +117,14 @@ class FilterActionTest extends TestCase
         $this->assertCount(2, $filtered->data);
     }
 
+    /** @test */
+    public function if_an_invalid_value_is_passed_to_the_recipe_an_exception_is_thrown()
+    {
+        $this->expectException(\Exception::class);
+        
+        $recipe = (new FilterActionRecipe());
+        $recipe->NotValid = true;
+        
+    }
+
 }

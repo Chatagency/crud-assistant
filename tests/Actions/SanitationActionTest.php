@@ -136,5 +136,15 @@ class SanitationActionTest extends TestCase
         $this->assertNotEquals($container->requestArray['name'][0], $requestArray['name'][0]);
         $this->assertEquals($container->requestArray['name'][0], $requestArray['name_raw'][0]);
     }
+
+    /** @test */
+    public function if_an_invalid_value_is_passed_to_the_recipe_an_exception_is_thrown()
+    {
+        $this->expectException(\Exception::class);
+        
+        $recipe = (new SanitationActionRecipe());
+        $recipe->NotValid = true;
+        
+    }
     
 }
