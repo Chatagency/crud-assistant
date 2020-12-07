@@ -14,6 +14,14 @@ use Chatagency\CrudAssistant\Recipe;
 class SanitationActionRecipe extends Recipe implements RecipeInterface
 {
     /**
+     * Allowed setters.
+     * Ignored if empty.
+     *
+     * @var array
+     */
+    protected $setters = ['type'];
+    
+    /**
      * Recipe identifier
      *
      * @var string

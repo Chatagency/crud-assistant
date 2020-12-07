@@ -14,6 +14,14 @@ use Chatagency\CrudAssistant\Recipe;
 class LabelValueActionRecipe extends Recipe implements RecipeInterface
 {
     /**
+     * Allowed setters.
+     * Ignored if empty.
+     *
+     * @var array
+     */
+    protected $setters = ['label', 'value'];
+    
+    /**
      * Recipe identifier
      *
      * @var string
