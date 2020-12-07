@@ -6,7 +6,6 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Exception;
-use InvalidArgumentException;
 
 /**
  * the recipe class stores input
