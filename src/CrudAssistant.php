@@ -35,7 +35,7 @@ class CrudAssistant
 
     /**
      * Magic call method class tied
-     * to collection and actions.
+     * to the input collection.
      *
      * @param $name
      * @param $arguments

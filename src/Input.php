@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use InvalidArgumentException;
+use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 
 /**
  * Input Base Class.
@@ -246,17 +246,13 @@ abstract class Input implements InputInterface
     /**
      * Sets Recipe.
      *
-     * @param $value
+     * @param RecipeInterface $recipe
      *
      * @return self
      */
-    public function setRecipe(string $recipe, $value)
+    public function setRecipe(RecipeInterface $recipe)
     {
-        if (!$this->actionFactory->isAction($recipe)) {
-            throw new InvalidArgumentException('The recipe '.$recipe.' is not a valid action', 500);
-        }
-
-        $this->recipes[$recipe] = $value;
+        $this->recipes[$recipe->getIdentifier()] = $recipe;
 
         return $this;
     }
@@ -264,7 +260,7 @@ abstract class Input implements InputInterface
     /**
      * Returns recipe by type.
      *
-     * @return mixed
+     * @return Recipe|null
      */
     public function getRecipe(string $recipe)
     {

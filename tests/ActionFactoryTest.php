@@ -4,7 +4,7 @@ namespace Chatagency\CrudAssistant\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\ActionFactory;
-use Chatagency\CrudAssistant\Actions\Filter;
+use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\CrudAssistant;
 use InvalidArgumentException;
 
@@ -15,9 +15,9 @@ class ActionFactoryTest extends TestCase
     public function the_action_factory_can_instantiate_an_action_using_the_name()
     {
         $factory = new ActionFactory();
-        $action = $factory->getInstance(Filter::class);
+        $action = $factory->getInstance(FilterAction::class);
         
-        $this->assertInstanceOf(Filter::class, $action);
+        $this->assertInstanceOf(FilterAction::class, $action);
     }
 
     /** @test */
@@ -33,9 +33,9 @@ class ActionFactoryTest extends TestCase
     public function the_action_factory_can_check_if_a_class_is_a_real_action()
     {
         $factory = new ActionFactory();
-        $action = $factory->isAction(Filter::class);
+        $action = $factory->isAction(FilterAction::class);
         
-        $this->assertEquals($action, Filter::class);
+        $this->assertEquals($action, FilterAction::class);
     }
     
     /** @test */

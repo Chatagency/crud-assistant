@@ -37,7 +37,7 @@ class LabelValueAction extends Action implements ActionInterface
 
         $recipe = $input->getRecipe(static::class);
 
-        if ($this->ignore($recipe)) {
+        if ($recipe && $recipe->isIgnored()) {
             return $output;
         }
 

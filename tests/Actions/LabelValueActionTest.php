@@ -7,6 +7,7 @@ use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Modifiers\BooleanModifier;
+use Chatagency\CrudAssistant\Recipes\LabelValueActionRecipe;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -64,9 +65,10 @@ class LabelValueActionTest extends TestCase
     public function an_input_can_be_ignored_by_the_label_value_action()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(LabelValueAction::class, [
-            'ignore' => true
-        ]);
+
+        $recipe = (new LabelValueActionRecipe())->ignore();
+        $name->setRecipe($recipe);
+
         $email = new TextInput('email', 'Email');
         $inputs = [$name, $email];
 
@@ -98,19 +100,23 @@ class LabelValueActionTest extends TestCase
         $email = new TextInput('email', 'Email');
 
         $nameFormat = "The %s is";
-        $name->setRecipe(LabelValueAction::class, [
-            'label' => function(Input $input, DataContainer $params) use ($nameFormat) {
-                return sprintf($nameFormat, $input->getLabel());
-            }
-        ]);
+
+        $nameRecipe = new LabelValueActionRecipe();
+        $nameRecipe->label = function(Input $input, DataContainer $params) use ($nameFormat) {
+            return sprintf($nameFormat, $input->getLabel());
+        };
+
+        $name->setRecipe($nameRecipe);
 
         $emailFormat = "The address is %s";
-        $email->setRecipe(LabelValueAction::class, [
-            'value' => function(Input $input, DataContainer $params) use ($emailFormat) {
-                $model = $params->model;
-                return sprintf($emailFormat, $model->email);
-            }
-        ]);
+
+        $emailRecipe = new LabelValueActionRecipe();
+        $emailRecipe->value = function(Input $input, DataContainer $params) use ($emailFormat) {
+            $model = $params->model;
+            return sprintf($emailFormat, $model->email);
+        };
+
+        $email->setRecipe($emailRecipe);
 
         $inputs = [$name, $email];
 
@@ -149,11 +155,11 @@ class LabelValueActionTest extends TestCase
             'trueLabel' => 'I Accept'
         ]);
 
-        $accept->setRecipe(LabelValueAction::class, [
-            'modifiers' => [
-                new BooleanModifier($modifierData)
-            ]
+        $recipe = new LabelValueActionRecipe();
+        $recipe->setModifiers([
+            new BooleanModifier($modifierData)
         ]);
+        $accept->setRecipe($recipe);
 
         $inputs = [$name, $accept];
 
@@ -175,6 +181,16 @@ class LabelValueActionTest extends TestCase
 
         $this->assertEquals($modifierData->trueLabel, $output->{$accept->getLabel()});
 
+    }
+
+    /** @test */
+    public function if_an_invalid_value_is_passed_to_the_recipe_an_exception_is_thrown()
+    {
+        $this->expectException(\Exception::class);
+        
+        $recipe = (new LabelValueActionRecipe());
+        $recipe->NotValid = true;
+        
     }
     
 }

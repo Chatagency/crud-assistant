@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 /**
- * Modifer Base Class.
+ * Modifier Base Class.
  */
 abstract class Modifier
 {

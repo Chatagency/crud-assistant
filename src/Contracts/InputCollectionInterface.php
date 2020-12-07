@@ -56,6 +56,13 @@ interface InputCollectionInterface
     public function count();
 
     /**
+     * Checks if input exists.
+     *
+     * @return bool
+     */
+    public function isset(string $key);
+
+    /**
      * Returns inputs array.
      *
      * @throws InvalidArgumentException

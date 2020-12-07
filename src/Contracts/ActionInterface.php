@@ -17,10 +17,9 @@ interface ActionInterface
     public function execute(InputInterface $input, DataContainerInterface $output);
 
     /**
-     * Notifies the collection the
-     * output result must be in a
-     * tree format instead of a
-     * flat output.
+     * Notifies the collection the output 
+     * result must be in a tree format 
+     * instead of a flat output.
      *
      * @return bool
      */

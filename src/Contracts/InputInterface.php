@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
+use Chatagency\CrudAssistant\Recipe;
+
 /**
  * Input Collection Interface.
  */
 interface InputInterface
 {
+    
     /**
      * Class construct.
      *
@@ -110,16 +113,16 @@ interface InputInterface
     /**
      * Sets Recipe.
      *
-     * @param $value
+     * @param RecipeInterface $recipe
      *
      * @return self
      */
-    public function setRecipe(string $type, $value);
+    public function setRecipe(RecipeInterface $recipe);
 
     /**
      * Returns recipe by type.
      *
-     * @return mixed
+     * @return Recipe
      */
     public function getRecipe(string $type);
 
