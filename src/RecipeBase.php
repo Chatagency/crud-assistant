@@ -12,7 +12,7 @@ use Exception;
  * information and instructions
  * for the action.
  */
-abstract class Recipe extends DataContainer implements RecipeInterface
+abstract class RecipeBase implements RecipeInterface
 {
     /**
      * Recipe identifier.
@@ -36,21 +36,17 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     protected $modifiers = [];
 
     /**
-     * Allowed setters.
-     * Ignored if empty.
+     * Construct can receive a data array.
      *
-     * @var array
+     * @return self
      */
-    protected $setters = [];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __set(string $name, $value)
+    public function __construct(array $data = [])
     {
-        $this->validateSetter($name);
+        foreach($data as $key => $value) {
+            $this->$key = $value;
+        }
 
-        return parent::__set($name, $value);
+        return $this;
     }
 
     /**
@@ -125,50 +121,16 @@ abstract class Recipe extends DataContainer implements RecipeInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function fill(array $data)
-    {
-        $this->validateSetters($data);
-
-        return parent::fill($data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function add(array $data)
-    {
-        $this->validateSetters($data);
-
-        return parent::add($data);
-    }
-
-    /**
-     * Validates if a key/value
-     * array has valid setters.
+     * Magic setter method
      *
-     * @return void
+     * @param string $name
+     * @param mixed $value
      */
-    public function validateSetters(array $data)
+    public function __set(string $name, $value)
     {
-        foreach ($data as $setter => $value) {
-            $this->validateSetter($setter);
+        if(!property_exists($this, $name)) {
+            throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
         }
     }
 
-    /**
-     * Checks if a setter is valid.
-     *
-     * @param mixed $setter
-     *
-     * @return void
-     */
-    protected function validateSetter($setter)
-    {
-        // Check if in setters array
-        if (!empty($this->setters) && !\in_array($setter, $this->setters)) {
-            throw new Exception('The setter "'.$setter.'" is not available on this recipe', 500);
-        }
-    }
 }
