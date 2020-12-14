@@ -6,12 +6,12 @@ namespace Chatagency\CrudAssistant\Recipes;
 
 use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use Chatagency\CrudAssistant\Recipe;
+use Chatagency\CrudAssistant\RecipeContainer;
 
 /**
  * Sanitation Action Recipe.
  */
-class SanitationActionRecipe extends Recipe implements RecipeInterface
+class SanitationActionRecipe extends RecipeContainer implements RecipeInterface
 {
     /**
      * Allowed setters.

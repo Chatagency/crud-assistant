@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant\Recipes;
 
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use Chatagency\CrudAssistant\Recipe;
+use Chatagency\CrudAssistant\RecipeContainer;
 
 /**
  * Generic Recipe.
  */
-class GenericRecipe extends Recipe implements RecipeInterface
+class GenericRecipe extends RecipeContainer implements RecipeInterface
 {
     /**
      * Sets recipe identifier.
