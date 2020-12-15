@@ -6,20 +6,19 @@ namespace Chatagency\CrudAssistant\Recipes;
 
 use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use Chatagency\CrudAssistant\RecipeContainer;
+use Chatagency\CrudAssistant\RecipeBase;
 
 /**
  * Sanitation Action Recipe.
  */
-class SanitationActionRecipe extends RecipeContainer implements RecipeInterface
+class SanitationActionRecipe extends RecipeBase implements RecipeInterface
 {
     /**
-     * Allowed setters.
-     * Ignored if empty.
+     * Sanitation type
      *
-     * @var array
+     * @var mixed
      */
-    protected $setters = ['type'];
+    public $type;
 
     /**
      * Recipe identifier.
