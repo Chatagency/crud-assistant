@@ -105,4 +105,29 @@ class GenericRecipeTest extends TestCase
         $this->assertTrue($genericRecipe->isIgnored());
         
     }
+    
+    /** @test */
+    public function methods_fill_and_add_also_validate_setters()
+    {
+        $genericRecipe = new GenericRecipe();
+        $genericRecipe->setIdentifier(LabelValueAction::class);
+        $genericRecipe->setSetters(['label', 'value']);
+        
+        $genericRecipe->fill([
+            'label' => 'New Label'
+        ]);
+
+        $genericRecipe->add([
+            'value' => 'New Value'
+        ]);
+
+        $this->assertCount(2, $genericRecipe);
+
+        $this->expectException(Exception::class);
+
+        $genericRecipe->add([
+            'otherValue' => 'Other Value'
+        ]);
+
+    }
 }
