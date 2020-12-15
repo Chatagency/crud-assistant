@@ -121,16 +121,14 @@ abstract class RecipeBase implements RecipeInterface
     }
 
     /**
-     * Magic setter method
+     * Disable public attribute setting
      *
      * @param string $name
      * @param mixed $value
      */
     public function __set(string $name, $value)
     {
-        if(!property_exists($this, $name)) {
-            throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
-        }
+        throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
     }
 
 }
