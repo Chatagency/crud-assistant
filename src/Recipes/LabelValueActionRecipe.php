@@ -13,8 +13,14 @@ use Chatagency\CrudAssistant\RecipeBase;
  */
 class LabelValueActionRecipe extends RecipeBase implements RecipeInterface
 {
+    /**
+     * Label
+     */
     public $label;
 
+    /**
+     * Value
+     */
     public $value;
 
     /**
