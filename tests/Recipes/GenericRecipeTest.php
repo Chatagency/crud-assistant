@@ -3,9 +3,11 @@
 namespace Chatagency\CrudAssistant\Tests\Recipes;
 
 use Chatagency\CrudAssistant\Actions\FilterAction;
+use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Modifiers\BooleanModifier;
 use Chatagency\CrudAssistant\Recipes\GenericRecipe;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -58,9 +60,6 @@ class GenericRecipeTest extends TestCase
     /** @test */
     public function setters_can_be_used_with_the_generic_recipe_to_make_setters_more_strict()
     {
-        $name = new TextInput('name');
-        $email = (new TextInput('email'))->setType('email');
-
         $genericRecipe = new GenericRecipe();
         $genericRecipe->setIdentifier(FilterAction::class);
         $genericRecipe->setSetters(['filter']);
@@ -78,9 +77,6 @@ class GenericRecipeTest extends TestCase
     /** @test */
     public function setters_are_also_validated_when_the_method_all_is_used()
     {
-        $name = new TextInput('name');
-        $email = (new TextInput('email'))->setType('email');
-
         $genericRecipe = new GenericRecipe();
         $genericRecipe->setIdentifier(FilterAction::class);
         $genericRecipe->setSetters(['filter']);
@@ -91,5 +87,22 @@ class GenericRecipeTest extends TestCase
         $genericRecipe->add([
             'notASetter' => true
         ]);
+    }
+    
+    /** @test */
+    public function modifiers_and_ignore_can_be_used_on_the_generic()
+    {
+        $genericRecipe = new GenericRecipe();
+        $genericRecipe->setIdentifier(LabelValueAction::class);
+
+        $genericRecipe->setModifiers([
+            new BooleanModifier()
+        ]);
+
+        $genericRecipe->ignore();
+
+        $this->assertCount(1, $genericRecipe->getModifiers());
+        $this->assertTrue($genericRecipe->isIgnored());
+        
     }
 }
