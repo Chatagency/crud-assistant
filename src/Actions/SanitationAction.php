@@ -32,7 +32,7 @@ class SanitationAction extends Action implements ActionInterface
         $recipe = $input->getRecipe(static::class);
         $requestArray = $output->requestArray;
         $inputName = $input->getName();
-        $type = $recipe['type'] ?? null;
+        $type = $recipe->type ?? null;
 
         if (isset($requestArray[$inputName]) && $type) {
             if (\is_array($type)) {

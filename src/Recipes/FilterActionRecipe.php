@@ -6,20 +6,28 @@ namespace Chatagency\CrudAssistant\Recipes;
 
 use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use Chatagency\CrudAssistant\Recipe;
+use Chatagency\CrudAssistant\RecipeBase;
+use Closure;
 
 /**
  * Filter Action Recipe.
  */
-class FilterActionRecipe extends Recipe implements RecipeInterface
+class FilterActionRecipe extends RecipeBase implements RecipeInterface
 {
     /**
-     * Allowed setters.
-     * Ignored if empty.
-     *
-     * @var array
+     * Filter value
      */
-    protected $setters = ['filter', 'ignoreIfEmpty', 'callback'];
+    public bool $filter = false;
+
+    /**
+     * Ignore if value is empty (null or empty string)
+     */
+    public bool $ignoreIfEmpty = false;
+
+    /**
+     * Custom filter via callback
+     */
+    public Closure $callback;
 
     /**
      * Recipe identifier.
