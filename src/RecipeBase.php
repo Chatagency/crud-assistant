@@ -17,6 +17,20 @@ abstract class RecipeBase implements RecipeInterface
     use RecipeTrait;
 
     /**
+     * Construct can receive a data array.
+     *
+     * @return self
+     */
+    public function __construct(array $data = [])
+    {
+        foreach($data as $key => $value) {
+            $this->$key = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Disable public attribute setting
      *
      * @param string $name

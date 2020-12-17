@@ -18,3 +18,4 @@
 - ✅ Rethink action parameters (specific `DataContainer` classes)
 - ✅ Add `tree` option for recursive forms output
 - ✅ Rethink recipes parameters (new Recipe class)
+- ✅ Decouple recipe methods into a trait
