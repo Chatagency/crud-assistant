@@ -15,17 +15,17 @@ use Closure;
 class FilterActionRecipe extends RecipeBase implements RecipeInterface
 {
     /**
-     * Filter value
+     * Filter value.
      */
     public bool $filter = false;
 
     /**
-     * Ignore if value is empty (null or empty string)
+     * Ignore if value is empty (null or empty string).
      */
     public bool $ignoreIfEmpty = false;
 
     /**
-     * Custom filter via callback
+     * Custom filter via callback.
      */
     public Closure $callback;
 

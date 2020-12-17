@@ -23,7 +23,7 @@ abstract class RecipeBase implements RecipeInterface
      */
     public function __construct(array $data = [])
     {
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $this->$key = $value;
         }
 
@@ -31,14 +31,12 @@ abstract class RecipeBase implements RecipeInterface
     }
 
     /**
-     * Disable public attribute setting
+     * Disable public attribute setting.
      *
-     * @param string $name
      * @param mixed $value
      */
     public function __set(string $name, $value)
     {
         throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
     }
-
 }

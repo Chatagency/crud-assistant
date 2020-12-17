@@ -15,7 +15,7 @@ use Exception;
 abstract class RecipeContainer extends DataContainer implements RecipeInterface
 {
     use RecipeTrait;
-    
+
     /**
      * Allowed setters.
      * Ignored if empty.
