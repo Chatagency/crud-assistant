@@ -76,7 +76,7 @@ class FilterAction extends Action implements ActionInterface
 
         if (\is_callable($callback)) {
             $data = $callback($input, $params, $data);
-        } elseif (isset($recipe['filter']) && $recipe['filter']) {
+        } elseif (isset($recipe->filter) && $recipe->filter) {
             unset($data[$name]);
         }
 

@@ -6,20 +6,22 @@ namespace Chatagency\CrudAssistant\Recipes;
 
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use Chatagency\CrudAssistant\Recipe;
+use Chatagency\CrudAssistant\RecipeBase;
 
 /**
  * Label Value Action Recipe.
  */
-class LabelValueActionRecipe extends Recipe implements RecipeInterface
+class LabelValueActionRecipe extends RecipeBase implements RecipeInterface
 {
     /**
-     * Allowed setters.
-     * Ignored if empty.
-     *
-     * @var array
+     * Label
      */
-    protected $setters = ['label', 'value'];
+    public $label;
+
+    /**
+     * Value
+     */
+    public $value;
 
     /**
      * Recipe identifier.

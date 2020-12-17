@@ -37,7 +37,7 @@ class InputTest extends TestCase
         $input->setType('email');
         $input->setRecipe(new LabelValueActionRecipe($value));
 
-        $this->assertEquals($input->getRecipe(LabelValueAction::class)->all(), $value);
+        $this->assertEquals($input->getRecipe(LabelValueAction::class)->label, $value['label']);
 
     }
 
