@@ -2,6 +2,8 @@
 
 namespace Chatagency\CrudAssistant;
 
+use Chatagency\CrudAssistant\Contracts\RecipeInterface;
+
 /**
  * Recipe Trait
  */
@@ -29,20 +31,6 @@ trait RecipeTrait
     protected $modifiers = [];
 
     /**
-     * Construct can receive a data array.
-     *
-     * @return self
-     */
-    public function __construct(array $data = [])
-    {
-        foreach($data as $key => $value) {
-            $this->$key = $value;
-        }
-
-        return $this;
-    }
-
-    /**
      * Returns recipe identifier.
      *
      * @return string
@@ -57,7 +45,7 @@ trait RecipeTrait
      *
      * @param mixed $ignore
      *
-     * @return self
+     * @return RecipeInterface
      */
     public function ignore($ignore = true)
     {
@@ -69,7 +57,7 @@ trait RecipeTrait
     /**
      * Adds modifier to the array.
      *
-     * @return self
+     * @return RecipeInterface
      */
     public function setModifier(Modifier $modifier)
     {
@@ -82,7 +70,7 @@ trait RecipeTrait
      * Adds multiple modifiers to the
      * modifiers array.
      *
-     * @return self
+     * @return RecipeInterface
      */
     public function setModifiers(array $modifiers)
     {
