@@ -31,6 +31,7 @@ $rules = [
     'list_syntax' => ["syntax" => "short"],
     'phpdoc_types_order' => ['null_adjustment'=> 'always_last'],
     'single_line_comment_style' => true,
+    'is_null' => ["use_yoda_style" => false],
 ];
 
 $exclude = [

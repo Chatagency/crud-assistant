@@ -82,7 +82,7 @@ abstract class Action
      */
     public function isEmpty($value)
     {
-        return '' == $value || null === $value;
+        return $value === '' || $value === null;
     }
 
     /**
@@ -104,7 +104,9 @@ abstract class Action
      */
     protected function checkRequiredParams(DataContainerInterface $data, array $checks)
     {
-        if ($missing = $data->missing($checks)) {
+        $missing = $data->missing($checks);
+        
+        if ($missing) {
             throw new InvalidArgumentException('The argument '.$missing.' is missing for the '.static::class.' action', 500);
         }
 

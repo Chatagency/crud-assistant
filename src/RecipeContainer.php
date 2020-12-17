@@ -77,7 +77,7 @@ abstract class RecipeContainer extends DataContainer implements RecipeInterface
     protected function validateSetter($setter)
     {
         // Check if in setters array
-        if (!empty($this->setters) && !\in_array($setter, $this->setters)) {
+        if (\count($this->setters) && !\in_array($setter, $this->setters)) {
             throw new Exception('The setter "'.$setter.'" is not available on this recipe', 500);
         }
     }

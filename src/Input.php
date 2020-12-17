@@ -76,7 +76,7 @@ abstract class Input implements InputInterface
     public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null)
     {
         $this->name = $name;
-        $this->label = $label ?: $name;
+        $this->label = $label ?? $name;
 
         $this->actionFactory = $actionFactory ?? new ActionFactory();
 

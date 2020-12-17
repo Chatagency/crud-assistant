@@ -23,9 +23,7 @@ class HidePasswordModifier extends Modifier
      */
     public function modify($value, DataContainer $data = null, $model = null)
     {
-        $content = $data && isset($data->value) ? $data->value : $this->defaultValue;
-
-        return $content;
+        return $data && isset($data->value) ? $data->value : $this->defaultValue;
     }
 
     /**
