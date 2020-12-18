@@ -58,13 +58,15 @@ abstract class RecipeContainer extends DataContainer implements RecipeInterface
      * Validates if a key/value
      * array has valid setters.
      *
-     * @return void
+     * @return self
      */
     public function validateSetters(array $data)
     {
         foreach ($data as $setter => $value) {
             $this->validateSetter($setter);
         }
+
+        return $this;
     }
 
     /**
