@@ -17,7 +17,8 @@ class HidePasswordModifier extends Modifier
     /**
      * Modifies value.
      *
-     * @param mixed $value
+     * @param mixed      $value
+     * @param mixed|null $model
      */
     public function modify($value, DataContainer $data = null, $model = null)
     {
