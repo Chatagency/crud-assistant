@@ -40,5 +40,5 @@ abstract class Modifier
      *
      * @param mixed $value
      */
-    abstract public function modify($value, DataContainer $data = null, iterable $model = null);
+    abstract public function modify($value, DataContainer $data = null, $model = null);
 }

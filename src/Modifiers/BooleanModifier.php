@@ -31,7 +31,7 @@ class BooleanModifier extends Modifier
      *
      * @param mixed $value
      */
-    public function modify($value, DataContainer $data = null, iterable $model = null)
+    public function modify($value, DataContainer $data = null, $model = null)
     {
         $trueLabel = $data->trueLabel ?? $this->trueLabel;
         $falseLabel = $data->falseLabel ?? $this->falseLabel;

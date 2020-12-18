@@ -17,7 +17,7 @@ class SanitizedModifier extends Modifier
      *
      * @param mixed $value
      */
-    public function modify($value, DataContainer $data = null, iterable $model = null)
+    public function modify($value, DataContainer $data = null, $model = null)
     {
         $filter = $data->filter ?? ENT_QUOTES;
 
