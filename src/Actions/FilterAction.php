@@ -24,9 +24,9 @@ class FilterAction extends Action implements ActionInterface
     protected $controlsExecution = true;
 
     /**
-     * Output has been prepared
+     * Output has been prepared.
      *
-     * @var boolean
+     * @var bool
      */
     protected $prepared = false;
 
@@ -44,7 +44,6 @@ class FilterAction extends Action implements ActionInterface
         $this->prepared = true;
 
         return $output;
-        
     }
 
     /**
@@ -57,7 +56,7 @@ class FilterAction extends Action implements ActionInterface
         if (!$this->prepared) {
             $output = $this->prepare($output);
         }
-        
+
         if (CrudAssistant::isInputCollection($input)) {
             foreach ($input as $val) {
                 if (CrudAssistant::isInputCollection($val)) {

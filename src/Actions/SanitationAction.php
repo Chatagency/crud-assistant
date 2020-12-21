@@ -15,12 +15,12 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 class SanitationAction extends Action implements ActionInterface
 {
     /**
-     * Output has been prepared
+     * Output has been prepared.
      *
-     * @var boolean
+     * @var bool
      */
     protected $prepared = false;
-    
+
     /**
      * Pre Execution.
      *
@@ -35,9 +35,8 @@ class SanitationAction extends Action implements ActionInterface
         $this->prepared = true;
 
         return $output;
-        
     }
-    
+
     /**
      * Execute action on input.
      *
