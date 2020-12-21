@@ -5,13 +5,11 @@ namespace Chatagency\CrudAssistant\Tests;
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Recipes\LabelValueActionRecipe;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class InputTest extends TestCase
