@@ -224,6 +224,8 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
 
         $output = $output ?? new DataContainer();
 
+        $output = $action->prepare($output);
+
         foreach ($this->getInputs() as $input) {
             if (CrudAssistant::isInputCollection($input) && $action->isTree()) {
                 $collectionName = $input->getName();
@@ -240,6 +242,8 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
             $input->execute($action, $output);
         }
 
+        $output = $action->cleanup($output);
+
         return $output;
     }
 
@@ -253,8 +257,10 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     public function executeAll(ActionInterface $action, DataContainerInterface $output = null)
     {
         $output = $output ?? new DataContainer();
-
-        return $action->execute($this, $output);
+        
+        $output = $action->prepare($output);
+        $output = $action->execute($this, $output);
+        return $action->cleanup($output);
     }
 
     /**

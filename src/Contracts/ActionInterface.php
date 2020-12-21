@@ -10,11 +10,25 @@ namespace Chatagency\CrudAssistant\Contracts;
 interface ActionInterface
 {
     /**
+     * Pre Execution.
+     *
+     * @return DataContainerInterface
+     */
+    public function prepare(DataContainerInterface $output);
+
+    /**
      * Execute action on input.
      *
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output);
+
+    /**
+     * Post Execution.
+     *
+     * @return DataContainerInterface
+     */
+    public function cleanup(DataContainerInterface $output);
 
     /**
      * Notifies the collection the output
