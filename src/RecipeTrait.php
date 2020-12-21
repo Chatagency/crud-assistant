@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 
 /**
- * Recipe Trait
+ * Recipe Trait.
  */
 trait RecipeTrait
 {
@@ -100,5 +102,4 @@ trait RecipeTrait
     {
         return $this->ignored;
     }
-
 }

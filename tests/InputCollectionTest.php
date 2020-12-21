@@ -260,7 +260,7 @@ class InputCollectionTest extends TestCase
             'model' => new DataContainer([
                 'name' => "Victor Sánchez",
                 'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+                'address' => 'Lorem ipsum dolor sit.',
                 'age' => 35,
             ])
         ]);
@@ -295,7 +295,7 @@ class InputCollectionTest extends TestCase
             'model' => new DataContainer([
                 'name' => "Victor Sánchez",
                 'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+                'address' => 'Lorem ipsum dolor sit.',
                 'age' => 35,
             ])
         ]);
@@ -334,7 +334,7 @@ class InputCollectionTest extends TestCase
             'data' => [
                 'name' => "Victor Sánchez",
                 'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+                'address' => 'Lorem ipsum dolor sit.',
                 'age' => 35,
             ]
         ]);

@@ -13,8 +13,6 @@ class ModifierFactory
 {
     /**
      * Modifier classes path.
-     *
-     * @var string
      */
     public const PATH = '\Chatagency\CrudAssistant\Modifiers\\';
 

@@ -14,7 +14,7 @@ use Chatagency\CrudAssistant\RecipeBase;
 class SanitationActionRecipe extends RecipeBase implements RecipeInterface
 {
     /**
-     * Sanitation type
+     * Sanitation type.
      *
      * @var mixed
      */

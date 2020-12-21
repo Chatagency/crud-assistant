@@ -29,9 +29,8 @@ class BooleanModifier extends Modifier
     /**
      * Modifies value.
      *
-     * @param mixed         $value
-     * @param DataContainer $data
-     * @param $model
+     * @param mixed      $value
+     * @param mixed|null $model
      */
     public function modify($value, DataContainer $data = null, $model = null)
     {

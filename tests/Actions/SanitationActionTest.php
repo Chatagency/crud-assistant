@@ -47,7 +47,7 @@ class SanitationActionTest extends TestCase
     }
 
     /** @test */
-    public function the_raw_values_can_be_accessed_with_the_sufix_underscore_raw()
+    public function the_raw_values_can_be_accessed_with_the_suffix_underscore_raw()
     {
         $name = new TextInput('name', 'Name');
         $name->setRecipe(new SanitationActionRecipe([

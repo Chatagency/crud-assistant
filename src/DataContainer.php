@@ -204,7 +204,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      */
     public function offsetSet($offset, $value)
     {
-        if (null === $offset) {
+        if ($offset === null) {
             $this->data[] = $value;
         } else {
             $this->data[$offset] = $value;

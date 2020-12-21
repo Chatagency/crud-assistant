@@ -15,7 +15,7 @@ use Exception;
 abstract class RecipeContainer extends DataContainer implements RecipeInterface
 {
     use RecipeTrait;
-    
+
     /**
      * Allowed setters.
      * Ignored if empty.
@@ -58,13 +58,15 @@ abstract class RecipeContainer extends DataContainer implements RecipeInterface
      * Validates if a key/value
      * array has valid setters.
      *
-     * @return void
+     * @return self
      */
     public function validateSetters(array $data)
     {
         foreach ($data as $setter => $value) {
             $this->validateSetter($setter);
         }
+
+        return $this;
     }
 
     /**
@@ -77,7 +79,7 @@ abstract class RecipeContainer extends DataContainer implements RecipeInterface
     protected function validateSetter($setter)
     {
         // Check if in setters array
-        if (!empty($this->setters) && !\in_array($setter, $this->setters)) {
+        if (\count($this->setters) && !\in_array($setter, $this->setters)) {
             throw new Exception('The setter "'.$setter.'" is not available on this recipe', 500);
         }
     }

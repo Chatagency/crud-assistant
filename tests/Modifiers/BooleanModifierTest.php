@@ -26,8 +26,8 @@ class BooleanModifierTest extends TestCase
         $modifier = new BooleanModifier();
         
         $data = new DataContainer([
-            'trueLabel' => 'Corrent',
-            'falseLabel' => 'Incorrent',
+            'trueLabel' => 'Correct',
+            'falseLabel' => 'Incorrect',
         ]);
         
         $newTrueValue = $modifier->modify(true, $data);

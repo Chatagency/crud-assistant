@@ -96,13 +96,13 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      */
     public function setPartialCollection(array $partialCollection)
     {
-        if (empty($partialCollection)) {
+        if (!\count($partialCollection)) {
             throw new Exception('The array passed to '.__METHOD__.' is empty', 500);
         }
 
         $inputs = $this->getInputs();
 
-        if (empty($inputs)) {
+        if (!\count($inputs)) {
             throw new Exception('This collection cannot add partial inputs because it has no inputs', 500);
         }
 
@@ -170,7 +170,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     {
         $partialCollection = $this->getPartialCollection();
 
-        if (!empty($partialCollection) && !$all) {
+        if (\count($partialCollection) && !$all) {
             return $partialCollection;
         }
 

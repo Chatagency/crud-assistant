@@ -32,7 +32,7 @@ class FilterActionTest extends TestCase
         $container->data = [
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
-            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+            'description' => 'Lorem ipsum dolor sit',
         ];
 
         $filter = new FilterAction($container);
@@ -70,7 +70,7 @@ class FilterActionTest extends TestCase
         $container->data = [
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
-            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+            'description' => 'Lorem ipsum dolor sit',
         ];
 
         $filter = new FilterAction($container);
@@ -104,7 +104,7 @@ class FilterActionTest extends TestCase
         $container->data = [
             'name' => "Victor Sánchez",
             'email' => '',
-            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+            'description' => 'Lorem ipsum dolor sit',
         ];
 
         $filter = new FilterAction($container);
