@@ -44,6 +44,7 @@ $exclude = [
     'tests',
     'build',
     'vendor',
+    'helpers',
 ];
 
 $finder = PhpCsFixer\Finder::create()
