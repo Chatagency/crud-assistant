@@ -15,19 +15,39 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 class SanitationAction extends Action implements ActionInterface
 {
     /**
+     * Output has been prepared
+     *
+     * @var boolean
+     */
+    protected $prepared = false;
+    
+    /**
+     * Pre Execution.
+     *
+     * @return DataContainerInterface
+     */
+    public function prepare(DataContainerInterface $output)
+    {
+        $params = $this->getParams();
+        $output->requestArray = $params->requestArray;
+        $this->checkRequiredParams($params, ['requestArray']);
+
+        $this->prepared = true;
+
+        return $output;
+        
+    }
+    
+    /**
      * Execute action on input.
      *
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output)
     {
-        $params = $this->getParams();
-
-        if (!isset($output->requestArray)) {
-            $output->requestArray = $params->requestArray;
+        if (!$this->prepared) {
+            $output = $this->prepare($output);
         }
-
-        $this->checkRequiredParams($params, ['requestArray']);
 
         $recipe = $input->getRecipe(static::class);
         $requestArray = $output->requestArray;

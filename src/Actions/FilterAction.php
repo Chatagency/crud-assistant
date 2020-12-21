@@ -24,20 +24,40 @@ class FilterAction extends Action implements ActionInterface
     protected $controlsExecution = true;
 
     /**
+     * Output has been prepared
+     *
+     * @var boolean
+     */
+    protected $prepared = false;
+
+    /**
+     * Pre Execution.
+     *
+     * @return DataContainerInterface
+     */
+    public function prepare(DataContainerInterface $output)
+    {
+        $params = $this->getParams();
+        $this->checkRequiredParams($params, ['data']);
+        $output->data = $params->data;
+
+        $this->prepared = true;
+
+        return $output;
+        
+    }
+
+    /**
      * Execute action on input.
      *
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output)
     {
-        $params = $this->getParams();
-
-        $this->checkRequiredParams($params, ['data']);
-
-        if (!isset($output->data)) {
-            $output->data = $params->data;
+        if (!$this->prepared) {
+            $output = $this->prepare($output);
         }
-
+        
         if (CrudAssistant::isInputCollection($input)) {
             foreach ($input as $val) {
                 if (CrudAssistant::isInputCollection($val)) {
