@@ -65,7 +65,6 @@ class FilterAction extends Action implements ActionInterface
                     $output = $this->executeOne($val, $output);
                 }
             }
-
             return $output;
         }
 
@@ -102,5 +101,18 @@ class FilterAction extends Action implements ActionInterface
         $output->data = $data;
 
         return $output;
+    }
+
+    /**
+     * Sets $controlsExecution
+     *
+     * @param bool $controlsExecution
+     * @return self
+     */
+    public function setControlsExecution(bool $controlsExecution)
+    {
+        $this->controlsExecution = $controlsExecution;
+
+        return $this;
     }
 }
