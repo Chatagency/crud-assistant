@@ -49,6 +49,26 @@ abstract class Action
     }
 
     /**
+     * Pre Execution.
+     *
+     * @return DataContainerInterface
+     */
+    public function prepare(DataContainerInterface $output)
+    {
+        return $output;
+    }
+
+    /**
+     * Post Execution.
+     *
+     * @return DataContainerInterface
+     */
+    public function cleanup(DataContainerInterface $output)
+    {
+        return $output;
+    }
+
+    /**
      * Notifies the collection the output
      * result must be in a tree format
      * instead of a flat output.

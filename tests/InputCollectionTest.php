@@ -242,7 +242,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_with_internal_collections_save_action_output_in_tree_if_the_is_tree_option_is_true()
+    public function an_input_collection_with_internal_collections_save_output_in_tree_if_the_is_tree_option_is_true()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -271,6 +271,54 @@ class InputCollectionTest extends TestCase
         $this->assertInstanceOf(DataContainer::class, $output->secondary_info);
         $this->assertCount(1, $output->secondary_info);
         $this->assertEquals($runtime->model->age, $output->secondary_info->{$internal->getInput('age')->getLabel()});
+    }
+
+    /** @test */
+    public function an_input_collection_with_internal_collections_without_the_tree_option_goes_with_the_normal_flow()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'Your Address');
+
+        $internal = new InputCollection('secondary_info');
+
+        $ageInput = new TextInput('age', 'Your age');
+        $ageInput->setRecipe(
+            (new FilterActionRecipe([
+                'filter' => true
+            ]))
+        );
+
+        $internal->setInputs([
+            $ageInput,
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $address, $internal,]);
+        
+        $runtime = new DataContainer([
+            'data' => [
+                'name' => "Victor Sánchez",
+                'email' => 'email@email.com',
+                'address' => 'Lorem ipsum dolor sit.',
+                'age' => 35,
+            ]
+        ]);
+
+        $action = (new FilterAction($runtime))
+            /**
+             * Delegates execution to the 
+             * input collection
+             */
+            ->setControlsExecution(false);
+
+        $output = $form->execute($action);
+
+        // dumpIt($output);
+        
+        $this->assertCount(3, $output->data);
+        $this->assertArrayHasKey('name', $output->data);
+        $this->assertArrayNotHasKey('age', $output->data);
     }
 
     /** @test */

@@ -19,3 +19,4 @@
 - ✅ Add `tree` option for recursive forms output
 - ✅ Rethink recipes parameters (new Recipe class)
 - ✅ Decouple recipe methods into a trait
+- ✅ Add prepare and cleanup methods to actions
