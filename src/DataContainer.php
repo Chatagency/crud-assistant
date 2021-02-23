@@ -179,19 +179,19 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return array
      */
-    public function all()
-    {
-        return $this->data;
-    }
-
-    /**
-     * all() method alias.
-     *
-     * @return array
-     */
     public function toArray()
     {
         return $this->all();
+    }
+
+    /**
+     * toArray() method alias.
+     *
+     * @return array
+     */
+    public function all()
+    {
+        return $this->data;
     }
 
     /**
