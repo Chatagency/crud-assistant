@@ -181,7 +181,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      */
     public function toArray()
     {
-        return $this->all();
+        return $this->data;
     }
 
     /**
@@ -191,7 +191,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      */
     public function all()
     {
-        return $this->data;
+        return $this->toArray();
     }
 
     /**
