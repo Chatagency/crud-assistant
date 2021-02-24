@@ -235,8 +235,8 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
                     if (!$collectionName) {
                         throw new Exception('All internal collections must have a name', 500);
                     }
-
-                    $output->$collectionName = $input->execute($action, new DataContainer());
+                    $dataContainerClass = get_class($output);
+                    $output->$collectionName = $input->execute($action, new $dataContainerClass);
 
                     continue;
                 }
