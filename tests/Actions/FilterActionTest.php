@@ -38,6 +38,7 @@ class FilterActionTest extends TestCase
         $filter = new FilterAction($container);
 
         $output = new DataContainer();
+        $filter->prepare($output);
         foreach($inputs as $input) {
             $filtered = $filter->execute($input, $output);
         }
@@ -76,6 +77,7 @@ class FilterActionTest extends TestCase
         $filter = new FilterAction($container);
 
         $output = new DataContainer();
+        $filter->prepare($output);
         foreach($inputs as $input) {
             $filtered = $filter->execute($input, $output);
         }
@@ -110,6 +112,7 @@ class FilterActionTest extends TestCase
         $filter = new FilterAction($container);
 
         $output = new DataContainer();
+        $filter->prepare($output);
         foreach($inputs as $input) {
             $filtered = $filter->execute($input, $output);
         }
