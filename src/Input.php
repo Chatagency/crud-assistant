@@ -64,21 +64,12 @@ abstract class Input implements InputInterface
     protected $recipes = [];
 
     /**
-     * Action Factory.
-     *
-     * @var ActionFactory
-     */
-    protected $actionFactory;
-
-    /**
      * @return self
      */
-    public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null)
+    public function __construct(string $name = null, string $label = null)
     {
         $this->name = $name;
         $this->label = $label ?? $name;
-
-        $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
     }
