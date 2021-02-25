@@ -25,9 +25,9 @@ class CrudAssistant
      *
      * @return self
      */
-    public function __construct(array $inputs = [], string $name = null, InputCollectionInterface $collection = null)
+    public function __construct(array $inputs = [], string $name = null, string $label = null, InputCollectionInterface $collection = null)
     {
-        $this->collection = $collection ?? new InputCollection($name);
+        $this->collection = $collection ?? new InputCollection($name, $label);
         $this->collection->setInputs($inputs);
 
         return $this;
