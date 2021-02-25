@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\DataContainer;
 use BadMethodCallException;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 class CrudAssistantTest extends TestCase
 {
@@ -39,7 +39,7 @@ class CrudAssistantTest extends TestCase
     public function actions_can_be_executed_using_the_execute_method_from_the_input_collection()
     {
         $name = new TextInput('name');
-        $name->setRecipe(new SanitationActionRecipe([
+        $name->setRecipe(new SanitationRecipe([
             'type' => FILTER_SANITIZE_SPECIAL_CHARS
         ]));
 

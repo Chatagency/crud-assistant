@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterRecipe;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -284,7 +284,7 @@ class InputCollectionTest extends TestCase
 
         $ageInput = new TextInput('age', 'Your age');
         $ageInput->setRecipe(
-            (new FilterActionRecipe([
+            (new FilterRecipe([
                 'filter' => true
             ]))
         );
@@ -366,7 +366,7 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'Your Address');
-        $address->setRecipe(new FilterActionRecipe([
+        $address->setRecipe(new FilterRecipe([
             'filter' => true
         ]));
 

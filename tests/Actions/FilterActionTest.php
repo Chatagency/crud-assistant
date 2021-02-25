@@ -5,7 +5,7 @@ namespace Chatagency\CrudAssistant\Tests\Actions;
 use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterRecipe;
 use PHPUnit\Framework\TestCase;
 
 class FilterActionTest extends TestCase
@@ -19,7 +19,7 @@ class FilterActionTest extends TestCase
         
         $email = new TextInput('email', 'Email');
 
-        $recipe = new FilterActionRecipe();
+        $recipe = new FilterRecipe();
         $recipe->filter = true;
         
         $email->setRecipe($recipe);
@@ -55,7 +55,7 @@ class FilterActionTest extends TestCase
         
         $email = new TextInput('email', 'Email');
         
-        $recipe = new FilterActionRecipe();
+        $recipe = new FilterRecipe();
         $recipe->callback = function($input, $params, $data){
             unset($data[$input->getName()]);
             return $data;
@@ -93,7 +93,7 @@ class FilterActionTest extends TestCase
         
         $email = new TextInput('email', 'Email');
 
-        $recipe = (new FilterActionRecipe());
+        $recipe = (new FilterRecipe());
         $recipe->ignoreIfEmpty = true;
         
         $email->setRecipe($recipe);
@@ -125,7 +125,7 @@ class FilterActionTest extends TestCase
     {
         $this->expectException(\Exception::class);
         
-        $recipe = (new FilterActionRecipe());
+        $recipe = (new FilterRecipe());
         $recipe->NotValid = true;
         
     }

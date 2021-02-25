@@ -67,10 +67,10 @@ This way we can group all descriptions/instructions in one place. But (arguably)
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->setRecipe(new SanitationActionRecipe([
+$name->setRecipe(new SanitationRecipe([
     'type' => FILTER_SANITIZE_SPECIAL_CHARS
 ]));
 ```
@@ -131,14 +131,14 @@ use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\Actions\FilterAction;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 // Input
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->setRecipe(new SanitationActionRecipe([
+$name->setRecipe(new SanitationRecipe([
     'type' => FILTER_SANITIZE_SPECIAL_CHARS
 ]));
-$name->setRecipe(new FilterActionRecipe([
+$name->setRecipe(new FilterRecipe([
     'filter' => true
 ]) );
 
@@ -185,10 +185,10 @@ It also doubles as a `InputCollection` facade:
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\FilterAction;
-use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterRecipe;
 
 $name = new TextInput('name');
-$name->setRecipe(new FilterActionRecipe([
+$name->setRecipe(new FilterRecipe([
     'filter' => true
 ]));
 

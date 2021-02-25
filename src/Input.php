@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;

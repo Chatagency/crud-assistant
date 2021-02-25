@@ -5,7 +5,7 @@ namespace Chatagency\CrudAssistant\Tests\Actions;
 use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 use PHPUnit\Framework\TestCase;
 
 class SanitationActionTest extends TestCase
@@ -14,12 +14,12 @@ class SanitationActionTest extends TestCase
     public function the_sanitation_action_is_used_to_sanitize_the_request()
     {
         $name = new TextInput('name', 'Name');
-        $nameRecipe = new SanitationActionRecipe();
+        $nameRecipe = new SanitationRecipe();
         $nameRecipe->type = FILTER_SANITIZE_SPECIAL_CHARS;
         $name->setRecipe($nameRecipe);
 
         $email = new TextInput('email', 'Email');
-        $emailRecipe = new SanitationActionRecipe();
+        $emailRecipe = new SanitationRecipe();
         $emailRecipe->type = FILTER_SANITIZE_EMAIL;
         $email->setRecipe($emailRecipe);
 
@@ -50,7 +50,7 @@ class SanitationActionTest extends TestCase
     public function the_raw_values_can_be_accessed_with_the_suffix_underscore_raw()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(new SanitationActionRecipe([
+        $name->setRecipe(new SanitationRecipe([
             'type' => FILTER_SANITIZE_SPECIAL_CHARS
         ]));
 
@@ -79,7 +79,7 @@ class SanitationActionTest extends TestCase
     public function an_array_can_be_passed_as_a_value_to_the_action_with_multiple_rules()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(new SanitationActionRecipe([
+        $name->setRecipe(new SanitationRecipe([
             'type' => [
                 ['id' => FILTER_SANITIZE_SPECIAL_CHARS]
             ],
@@ -109,7 +109,7 @@ class SanitationActionTest extends TestCase
     public function if_one_of_the_values_of_the_request_is_an_array_the_filter_is_applied_to_all_values()
     {
         $name = new TextInput('name', 'Name');
-        $name->setRecipe(new SanitationActionRecipe([
+        $name->setRecipe(new SanitationRecipe([
             'type' => FILTER_SANITIZE_SPECIAL_CHARS
         ]));
 
@@ -142,7 +142,7 @@ class SanitationActionTest extends TestCase
     {
         $this->expectException(\Exception::class);
         
-        $recipe = (new SanitationActionRecipe());
+        $recipe = (new SanitationRecipe());
         $recipe->NotValid = true;
         
     }

@@ -11,8 +11,8 @@ use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\Actions\SanitationAction;
-use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterRecipe;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 class ReadmeTest extends TestCase
 {
@@ -44,7 +44,7 @@ class ReadmeTest extends TestCase
     public function  docs_collection_one_test()
     {
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-        $name->setRecipe(new \Chatagency\CrudAssistant\Recipes\SanitationActionRecipe([
+        $name->setRecipe(new \Chatagency\CrudAssistant\Recipes\SanitationRecipe([
             'type' => FILTER_SANITIZE_SPECIAL_CHARS
         ]));
     }
@@ -99,10 +99,10 @@ class ReadmeTest extends TestCase
     {
         // Input
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-        $name->setRecipe(new SanitationActionRecipe([
+        $name->setRecipe(new SanitationRecipe([
             'type' => FILTER_SANITIZE_SPECIAL_CHARS
         ]));
-        $name->setRecipe(new FilterActionRecipe([
+        $name->setRecipe(new FilterRecipe([
             'filter' => true
         ]) );
 
@@ -148,7 +148,7 @@ class ReadmeTest extends TestCase
     public function  docs_assistant_two_test()
     {
         $name = new TextInput('name');
-        $name->setRecipe(new FilterActionRecipe([
+        $name->setRecipe(new FilterRecipe([
             'filter' => true
         ]));
         

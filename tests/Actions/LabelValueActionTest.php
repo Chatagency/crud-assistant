@@ -7,7 +7,7 @@ use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Modifiers\BooleanModifier;
-use Chatagency\CrudAssistant\Recipes\LabelValueActionRecipe;
+use Chatagency\CrudAssistant\Recipes\LabelValueRecipe;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -66,7 +66,7 @@ class LabelValueActionTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
 
-        $recipe = (new LabelValueActionRecipe())->ignore();
+        $recipe = (new LabelValueRecipe())->ignore();
         $name->setRecipe($recipe);
 
         $email = new TextInput('email', 'Email');
@@ -101,7 +101,7 @@ class LabelValueActionTest extends TestCase
 
         $nameFormat = "The %s is";
 
-        $nameRecipe = new LabelValueActionRecipe();
+        $nameRecipe = new LabelValueRecipe();
         $nameRecipe->label = function(Input $input, DataContainer $params) use ($nameFormat) {
             return sprintf($nameFormat, $input->getLabel());
         };
@@ -110,7 +110,7 @@ class LabelValueActionTest extends TestCase
 
         $emailFormat = "The address is %s";
 
-        $emailRecipe = new LabelValueActionRecipe();
+        $emailRecipe = new LabelValueRecipe();
         $emailRecipe->value = function(Input $input, DataContainer $params) use ($emailFormat) {
             $model = $params->model;
             return sprintf($emailFormat, $model->email);
@@ -155,7 +155,7 @@ class LabelValueActionTest extends TestCase
             'trueLabel' => 'I Accept'
         ]);
 
-        $recipe = new LabelValueActionRecipe();
+        $recipe = new LabelValueRecipe();
         $recipe->setModifiers([
             new BooleanModifier($modifierData)
         ]);
@@ -188,7 +188,7 @@ class LabelValueActionTest extends TestCase
     {
         $this->expectException(\Exception::class);
         
-        $recipe = (new LabelValueActionRecipe());
+        $recipe = (new LabelValueRecipe());
         $recipe->NotValid = true;
         
     }
