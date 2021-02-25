@@ -26,7 +26,7 @@ class GenericRecipeTest extends TestCase
 
         $name->setRecipe($genericRecipe);
 
-        $collection = (CrudAssistant::make([$name, $email]))->getCollection();
+        $collection = (CrudAssistant::make([$name, $email]));
 
         $params = new DataContainer([
             'data' => [

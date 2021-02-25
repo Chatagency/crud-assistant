@@ -8,17 +8,18 @@ use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\DataContainer;
 use BadMethodCallException;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
 
 class CrudAssistantTest extends TestCase
 {
 
     /** @test */
-    public function a_crud_assistant_instance_can_be_created_statically()
+    public function when_the_make_method_is_called_on_crud_assistant_an_input_collection_instance_is_returned()
     {
         $manager = CrudAssistant::make([]);
 
-        $this->assertInstanceOf(CrudAssistant::class, $manager);
+        $this->assertInstanceOf(InputCollectionInterface::class, $manager);
     }
 
     /** @test */
