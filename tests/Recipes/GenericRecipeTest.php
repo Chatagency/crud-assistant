@@ -15,6 +15,14 @@ use PHPUnit\Framework\TestCase;
 class GenericRecipeTest extends TestCase
 {
     /** @test */
+    public function make_can_be_used_to_get_an_instance_of_generic_recipe()
+    {
+        $recipe = GenericRecipe::make();
+
+        $this->assertInstanceOf(GenericRecipe::class, $recipe);
+    }
+    
+    /** @test */
     public function a_generic_recipe_can_can_be_passed_to_actions()
     {
         $name = new TextInput('name');
