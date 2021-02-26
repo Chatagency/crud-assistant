@@ -57,11 +57,11 @@ class CrudAssistant
     }
 
     /**
-     * Creates new instance of this class.
+     * Creates new instance of the class.
      *
      * @param array $args
      *
-     * @return InputCollection
+     * @return InputCollectionInterface
      */
     public static function make(...$args)
     {
@@ -71,7 +71,7 @@ class CrudAssistant
     /**
      * Returns input collection.
      *
-     * @return InputCollection
+     * @return InputCollectionInterface
      */
     public function getCollection()
     {
