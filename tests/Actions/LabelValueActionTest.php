@@ -14,6 +14,14 @@ use PHPUnit\Framework\TestCase;
 class LabelValueActionTest extends TestCase
 {
     /** @test */
+    public function make_can_be_used_to_get_an_instance_of_filter_action()
+    {
+        $recipe = LabelValueAction::make();
+
+        $this->assertInstanceOf(LabelValueAction::class, $recipe);
+    }
+    
+    /** @test */
     public function the_label_value_action_returns_an_container_with_labels_as_keys()
     {
         $name = new TextInput('name', 'Name');
@@ -29,7 +37,7 @@ class LabelValueActionTest extends TestCase
             'model' => $model,
         ]);
         
-        $action =  (new LabelValueAction($container));
+        $action =  new LabelValueAction($container);
         
         $output = new DataContainer();
         foreach($inputs as $input) {

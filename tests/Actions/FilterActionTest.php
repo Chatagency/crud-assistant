@@ -10,6 +10,15 @@ use PHPUnit\Framework\TestCase;
 
 class FilterActionTest extends TestCase
 {
+
+    /** @test */
+    public function make_can_be_used_to_get_an_instance_of_filter_action()
+    {
+        $recipe = FilterAction::make();
+
+        $this->assertInstanceOf(FilterAction::class, $recipe);
+    }
+    
     /** @test */
     public function a_filter_action_is_used_to_exclude_input_data_from_dataset()
     {

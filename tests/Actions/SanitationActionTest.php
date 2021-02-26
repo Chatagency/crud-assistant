@@ -11,6 +11,14 @@ use PHPUnit\Framework\TestCase;
 class SanitationActionTest extends TestCase
 {
     /** @test */
+    public function make_can_be_used_to_get_an_instance_of_filter_action()
+    {
+        $recipe = SanitationAction::make();
+
+        $this->assertInstanceOf(SanitationAction::class, $recipe);
+    }
+
+    /** @test */
     public function the_sanitation_action_is_used_to_sanitize_the_request()
     {
         $name = new TextInput('name', 'Name');

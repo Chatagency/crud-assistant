@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
-
 /**
  * Action base class.
  */
@@ -46,6 +46,18 @@ abstract class Action
         $this->params = $params ?? new DataContainer();
 
         return $this;
+    }
+
+    /**
+     * Creates new instance of the class.
+     *
+     * @param array $args
+     *
+     * @return ActionInterface
+     */
+    public static function make(...$args)
+    {
+        return new static(...$args);
     }
 
     /**
