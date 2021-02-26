@@ -20,3 +20,4 @@
 - ✅ Rethink recipes parameters (new Recipe class)
 - ✅ Decouple recipe methods into a trait
 - ✅ Add prepare and cleanup methods to actions
+- ⬜️ Test in lower php versions
