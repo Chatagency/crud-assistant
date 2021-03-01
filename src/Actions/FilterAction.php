@@ -9,6 +9,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\CrudAssistant;
+use InvalidArgumentException;
 
 /**
  * Filter action.
@@ -24,15 +25,19 @@ class FilterAction extends Action implements ActionInterface
     protected $controlsExecution = true;
 
     /**
+     * Data to be filtered.
+     * @var array
+     */
+    public array $data;
+
+    /**
      * Pre Execution.
      *
      * @return DataContainerInterface
      */
     public function prepare(DataContainerInterface $output)
     {
-        $params = $this->getParams();
-        $this->checkRequiredParams($params, ['data']);
-        $output->data = $params->data;
+        $output->data = $this->data;
 
         return $output;
     }

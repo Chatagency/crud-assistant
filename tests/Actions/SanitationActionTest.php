@@ -43,6 +43,7 @@ class SanitationActionTest extends TestCase
         $sanitation = new SanitationAction($container);
         
         $output = new DataContainer();
+        $sanitation->prepare($output);
         foreach($inputs as $input) {
             $output = $sanitation->execute($input,  $output);
         }
@@ -73,6 +74,7 @@ class SanitationActionTest extends TestCase
         $sanitation = new SanitationAction($container);
         
         $output = new DataContainer();
+        $sanitation->prepare($output);
         foreach($inputs as $input) {
             $output = $sanitation->execute($input, $output);
         }
@@ -104,6 +106,7 @@ class SanitationActionTest extends TestCase
         $sanitation = new SanitationAction($container);
         
         $output = new DataContainer();
+        $sanitation->prepare($output);
         foreach($inputs as $input) {
             $output = $sanitation->execute($input, $output);
         }
@@ -135,6 +138,7 @@ class SanitationActionTest extends TestCase
         $sanitation = new SanitationAction($container);
         
         $output = new DataContainer();
+        $sanitation->prepare($output);
         foreach($inputs as $input) {
             $output = $sanitation->execute($input, $output);
         }
@@ -143,6 +147,16 @@ class SanitationActionTest extends TestCase
 
         $this->assertNotEquals($container->requestArray['name'][0], $requestArray['name'][0]);
         $this->assertEquals($container->requestArray['name'][0], $requestArray['name_raw'][0]);
+    }
+
+    /** @test */
+    public function if_no_request_array_is_passed_to_the_sanitation_action_an_exception_is_thrown()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        
+        $sanitation = new SanitationAction(new DataContainer());
+        $sanitation->prepare(new DataContainer());
+        
     }
 
     /** @test */

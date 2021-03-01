@@ -119,8 +119,7 @@ class LabelValueActionTest extends TestCase
         $emailFormat = "The address is %s";
 
         $emailRecipe = new LabelValueRecipe();
-        $emailRecipe->value = function(Input $input, DataContainer $params) use ($emailFormat) {
-            $model = $params->model;
+        $emailRecipe->value = function(Input $input, $model) use ($emailFormat) {
             return sprintf($emailFormat, $model->email);
         };
 
