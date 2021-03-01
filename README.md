@@ -8,7 +8,7 @@ There is one main goal Crud Assistant is set to solve: **Organization**.
 
 This is where this package shines. It allows the you to, depending on your implementation, make changes only in a couple of places. With Crud Assistant you can consolidate all business logic in `Inputs` and all implementation code in `Actions`. This also promotes code isolation and code re-use.
 
-*Disclaimer: This a package is meant to be used on small projects. We needed an easy way to create promotional landing pages and a fast way to apply changes to them. WE still have hot tested how this solution would scale in large projects.*
+*Disclaimer: This a package is meant to be used on small projects. We needed an easy way to create promotional landing pages and a fast way to apply changes to them. We still have not tested how this solution would scale in large projects.*
 
 ## Use
 
