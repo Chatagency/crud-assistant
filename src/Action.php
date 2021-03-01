@@ -45,6 +45,10 @@ abstract class Action
     {
         $this->params = $params ?? new DataContainer();
 
+        foreach ($this->params as $name => $param) {
+            $this->$name = $param;
+        }
+
         return $this;
     }
 
@@ -125,24 +129,6 @@ abstract class Action
     protected function getParams()
     {
         return $this->params;
-    }
-
-    /**
-     * Checks params integrity.
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return bool
-     */
-    protected function checkRequiredParams(DataContainerInterface $data, array $checks)
-    {
-        $missing = $data->missing($checks);
-
-        if ($missing) {
-            throw new InvalidArgumentException('The argument '.$missing.' is missing for the '.static::class.' action', 500);
-        }
-
-        return true;
     }
 
     /**
