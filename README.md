@@ -92,7 +92,9 @@ $collection = new InputCollection();
 $collection->setInputs([$name, $email]);
 
 $data = new DataContainer([
-    'requestArray' => []
+    'requestArray' => [
+        'email' => 'john@doe.com'
+    ]
 ]);
 
 $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\SanitationAction($data));
@@ -148,7 +150,9 @@ $collection->setInputs([$name]);
 // sanitizes values
 $sanitized = $collection->execute(new SanitationAction(
     new DataContainer([
-        'requestArray' => []
+        'requestArray' => [
+            'name' => 'John Dow'
+        ]
     ])
 ));
 // returns filtered values
