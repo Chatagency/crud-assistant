@@ -336,18 +336,16 @@ class InputCollectionTest extends TestCase
         $form = new InputCollection();
         $form->setInputs([$name, $email, $address, $internal,]);
         
-        $runtime = new DataContainer([
-            'model' => new DataContainer([
-                'name' => "Victor Sánchez",
-                'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit.',
-                'age' => 35,
-            ])
+        $model = new DataContainer([
+            'name' => "Victor Sánchez",
+            'email' => 'email@email.com',
+            'address' => 'Lorem ipsum dolor sit.',
+            'age' => 35,
         ]);
 
         $this->expectException(\Exception::class);
 
-        $form->execute(new LabelValueAction($runtime));
+        $form->execute(LabelValueAction::make()->setModel($model));
     }
     
     /** @test */
