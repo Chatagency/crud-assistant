@@ -62,13 +62,14 @@ class ReadmeTest extends TestCase
         $collection = new InputCollection();
         $collection->setInputs([$name, $email]);
 
-        $data = new DataContainer([
-            'requestArray' => [
-                'email' => 'john@doe.com'
-            ]
-        ]);
+        $requestArray = [
+            'email' => 'john@doe.com'
+        ];
         
-        $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\SanitationAction($data));
+        $actionResult = $collection->execute(
+            \Chatagency\CrudAssistant\Actions\SanitationAction::make()
+                ->setRequestArray($requestArray)
+        );
     }
 
     /** 
@@ -112,21 +113,17 @@ class ReadmeTest extends TestCase
         $collection->setInputs([$name]);
 
         // sanitizes values
-        $sanitized = $collection->execute(new SanitationAction(
-            new DataContainer([
-                'requestArray' => [
-                    'name' => 'John Dow'
-                ]
+        $sanitized = $collection->execute(
+            SanitationAction::make()->setRequestArray([
+                'name' => 'John Dow'
             ])
-        ));
+        );
         // returns filtered values
-        $rules = $collection->execute(new FilterAction(
-            new DataContainer([
-                'data' => [
-                    'name' => 'John Dow'
-                ]
+        $rules = $collection->execute(
+            FilterAction::make()->setData([
+                'name' => 'John Dow'
             ])
-        ));
+        );
     }
 
     /** 
@@ -160,13 +157,12 @@ class ReadmeTest extends TestCase
         
         $manager = CrudAssistant::make([$name]);
         
-        $rules = $manager->execute(new FilterAction(
-            new DataContainer([
-                'data' => [
-                    'name' => 'John Doe'
-                ]
-            ])
-        ));
+        $action = new FilterAction();
+        $action->setData([
+            'name' => 'John Doe'
+        ]);
+        
+        $rules = $manager->execute($action);
     
     }
 
