@@ -37,14 +37,12 @@ class FilterActionTest extends TestCase
         
         $inputs = [$email, $name, $description];
         
-        $container = new DataContainer();
-        $container->data = [
+        $filter = new FilterAction();
+        $filter->setData([
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
             'description' => 'Lorem ipsum dolor sit',
-        ];
-
-        $filter = new FilterAction($container);
+        ]);
 
         $output = new DataContainer();
         $filter->prepare($output);
@@ -65,7 +63,7 @@ class FilterActionTest extends TestCase
         $email = new TextInput('email', 'Email');
         
         $recipe = new FilterRecipe();
-        $recipe->callback = function($input, $params, $data){
+        $recipe->callback = function($input, $data){
             unset($data[$input->getName()]);
             return $data;
         };
@@ -76,14 +74,12 @@ class FilterActionTest extends TestCase
         
         $inputs = [$name, $email, $description];
         
-        $container = new DataContainer();
-        $container->data = [
+        $filter = new FilterAction();
+        $filter->setData([
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
             'description' => 'Lorem ipsum dolor sit',
-        ];
-
-        $filter = new FilterAction($container);
+        ]);
 
         $output = new DataContainer();
         $filter->prepare($output);
@@ -110,15 +106,13 @@ class FilterActionTest extends TestCase
         $description = new TextInput('description', 'Description');
         
         $inputs = [$name, $email, $description];
-        
-        $container = new DataContainer();
-        $container->data = [
+
+        $filter = new FilterAction();
+        $filter->setData([
             'name' => "Victor Sánchez",
             'email' => '',
             'description' => 'Lorem ipsum dolor sit',
-        ];
-
-        $filter = new FilterAction($container);
+        ]);
 
         $output = new DataContainer();
         $filter->prepare($output);

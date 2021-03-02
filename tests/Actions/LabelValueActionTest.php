@@ -33,11 +33,8 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
         
-        $container = new DataContainer([
-            'model' => $model,
-        ]);
-        
-        $action =  new LabelValueAction($container);
+        $action = new LabelValueAction();
+        $action->setModel($model);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -85,11 +82,8 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
 
-        $container = new DataContainer([
-            'model' => $model,
-        ]);
-        
-        $action =  new LabelValueAction($container);
+        $action =  new LabelValueAction();
+        $action->setModel($model);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -132,11 +126,8 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
         
-        $container = new DataContainer([
-            'model' => $model,
-        ]);
-        
-        $action =  (new LabelValueAction($container));
+        $action =  (new LabelValueAction());
+        $action->setModel($model);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -175,11 +166,8 @@ class LabelValueActionTest extends TestCase
             'accept' => true,
         ]);
 
-        $container = new DataContainer([
-            'model' => $model,
-        ]);
-
-        $action =  new LabelValueAction($container);
+        $action =  new LabelValueAction();
+        $action->setModel($model);
         
         $output = new DataContainer();
         foreach($inputs as $input) {

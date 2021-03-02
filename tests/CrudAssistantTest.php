@@ -44,14 +44,12 @@ class CrudAssistantTest extends TestCase
         ]));
 
         $manager = new CrudAssistant([$name]);
-
-        $output = $manager->execute(new SanitationAction(
-            new DataContainer([
-                'requestArray' => [
-                    'name' => 'John Smith',
-                ],
-            ])
-        ));
+        
+        $action = SanitationAction::make()->setRequestArray([
+            'name' => 'John Smith',
+        ]);
+        
+        $output = $manager->execute($action);
 
         $sanitation = $output->requestArray;
 

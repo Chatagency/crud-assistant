@@ -36,14 +36,14 @@ class GenericRecipeTest extends TestCase
 
         $collection = (CrudAssistant::make([$name, $email]));
 
-        $params = new DataContainer([
-            'data' => [
+        $data = [
                 'name' => 'John',
                 'email' => 'john@john.com'
-            ]
-        ]);
+        ];
 
-        $output = $collection->execute(new FilterAction($params));
+        $output = $collection->execute(
+            FilterAction::make()->setData($data)
+        );
 
         $data = $output->data;
 
@@ -59,7 +59,9 @@ class GenericRecipeTest extends TestCase
 
         $email->setRecipe($genericRecipe2);
 
-        $output2 = $collection->execute(new FilterAction($params));
+        $output2 = $collection->execute(
+            FilterAction::make()->setData($data)
+        );
 
         $this->assertCount(0, $output2->data);
         

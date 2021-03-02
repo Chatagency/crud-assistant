@@ -85,9 +85,9 @@ class InputCollectionTest extends TestCase
             'email' => 'john#@email.com',
         ]);
 
-        $labelValue = $form->execute(new LabelValueAction(
-            new DataContainer(['model' => $model])
-        ));
+        $labelValue = $form->execute(
+            LabelValueAction::make()->setModel($model)
+        );
 
         $this->assertCount(2, $labelValue);
     }
@@ -256,21 +256,21 @@ class InputCollectionTest extends TestCase
         $form = new InputCollection();
         $form->setInputs([$name, $email, $address, $internal,]);
         
-        $runtime = new DataContainer([
-            'model' => new DataContainer([
-                'name' => "Victor Sánchez",
-                'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit.',
-                'age' => 35,
-            ])
+        $model =  new DataContainer([
+            'name' => "Victor Sánchez",
+            'email' => 'email@email.com',
+            'address' => 'Lorem ipsum dolor sit.',
+            'age' => 35,
         ]);
 
-        $output = $form->execute(new LabelValueAction($runtime));
+        $output = $form->execute(
+            LabelValueAction::make()->setModel($model)
+        );
         
         $this->assertCount(4, $output);
         $this->assertInstanceOf(DataContainer::class, $output->secondary_info);
         $this->assertCount(1, $output->secondary_info);
-        $this->assertEquals($runtime->model->age, $output->secondary_info->{$internal->getInput('age')->getLabel()});
+        $this->assertEquals($model->age, $output->secondary_info->{$internal->getInput('age')->getLabel()});
     }
 
     /** @test */
@@ -296,16 +296,15 @@ class InputCollectionTest extends TestCase
         $form = new InputCollection();
         $form->setInputs([$name, $email, $address, $internal,]);
         
-        $runtime = new DataContainer([
-            'data' => [
-                'name' => "Victor Sánchez",
-                'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit.',
-                'age' => 35,
-            ]
-        ]);
+        $data = [
+            'name' => "Victor Sánchez",
+            'email' => 'email@email.com',
+            'address' => 'Lorem ipsum dolor sit.',
+            'age' => 35,
+        ];
 
-        $action = (new FilterAction($runtime))
+        $action = FilterAction::make()
+            ->setData($data)
             /**
              * Delegates execution to the 
              * input collection
@@ -314,8 +313,6 @@ class InputCollectionTest extends TestCase
 
         $output = $form->execute($action);
 
-        // dumpIt($output);
-        
         $this->assertCount(3, $output->data);
         $this->assertArrayHasKey('name', $output->data);
         $this->assertArrayNotHasKey('age', $output->data);
@@ -378,23 +375,23 @@ class InputCollectionTest extends TestCase
         $form = new InputCollection();
         $form->setInputs([$name, $email, $address, $internal,]);
         
-        $runtime = new DataContainer([
-            'data' => [
-                'name' => "Victor Sánchez",
-                'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit.',
-                'age' => 35,
-            ]
-        ]);
+        $data = [
+            'name' => "Victor Sánchez",
+            'email' => 'email@email.com',
+            'address' => 'Lorem ipsum dolor sit.',
+            'age' => 35,
+        ];
 
-        $output = $form->executeAll(new FilterAction($runtime));
-        $output2 = $form->execute(new FilterAction($runtime));
+        $action = FilterAction::make()->setData($data);
+
+        $output = $form->executeAll($action);
+        $output2 = $form->execute($action);
 
         $this->assertEquals($output, $output2);
 
         $this->assertCount(3, $output->data);
-        $this->assertContains($runtime->data['name'], $output->data);
-        $this->assertNotContains($runtime->data['address'], $output->data);
+        $this->assertContains($data['name'], $output->data);
+        $this->assertNotContains($data['address'], $output->data);
     }
 
 }

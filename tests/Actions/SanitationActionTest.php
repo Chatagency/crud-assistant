@@ -33,14 +33,13 @@ class SanitationActionTest extends TestCase
 
         $inputs = [$name, $email];
 
-        $container = new DataContainer();
-        $container->requestArray = [
+        $sanitation = new SanitationAction();
+        $requestArrayOriginal = [
             'name' => "Victor O'Reilly",
             'email' => 'not_""an_email',
             'title' => 'Supervisor',
         ];
-
-        $sanitation = new SanitationAction($container);
+        $sanitation->setRequestArray($requestArrayOriginal);
         
         $output = new DataContainer();
         $sanitation->prepare($output);
@@ -50,9 +49,9 @@ class SanitationActionTest extends TestCase
         
         $requestArray = $output->requestArray;
 
-        $this->assertNotEquals($container->requestArray['name'], $requestArray['name']);
-        $this->assertNotEquals($container->requestArray['email'], $requestArray['email']);
-        $this->assertEquals($container->requestArray['name'], html_entity_decode($requestArray['name'], ENT_QUOTES));
+        $this->assertNotEquals($requestArrayOriginal['name'], $requestArray['name']);
+        $this->assertNotEquals($requestArrayOriginal['email'], $requestArray['email']);
+        $this->assertEquals($requestArrayOriginal['name'], html_entity_decode($requestArray['name'], ENT_QUOTES));
     }
 
     /** @test */
@@ -65,13 +64,13 @@ class SanitationActionTest extends TestCase
 
         $inputs = [$name];
 
-        $container = new DataContainer();
-        $container->requestArray = [
+        $requestArrayOriginal = [
             'name' => "Victor O'Reilly",
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new SanitationAction($container);
+        $sanitation = new SanitationAction();
+        $sanitation->setRequestArray($requestArrayOriginal);
         
         $output = new DataContainer();
         $sanitation->prepare($output);
@@ -81,8 +80,8 @@ class SanitationActionTest extends TestCase
 
         $requestArray = $output->requestArray;
 
-        $this->assertNotEquals($container->requestArray['name'], $requestArray['name']);
-        $this->assertEquals($container->requestArray['name'], $requestArray['name_raw']);
+        $this->assertNotEquals($requestArrayOriginal['name'], $requestArray['name']);
+        $this->assertEquals($requestArrayOriginal['name'], $requestArray['name_raw']);
     }
 
     /** @test */
@@ -97,14 +96,14 @@ class SanitationActionTest extends TestCase
 
         $inputs = [$name];
 
-        $container = new DataContainer();
-        $container->requestArray = [
+        $requestArrayOriginal = [
             'name' => "Victor O'Reill\y",
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new SanitationAction($container);
-        
+        $sanitation = new SanitationAction();
+        $sanitation->setRequestArray($requestArrayOriginal);
+
         $output = new DataContainer();
         $sanitation->prepare($output);
         foreach($inputs as $input) {
@@ -113,7 +112,7 @@ class SanitationActionTest extends TestCase
 
         $requestArray = $output->requestArray;
 
-        $this->assertNotEquals($container->requestArray['name'], $requestArray['name']);
+        $this->assertNotEquals($requestArrayOriginal['name'], $requestArray['name']);
     }
 
     /** @test */
@@ -126,8 +125,7 @@ class SanitationActionTest extends TestCase
 
         $inputs = [$name];
 
-        $container = new DataContainer();
-        $container->requestArray = [
+        $requestArrayOriginal = [
             'name' => [
                 "Victor O'Reilly",
                 "Another G'uy",
@@ -135,7 +133,8 @@ class SanitationActionTest extends TestCase
             'title' => 'Supervisor',
         ];
 
-        $sanitation = new SanitationAction($container);
+        $sanitation = new SanitationAction();
+        $sanitation->setRequestArray($requestArrayOriginal);
         
         $output = new DataContainer();
         $sanitation->prepare($output);
@@ -145,8 +144,8 @@ class SanitationActionTest extends TestCase
 
         $requestArray = $output->requestArray;
 
-        $this->assertNotEquals($container->requestArray['name'][0], $requestArray['name'][0]);
-        $this->assertEquals($container->requestArray['name'][0], $requestArray['name_raw'][0]);
+        $this->assertNotEquals($requestArrayOriginal['name'][0], $requestArray['name'][0]);
+        $this->assertEquals($requestArrayOriginal['name'][0], $requestArray['name_raw'][0]);
     }
 
     /** @test */
