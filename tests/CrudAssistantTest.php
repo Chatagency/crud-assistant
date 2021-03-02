@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\DataContainer;
 use BadMethodCallException;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Recipes\SanitationRecipe;

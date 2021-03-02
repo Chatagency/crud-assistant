@@ -5,7 +5,6 @@ namespace Chatagency\CrudAssistant\Tests;
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\InputCollection;
-use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
@@ -161,7 +160,7 @@ class ReadmeTest extends TestCase
         $action->setData([
             'name' => 'John Doe'
         ]);
-        
+
         $rules = $manager->execute($action);
     
     }
