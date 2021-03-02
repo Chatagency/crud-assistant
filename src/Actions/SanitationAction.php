@@ -15,7 +15,7 @@ use InvalidArgumentException;
  */
 class SanitationAction extends Action implements ActionInterface
 {
-    public array $requestArray = [];
+    protected array $requestArray = [];
 
     /**
      * Pre Execution.

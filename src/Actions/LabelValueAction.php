@@ -18,7 +18,7 @@ class LabelValueAction extends Action implements ActionInterface
     /**
      * Model.
      */
-    public $model;
+    protected $model;
     
     /**
      * Result is a tree instead
