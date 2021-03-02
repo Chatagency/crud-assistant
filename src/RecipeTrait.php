@@ -37,7 +37,7 @@ trait RecipeTrait
      *
      * @param array $args
      *
-     * @return RecipeInterface
+     * @return static
      */
     public static function make(...$args)
     {
