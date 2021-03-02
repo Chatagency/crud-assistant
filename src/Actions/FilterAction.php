@@ -29,6 +29,19 @@ class FilterAction extends Action implements ActionInterface
      * @var array
      */
     protected $data = [];
+    
+    /**
+     * Sets the data param.
+     *
+     * @param array $data
+     * @return self
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
 
     /**
      * Pre Execution.
@@ -87,7 +100,6 @@ class FilterAction extends Action implements ActionInterface
      */
     protected function executeOne(InputInterface $input, DataContainerInterface $output)
     {
-        $params = $this->getParams();
 
         $data = $output->data;
 
@@ -102,7 +114,7 @@ class FilterAction extends Action implements ActionInterface
         }
 
         if (\is_callable($callback)) {
-            $data = $callback($input, $params, $data);
+            $data = $callback($input, $data);
         } elseif (isset($recipe->filter) && $recipe->filter) {
             unset($data[$name]);
         }

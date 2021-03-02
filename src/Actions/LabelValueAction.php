@@ -9,6 +9,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use InvalidArgumentException;
+use Traversable;
 
 /**
  * Label Value Action.
@@ -27,6 +28,20 @@ class LabelValueAction extends Action implements ActionInterface
      * @var bool
      */
     protected $isTree = true;
+
+    /**
+     * Undocumented function
+     *
+     * @param Traversable $model
+     * 
+     * @return self
+     */
+    public function setModel(Traversable  $model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
 
     /**
      * Execute action on input.
