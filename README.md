@@ -158,7 +158,9 @@ $sanitized = $collection->execute(new SanitationAction(
 // returns filtered values
 $rules = $collection->execute(new FilterAction(
     new DataContainer([
-        'data' => []
+        'data' => [
+            'name' => 'John Dow'
+        ]
     ])
 ));
 ```

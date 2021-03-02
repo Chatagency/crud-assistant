@@ -28,7 +28,7 @@ class FilterAction extends Action implements ActionInterface
      * Data to be filtered.
      * @var array
      */
-    public array $data;
+    protected $data = [];
 
     /**
      * Pre Execution.
@@ -37,6 +37,10 @@ class FilterAction extends Action implements ActionInterface
      */
     public function prepare(DataContainerInterface $output)
     {
+        if(!is_array($this->data) || empty($this->data)) {
+            throw new InvalidArgumentException("The data is required", 500);
+        }
+        
         $output->data = $this->data;
 
         return $output;

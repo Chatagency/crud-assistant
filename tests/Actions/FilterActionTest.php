@@ -102,7 +102,7 @@ class FilterActionTest extends TestCase
         
         $email = new TextInput('email', 'Email');
 
-        $recipe = (new FilterRecipe());
+        $recipe = new FilterRecipe();
         $recipe->ignoreIfEmpty = true;
         
         $email->setRecipe($recipe);
@@ -130,11 +130,21 @@ class FilterActionTest extends TestCase
     }
 
     /** @test */
+    public function if_data_is_missing_or_empty_an_exception_is_thrown ()
+    {
+        $this->expectException(\Exception::class);
+        
+        $filter = new FilterAction();
+        $filter->prepare(new DataContainer());
+        
+    }
+
+    /** @test */
     public function if_an_invalid_value_is_passed_to_the_recipe_an_exception_is_thrown()
     {
         $this->expectException(\Exception::class);
         
-        $recipe = (new FilterRecipe());
+        $recipe = new FilterRecipe();
         $recipe->NotValid = true;
         
     }

@@ -122,7 +122,9 @@ class ReadmeTest extends TestCase
         // returns filtered values
         $rules = $collection->execute(new FilterAction(
             new DataContainer([
-                'data' => []
+                'data' => [
+                    'name' => 'John Dow'
+                ]
             ])
         ));
     }
