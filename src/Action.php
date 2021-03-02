@@ -37,27 +37,11 @@ abstract class Action
     protected $controlsExecution = false;
 
     /**
-     * Construct.
-     *
-     * @param DataContainerInterface $params
-     */
-    public function __construct(DataContainerInterface $params = null)
-    {
-        $this->params = $params ?? new DataContainer();
-
-        foreach ($this->params as $name => $param) {
-            $this->$name = $param;
-        }
-
-        return $this;
-    }
-
-    /**
      * Creates new instance of the class.
      *
      * @param array $args
      *
-     * @return ActionInterface
+     * @return static
      */
     public static function make(...$args)
     {
@@ -119,16 +103,6 @@ abstract class Action
     public function isEmpty($value)
     {
         return $value === '' || $value === null;
-    }
-
-    /**
-     * Returns runtime args.
-     *
-     * @return DataContainerInterface
-     */
-    protected function getParams()
-    {
-        return $this->params;
     }
 
     /**
