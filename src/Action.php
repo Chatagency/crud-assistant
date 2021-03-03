@@ -6,6 +6,8 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
+
 /**
  * Action base class.
  */
@@ -47,27 +49,27 @@ abstract class Action
     }
 
     /**
-     * Sets generic set data.
+     * Sets generic set genericData.
      *
-     * @param DataContainerInterface $data
+     * @param DataContainerInterface $genericData
      * 
-     * @return self
+     * @return ActionInterface
      */
-    public function setGenericData(DataContainerInterface $data)
+    public function setGenericData(DataContainerInterface $genericData)
     {
-        $this->data = $data;
+        $this->genericData = $genericData;
 
         return $this;
     }
 
     /**
-     * Returns generic set data.
+     * Returns generic set genericData.
      *
-     * @param DataContainerInterface $data
+     * @return DataContainerInterface
      */
     public function getGenericData()
     {
-        return $this->data;
+        return $this->genericData;
     }
 
     /**
