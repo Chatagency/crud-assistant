@@ -22,6 +22,19 @@ class LabelValueActionTest extends TestCase
     }
     
     /** @test */
+    public function all_actions_have_a_generic_data_setter_and_getter()
+    {
+        $recipe = LabelValueAction::make();
+
+        $data = [
+            'name' => 'John Doe'
+        ];
+        $recipe->setGenericData(new DataContainer($data));
+
+        $this->assertEquals($data['name'], $recipe->getGenericData()->name);
+    }
+    
+    /** @test */
     public function the_label_value_action_returns_an_container_with_labels_as_keys()
     {
         $name = new TextInput('name', 'Name');

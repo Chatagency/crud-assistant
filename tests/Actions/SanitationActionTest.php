@@ -19,6 +19,19 @@ class SanitationActionTest extends TestCase
     }
 
     /** @test */
+    public function all_actions_have_a_generic_data_setter_and_getter()
+    {
+        $recipe = SanitationAction::make();
+
+        $data = [
+            'name' => 'John Doe'
+        ];
+        $recipe->setGenericData(new DataContainer($data));
+
+        $this->assertEquals($data['name'], $recipe->getGenericData()->name);
+    }
+    
+    /** @test */
     public function the_sanitation_action_is_used_to_sanitize_the_request()
     {
         $name = new TextInput('name', 'Name');

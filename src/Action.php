@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use InvalidArgumentException;
 /**
  * Action base class.
  */
@@ -18,7 +16,7 @@ abstract class Action
      *
      * @var DataContainerInterface
      */
-    protected $params;
+    protected $genericData;
 
     /**
      * Result is a tree instead
@@ -46,6 +44,30 @@ abstract class Action
     public static function make(...$args)
     {
         return new static(...$args);
+    }
+
+    /**
+     * Sets generic set data.
+     *
+     * @param DataContainerInterface $data
+     * 
+     * @return self
+     */
+    public function setGenericData(DataContainerInterface $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Returns generic set data.
+     *
+     * @param DataContainerInterface $data
+     */
+    public function getGenericData()
+    {
+        return $this->data;
     }
 
     /**
