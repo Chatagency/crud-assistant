@@ -21,12 +21,18 @@ abstract class Action
     protected $genericData;
 
     /**
-     * Result is a tree instead
-     * of flat.
+     * Returns tree in tree form.
      *
      * @var bool
      */
     protected $isTree = false;
+
+    /**
+     * Returns tree en Flat form.
+     *
+     * @var bool
+     */
+    protected $isFlat = false;
 
     /**
      * Action control the
@@ -94,14 +100,24 @@ abstract class Action
 
     /**
      * Notifies the collection the output
-     * result must be in a tree format
-     * instead of a flat output.
+     * result must be in a tree format.
      *
      * @return bool
      */
     public function isTree()
     {
         return $this->isTree;
+    }
+
+    /**
+     * Notifies the collection the output
+     * result must be in a flat format.
+     *
+     * @return bool
+     */
+    public function isFlat()
+    {
+        return $this->isFlat;
     }
 
     /**

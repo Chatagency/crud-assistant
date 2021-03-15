@@ -48,12 +48,19 @@ interface ActionInterface
 
     /**
      * Notifies the collection the output
-     * result must be in a tree format
-     * instead of a flat output.
+     * result must be in a tree format.
      *
      * @return bool
      */
     public function isTree();
+
+    /**
+     * Notifies the collection the output
+     * result must be in a flat format.
+     *
+     * @return bool
+     */
+    public function isFlat();
 
     /**
      * Notifies the collection the action

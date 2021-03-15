@@ -240,8 +240,10 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
                     continue;
                 }
 
-                $output = $action->execute($input, $output);
-                continue;
+                if(!$action->isFlat()) {
+                    $output = $action->execute($input, $output);
+                    continue;
+                }
             }
 
             $input->execute($action, $output);
