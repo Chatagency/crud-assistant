@@ -186,7 +186,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     {
         $names = [];
 
-        foreach ($this->getInputs() as $key => $input) {
+        foreach ($this->getInputs() as $input) {
             $names[] = $input->getName();
         }
 
@@ -202,7 +202,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     {
         $labels = [];
 
-        foreach ($this->getInputs() as $key => $input) {
+        foreach ($this->getInputs() as $input) {
             $labels[] = $input->getLabel();
         }
 
@@ -267,7 +267,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
 
         $output = $action->prepare($output);
         $output = $action->execute($this, $output);
-
         return $action->cleanup($output);
     }
 
