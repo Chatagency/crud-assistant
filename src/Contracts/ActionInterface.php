@@ -55,14 +55,6 @@ interface ActionInterface
     public function isTree();
 
     /**
-     * Notifies the collection the output
-     * result must be in a flat format.
-     *
-     * @return bool
-     */
-    public function isFlat();
-
-    /**
      * Notifies the collection the action
      * will take control of the whole
      * execution. This triggers the

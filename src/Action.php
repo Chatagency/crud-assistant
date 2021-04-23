@@ -28,13 +28,6 @@ abstract class Action
     protected $isTree = false;
 
     /**
-     * Returns tree en Flat form.
-     *
-     * @var bool
-     */
-    protected $isFlat = false;
-
-    /**
      * Action control the
      * whole execution.
      *
@@ -107,17 +100,6 @@ abstract class Action
     public function isTree()
     {
         return $this->isTree;
-    }
-
-    /**
-     * Notifies the collection the output
-     * result must be in a flat format.
-     *
-     * @return bool
-     */
-    public function isFlat()
-    {
-        return $this->isFlat;
     }
 
     /**
