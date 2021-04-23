@@ -226,16 +226,10 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         $output = $action->prepare($output);
 
         foreach ($this->getInputs() as $input) {
+            
             if (CrudAssistant::isInputCollection($input) && $action->isTree()) {
                 
-                $collectionName = $input->getName();
-
-                if (!$collectionName) {
-                    throw new Exception('All internal collections must have a name', 500);
-                }
-                $dataContainerClass = \get_class($output);
-                $output->$collectionName = $input->execute($action, new $dataContainerClass());
-
+                $output = $action->execute($input, $output);
                 continue;
             }
 
