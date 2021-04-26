@@ -8,7 +8,10 @@ use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\DataContainer;
 use InvalidArgumentException;
+use Symfony\Component\Finder\Comparator\DateComparator;
 use Traversable;
 
 /**
@@ -79,6 +82,25 @@ class LabelValueAction extends Action implements ActionInterface
         $value = $this->modifiers($value, $input, $model);
 
         $output->$label = $value;
+
+        
+        /**
+         * Internal collection
+         */
+        if(CrudAssistant::isInputCollection($input)) {
+    
+            $inputName = $input->getName();
+            $subValues = [];
+
+            $subOutput = new DataContainer();
+
+            foreach($input as $subInput) {
+                $subOutput = $this->execute($subInput, $subOutput);
+            }
+
+            $output->$inputName = $subOutput;
+        }
+
 
         return $output;
     }
