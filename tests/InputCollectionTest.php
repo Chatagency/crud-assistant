@@ -266,7 +266,7 @@ class InputCollectionTest extends TestCase
         $output = $form->execute(
             LabelValueAction::make()->setModel($model)
         );
-        
+
         $this->assertCount(4, $output);
         $this->assertInstanceOf(DataContainer::class, $output->secondary_info);
         $this->assertCount(1, $output->secondary_info);
@@ -318,36 +318,6 @@ class InputCollectionTest extends TestCase
         $this->assertArrayNotHasKey('age', $output->data);
     }
 
-    /** @test */
-    public function if_an_internal_collection_does_not_have_a_name_an_exception_is_thrown()
-    {
-        $name = new TextInput('name', 'Name');
-        $email = new TextInput('email', 'Email');
-        $address = new TextInput('address', 'Your Address');
-
-        /**
-         * Collection has no name
-         */
-        $internal = new InputCollection();
-        $internal->setInputs([
-            new TextInput('age', 'Your age'),
-        ]);
-
-        $form = new InputCollection();
-        $form->setInputs([$name, $email, $address, $internal,]);
-        
-        $model = new DataContainer([
-            'name' => "Victor Sánchez",
-            'email' => 'email@email.com',
-            'address' => 'Lorem ipsum dolor sit.',
-            'age' => 35,
-        ]);
-
-        $this->expectException(\Exception::class);
-
-        $form->execute(LabelValueAction::make()->setModel($model));
-    }
-    
     /** @test */
     public function an_action_can_take_control_of_the_whole_execution_using_execute_all()
     {
