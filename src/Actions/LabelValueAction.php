@@ -90,7 +90,6 @@ class LabelValueAction extends Action implements ActionInterface
         if(CrudAssistant::isInputCollection($input)) {
     
             $inputName = $input->getName();
-            $subValues = [];
 
             $subOutput = new DataContainer();
 
