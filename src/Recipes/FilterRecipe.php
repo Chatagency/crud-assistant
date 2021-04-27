@@ -12,7 +12,7 @@ use Closure;
 /**
  * Filter Action Recipe.
  */
-class FilterActionRecipe extends RecipeBase implements RecipeInterface
+class FilterRecipe extends RecipeBase implements RecipeInterface
 {
     /**
      * Filter value.

@@ -8,7 +8,7 @@ There is one main goal Crud Assistant is set to solve: **Organization**.
 
 This is where this package shines. It allows the you to, depending on your implementation, make changes only in a couple of places. With Crud Assistant you can consolidate all business logic in `Inputs` and all implementation code in `Actions`. This also promotes code isolation and code re-use.
 
-*Disclaimer: This a package is meant to be used on small projects. We needed an easy way to create promotional landing pages and a fast way to apply changes to them. WE still have hot tested how this solution would scale in large projects.*
+*Disclaimer: This a package is meant to be used on small projects. We needed an easy way to create promotional landing pages and a fast way to apply changes to them. We still have not tested how this solution would scale in large projects.*
 
 ## Use
 
@@ -67,10 +67,10 @@ This way we can group all descriptions/instructions in one place. But (arguably)
 
 ```php
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->setRecipe(new SanitationActionRecipe([
+$name->setRecipe(new SanitationRecipe([
     'type' => FILTER_SANITIZE_SPECIAL_CHARS
 ]));
 ```
@@ -91,11 +91,14 @@ $email->setType('email');
 $collection = new InputCollection();
 $collection->setInputs([$name, $email]);
 
-$data = new DataContainer([
-    'requestArray' => []
-]);
+$requestArray = [
+    'email' => 'john@doe.com'
+];
 
-$actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\SanitationAction($data));
+$actionResult = $collection->execute(
+    \Chatagency\CrudAssistant\Actions\SanitationAction::make()
+        ->setRequestArray($requestArray)
+);
 ```
 
 An `InputCollection` can also hold other collections.
@@ -124,21 +127,21 @@ $collection->setInputs($inputs);
 
 `Actions` are arbitrary functionality executed by the `Inputs` or `InputCollection`. 
 
-If runtime parameters must be passed to the action a `DataContainer` must be used:
+Runtime parameters are passed to the action using simple setters. Each action must implement its own setters depending ont the parameters it needs.
 
 ```php
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\Actions\FilterAction;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 // Input
 $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-$name->setRecipe(new SanitationActionRecipe([
+$name->setRecipe(new SanitationRecipe([
     'type' => FILTER_SANITIZE_SPECIAL_CHARS
 ]));
-$name->setRecipe(new FilterActionRecipe([
+$name->setRecipe(new FilterRecipe([
     'filter' => true
 ]) );
 
@@ -146,17 +149,18 @@ $collection = new InputCollection();
 $collection->setInputs([$name]);
 
 // sanitizes values
-$sanitized = $collection->execute(new SanitationAction(
-    new DataContainer([
-        'requestArray' => []
+$sanitized = $collection->execute(
+    SanitationAction::make()->setRequestArray([
+        'name' => 'John Dow'
     ])
-));
+);
+
 // returns filtered values
-$rules = $collection->execute(new FilterAction(
-    new DataContainer([
-        'data' => []
+$rules = $collection->execute(
+    FilterAction::make()->setData([
+        'name' => 'John Dow'
     ])
-));
+);
 ```
 
 ### CrudAssistant [docs link]
@@ -185,22 +189,21 @@ It also doubles as a `InputCollection` facade:
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Actions\FilterAction;
-use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterRecipe;
 
 $name = new TextInput('name');
-$name->setRecipe(new FilterActionRecipe([
+$name->setRecipe(new FilterRecipe([
     'filter' => true
 ]));
 
 $manager = CrudAssistant::make([$name]);
 
-$rules = $manager->execute(new FilterAction(
-    new DataContainer([
-        'data' => [
-            'name' => 'John Doe'
-        ]
-    ])
-));
+$action = new FilterAction();
+$action->setData([
+    'name' => 'John Doe'
+]);
+
+$rules = $manager->execute($action);
 ```
 
 ## License

@@ -6,7 +6,7 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use InvalidArgumentException;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
 
 /**
  * Action base class.
@@ -18,11 +18,10 @@ abstract class Action
      *
      * @var DataContainerInterface
      */
-    protected $params;
+    protected $genericData;
 
     /**
-     * Result is a tree instead
-     * of flat.
+     * Returns tree in tree form.
      *
      * @var bool
      */
@@ -37,15 +36,39 @@ abstract class Action
     protected $controlsExecution = false;
 
     /**
-     * Construct.
+     * Creates new instance of the class.
      *
-     * @param DataContainerInterface $params
+     * @param array $args
+     *
+     * @return static
      */
-    public function __construct(DataContainerInterface $params = null)
+    public static function make(...$args)
     {
-        $this->params = $params ?? new DataContainer();
+        return new static(...$args);
+    }
+
+    /**
+     * Sets generic set genericData.
+     *
+     * @param DataContainerInterface $genericData
+     * 
+     * @return ActionInterface
+     */
+    public function setGenericData(DataContainerInterface $genericData)
+    {
+        $this->genericData = $genericData;
 
         return $this;
+    }
+
+    /**
+     * Returns generic set genericData.
+     *
+     * @return DataContainerInterface
+     */
+    public function getGenericData()
+    {
+        return $this->genericData;
     }
 
     /**
@@ -70,8 +93,7 @@ abstract class Action
 
     /**
      * Notifies the collection the output
-     * result must be in a tree format
-     * instead of a flat output.
+     * result must be in a tree format.
      *
      * @return bool
      */
@@ -103,34 +125,6 @@ abstract class Action
     public function isEmpty($value)
     {
         return $value === '' || $value === null;
-    }
-
-    /**
-     * Returns runtime args.
-     *
-     * @return DataContainerInterface
-     */
-    protected function getParams()
-    {
-        return $this->params;
-    }
-
-    /**
-     * Checks params integrity.
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return bool
-     */
-    protected function checkRequiredParams(DataContainerInterface $data, array $checks)
-    {
-        $missing = $data->missing($checks);
-
-        if ($missing) {
-            throw new InvalidArgumentException('The argument '.$missing.' is missing for the '.static::class.' action', 500);
-        }
-
-        return true;
     }
 
     /**

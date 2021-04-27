@@ -8,6 +8,7 @@ use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use InvalidArgumentException;
 
 /**
  * Sanitation action.
@@ -15,11 +16,25 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 class SanitationAction extends Action implements ActionInterface
 {
     /**
-     * Output has been prepared.
+     * Request array.
      *
-     * @var bool
+     * @var array
      */
-    protected $prepared = false;
+    protected $requestArray = [];
+
+    /**
+     * Sets request array.
+     *
+     * @param array $requestArray
+     * 
+     * @return self
+     */
+    public function setRequestArray(array $requestArray)
+    {
+        $this->requestArray = $requestArray;
+
+        return $this;
+    }
 
     /**
      * Pre Execution.
@@ -28,11 +43,11 @@ class SanitationAction extends Action implements ActionInterface
      */
     public function prepare(DataContainerInterface $output)
     {
-        $params = $this->getParams();
-        $output->requestArray = $params->requestArray;
-        $this->checkRequiredParams($params, ['requestArray']);
+        if(!is_array($this->requestArray) || empty($this->requestArray)) {
+            throw new InvalidArgumentException("The requestArray is required", 500);
+        }
 
-        $this->prepared = true;
+        $output->requestArray = $this->requestArray;
 
         return $output;
     }
@@ -44,10 +59,6 @@ class SanitationAction extends Action implements ActionInterface
      */
     public function execute(InputInterface $input, DataContainerInterface $output)
     {
-        if (!$this->prepared) {
-            $output = $this->prepare($output);
-        }
-
         $recipe = $input->getRecipe(static::class);
         $requestArray = $output->requestArray;
         $inputName = $input->getName();

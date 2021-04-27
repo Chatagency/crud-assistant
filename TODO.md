@@ -20,3 +20,6 @@
 - ✅ Rethink recipes parameters (new Recipe class)
 - ✅ Decouple recipe methods into a trait
 - ✅ Add prepare and cleanup methods to actions
+- ⬜️ Remove the output as a parameter for the `InputCollection` and let `Actions` manage their own state
+- ⬜️ Test in lower php versions
+- ⬜️ Package cleanup

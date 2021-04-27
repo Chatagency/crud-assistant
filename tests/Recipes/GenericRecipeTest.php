@@ -15,6 +15,14 @@ use PHPUnit\Framework\TestCase;
 class GenericRecipeTest extends TestCase
 {
     /** @test */
+    public function make_can_be_used_to_get_an_instance_of_generic_recipe()
+    {
+        $recipe = GenericRecipe::make();
+
+        $this->assertInstanceOf(GenericRecipe::class, $recipe);
+    }
+    
+    /** @test */
     public function a_generic_recipe_can_can_be_passed_to_actions()
     {
         $name = new TextInput('name');
@@ -26,16 +34,16 @@ class GenericRecipeTest extends TestCase
 
         $name->setRecipe($genericRecipe);
 
-        $collection = (CrudAssistant::make([$name, $email]))->getCollection();
+        $collection = (CrudAssistant::make([$name, $email]));
 
-        $params = new DataContainer([
-            'data' => [
+        $data = [
                 'name' => 'John',
                 'email' => 'john@john.com'
-            ]
-        ]);
+        ];
 
-        $output = $collection->execute(new FilterAction($params));
+        $output = $collection->execute(
+            FilterAction::make()->setData($data)
+        );
 
         $data = $output->data;
 
@@ -51,7 +59,9 @@ class GenericRecipeTest extends TestCase
 
         $email->setRecipe($genericRecipe2);
 
-        $output2 = $collection->execute(new FilterAction($params));
+        $output2 = $collection->execute(
+            FilterAction::make()->setData($data)
+        );
 
         $this->assertCount(0, $output2->data);
         

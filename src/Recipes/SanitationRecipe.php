@@ -11,7 +11,7 @@ use Chatagency\CrudAssistant\RecipeBase;
 /**
  * Sanitation Action Recipe.
  */
-class SanitationActionRecipe extends RecipeBase implements RecipeInterface
+class SanitationRecipe extends RecipeBase implements RecipeInterface
 {
     /**
      * Sanitation type.

@@ -11,7 +11,7 @@ use Chatagency\CrudAssistant\RecipeBase;
 /**
  * Label Value Action Recipe.
  */
-class LabelValueActionRecipe extends RecipeBase implements RecipeInterface
+class LabelValueRecipe extends RecipeBase implements RecipeInterface
 {
     /**
      * Label.

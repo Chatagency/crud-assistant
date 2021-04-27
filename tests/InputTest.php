@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\LabelValueActionRecipe;
+use Chatagency\CrudAssistant\Recipes\LabelValueRecipe;
 use PHPUnit\Framework\TestCase;
 
 class InputTest extends TestCase
@@ -33,7 +33,7 @@ class InputTest extends TestCase
 
         $input = new TextInput('email', 'Email');
         $input->setType('email');
-        $input->setRecipe(new LabelValueActionRecipe($value));
+        $input->setRecipe(new LabelValueRecipe($value));
 
         $this->assertEquals($input->getRecipe(LabelValueAction::class)->label, $value['label']);
 

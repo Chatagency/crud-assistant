@@ -6,19 +6,19 @@ use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\Actions\SanitationAction;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\DataContainer;
 use BadMethodCallException;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 class CrudAssistantTest extends TestCase
 {
 
     /** @test */
-    public function a_crud_assistant_instance_can_be_created_statically()
+    public function when_the_make_method_is_called_on_crud_assistant_an_input_collection_instance_is_returned()
     {
         $manager = CrudAssistant::make([]);
 
-        $this->assertInstanceOf(CrudAssistant::class, $manager);
+        $this->assertInstanceOf(InputCollectionInterface::class, $manager);
     }
 
     /** @test */
@@ -38,19 +38,17 @@ class CrudAssistantTest extends TestCase
     public function actions_can_be_executed_using_the_execute_method_from_the_input_collection()
     {
         $name = new TextInput('name');
-        $name->setRecipe(new SanitationActionRecipe([
+        $name->setRecipe(new SanitationRecipe([
             'type' => FILTER_SANITIZE_SPECIAL_CHARS
         ]));
 
         $manager = new CrudAssistant([$name]);
-
-        $output = $manager->execute(new SanitationAction(
-            new DataContainer([
-                'requestArray' => [
-                    'name' => 'John Smith',
-                ],
-            ])
-        ));
+        
+        $action = SanitationAction::make()->setRequestArray([
+            'name' => 'John Smith',
+        ]);
+        
+        $output = $manager->execute($action);
 
         $sanitation = $output->requestArray;
 

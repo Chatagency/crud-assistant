@@ -7,12 +7,33 @@ use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Input;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Modifiers\BooleanModifier;
-use Chatagency\CrudAssistant\Recipes\LabelValueActionRecipe;
+use Chatagency\CrudAssistant\Recipes\LabelValueRecipe;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class LabelValueActionTest extends TestCase
 {
+    /** @test */
+    public function make_can_be_used_to_get_an_instance_of_filter_action()
+    {
+        $recipe = LabelValueAction::make();
+
+        $this->assertInstanceOf(LabelValueAction::class, $recipe);
+    }
+    
+    /** @test */
+    public function all_actions_have_a_generic_data_setter_and_getter()
+    {
+        $recipe = LabelValueAction::make();
+
+        $data = [
+            'name' => 'John Doe'
+        ];
+        $recipe->setGenericData(new DataContainer($data));
+
+        $this->assertEquals($data['name'], $recipe->getGenericData()->name);
+    }
+    
     /** @test */
     public function the_label_value_action_returns_an_container_with_labels_as_keys()
     {
@@ -25,11 +46,8 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
         
-        $container = new DataContainer([
-            'model' => $model,
-        ]);
-        
-        $action =  (new LabelValueAction($container));
+        $action = new LabelValueAction();
+        $action->setModel($model);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -66,7 +84,7 @@ class LabelValueActionTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
 
-        $recipe = (new LabelValueActionRecipe())->ignore();
+        $recipe = (new LabelValueRecipe())->ignore();
         $name->setRecipe($recipe);
 
         $email = new TextInput('email', 'Email');
@@ -77,11 +95,8 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
 
-        $container = new DataContainer([
-            'model' => $model,
-        ]);
-        
-        $action =  new LabelValueAction($container);
+        $action =  new LabelValueAction();
+        $action->setModel($model);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -101,7 +116,7 @@ class LabelValueActionTest extends TestCase
 
         $nameFormat = "The %s is";
 
-        $nameRecipe = new LabelValueActionRecipe();
+        $nameRecipe = new LabelValueRecipe();
         $nameRecipe->label = function(Input $input, DataContainer $params) use ($nameFormat) {
             return sprintf($nameFormat, $input->getLabel());
         };
@@ -110,9 +125,8 @@ class LabelValueActionTest extends TestCase
 
         $emailFormat = "The address is %s";
 
-        $emailRecipe = new LabelValueActionRecipe();
-        $emailRecipe->value = function(Input $input, DataContainer $params) use ($emailFormat) {
-            $model = $params->model;
+        $emailRecipe = new LabelValueRecipe();
+        $emailRecipe->value = function(Input $input, $model) use ($emailFormat) {
             return sprintf($emailFormat, $model->email);
         };
 
@@ -125,11 +139,8 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
         
-        $container = new DataContainer([
-            'model' => $model,
-        ]);
-        
-        $action =  (new LabelValueAction($container));
+        $action =  (new LabelValueAction());
+        $action->setModel($model);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -155,7 +166,7 @@ class LabelValueActionTest extends TestCase
             'trueLabel' => 'I Accept'
         ]);
 
-        $recipe = new LabelValueActionRecipe();
+        $recipe = new LabelValueRecipe();
         $recipe->setModifiers([
             new BooleanModifier($modifierData)
         ]);
@@ -168,11 +179,8 @@ class LabelValueActionTest extends TestCase
             'accept' => true,
         ]);
 
-        $container = new DataContainer([
-            'model' => $model,
-        ]);
-
-        $action =  new LabelValueAction($container);
+        $action =  new LabelValueAction();
+        $action->setModel($model);
         
         $output = new DataContainer();
         foreach($inputs as $input) {
@@ -188,7 +196,7 @@ class LabelValueActionTest extends TestCase
     {
         $this->expectException(\Exception::class);
         
-        $recipe = (new LabelValueActionRecipe());
+        $recipe = (new LabelValueRecipe());
         $recipe->NotValid = true;
         
     }

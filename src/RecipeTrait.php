@@ -33,6 +33,18 @@ trait RecipeTrait
     protected $modifiers = [];
 
     /**
+     * Creates new instance of the class.
+     *
+     * @param array $args
+     *
+     * @return static
+     */
+    public static function make(...$args)
+    {
+        return new static(...$args);
+    }
+
+    /**
      * Returns recipe identifier.
      *
      * @return string

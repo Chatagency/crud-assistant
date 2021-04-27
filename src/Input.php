@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Contracts\ActionFactoryInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
@@ -64,21 +63,12 @@ abstract class Input implements InputInterface
     protected $recipes = [];
 
     /**
-     * Action Factory.
-     *
-     * @var ActionFactory
-     */
-    protected $actionFactory;
-
-    /**
      * @return self
      */
-    public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null)
+    public function __construct(string $name = null, string $label = null)
     {
         $this->name = $name;
         $this->label = $label ?? $name;
-
-        $this->actionFactory = $actionFactory ?? new ActionFactory();
 
         return $this;
     }

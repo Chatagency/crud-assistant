@@ -10,6 +10,22 @@ namespace Chatagency\CrudAssistant\Contracts;
 interface ActionInterface
 {
     /**
+     * Sets generic set genericData.
+     *
+     * @param DataContainerInterface $genericData
+     * 
+     * @return ActionInterface
+     */
+    public function setGenericData(DataContainerInterface $genericData);
+
+    /**
+     * Returns generic set genericData.
+     *
+     * @return DataContainerInterface
+     */
+    public function getGenericData();
+    
+    /**
      * Pre Execution.
      *
      * @return DataContainerInterface
@@ -32,8 +48,7 @@ interface ActionInterface
 
     /**
      * Notifies the collection the output
-     * result must be in a tree format
-     * instead of a flat output.
+     * result must be in a tree format.
      *
      * @return bool
      */
