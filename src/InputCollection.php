@@ -241,17 +241,13 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     /**
      * Pass whole collection to the action.
      *
-     * @param DataContainer $output
-     *
      * @return DataContainer
      */
-    public function executeAll(ActionInterface $action, DataContainerInterface $output = null)
+    public function executeAll(ActionInterface $action)
     {
-        $output = $output ?? new DataContainer();
-
-        $output = $action->prepare($output);
-        $output = $action->execute($this);
-        $action->cleanup($output);
+        $action->prepare();
+        $action->execute($this);
+        $action->cleanup();
 
         return $action->getOutput();
     }
