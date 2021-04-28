@@ -14,11 +14,18 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 abstract class Action
 {
     /**
-     * Data.
+     * Generic Data.
      *
      * @var DataContainerInterface
      */
     protected $genericData;
+
+    /**
+     * Output.
+     *
+     * @var DataContainerInterface
+     */
+    protected $output;
 
     /**
      * Returns tree in tree form.
@@ -34,6 +41,20 @@ abstract class Action
      * @var bool
      */
     protected $controlsExecution = false;
+
+    /**
+     * Construct
+     *
+     * @param DataContainerInterface $output
+     * 
+     * @return self
+     */
+    public function __construct(DataContainerInterface $output = null)
+    {
+        $this->output = $output ?? new DataContainer();
+
+        return $this;
+    }
 
     /**
      * Creates new instance of the class.
@@ -74,21 +95,21 @@ abstract class Action
     /**
      * Pre Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
-    public function prepare(DataContainerInterface $output)
+    public function prepare()
     {
-        return $output;
+        return $this;
     }
 
     /**
      * Post Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
-    public function cleanup(DataContainerInterface $output)
+    public function cleanup()
     {
-        return $output;
+        return $this;
     }
 
     /**
@@ -165,5 +186,15 @@ abstract class Action
     protected function executeModifier(Modifier $modifier, $value, $model = null)
     {
         return $modifier->modify($value, $modifier->getData(), $model);
+    }
+
+    /**
+     * Returns output
+     *
+     * @return DataContainerInterface
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 }

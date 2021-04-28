@@ -212,33 +212,30 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     /**
      * Executes Action.
      *
-     * @param DataContainer $output
-     *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action, DataContainerInterface $output = null)
+    public function execute(ActionInterface $action)
     {
         if ($action->controlsExecution()) {
-            return $this->executeAll($action, $output);
+            return $this->executeAll($action);
         }
 
-        $output = $output ?? new DataContainer();
-        $output = $action->prepare($output);
+        $action->prepare();
 
         foreach ($this->getInputs() as $input) {
             
             if (CrudAssistant::isInputCollection($input) && $action->isTree()) {
                 
-                $output = $action->execute($input, $output);
+                $action->execute($input);
                 continue;
             }
 
-            $input->execute($action, $output);
+            $input->execute($action);
         }
 
-        $output = $action->cleanup($output);
+        $action->cleanup();
 
-        return $output;
+        return $action->getOutput();
     }
 
     /**
@@ -253,8 +250,10 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         $output = $output ?? new DataContainer();
 
         $output = $action->prepare($output);
-        $output = $action->execute($this, $output);
-        return $action->cleanup($output);
+        $output = $action->execute($this);
+        $action->cleanup($output);
+
+        return $action->getOutput();
     }
 
     /**

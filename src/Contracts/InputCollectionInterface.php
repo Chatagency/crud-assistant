@@ -95,15 +95,6 @@ interface InputCollectionInterface
     public function getInputLabels();
 
     /**
-     * Executes Action.
-     *
-     * @param DataContainer $output
-     *
-     * @return DataContainer
-     */
-    public function execute(ActionInterface $action, DataContainerInterface $output = null);
-
-    /**
      * Pass whole collection to the action.
      *
      * @param DataContainer $output
