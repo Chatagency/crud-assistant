@@ -71,11 +71,10 @@ class LabelValueAction extends Action implements ActionInterface
         if(CrudAssistant::isInputCollection($input)) {
     
             $inputName = $input->getName();
-
+            
+            $subAction = static::make()->setModel($model);
             foreach($input as $subInput) {
-                $subOutput = static::make()
-                    ->setModel($model)
-                    ->execute($subInput);
+                $subOutput = $subAction->execute($subInput);
             }
 
             $output->$inputName = $subOutput;
