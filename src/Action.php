@@ -73,7 +73,7 @@ abstract class Action
      *
      * @param DataContainerInterface $genericData
      * 
-     * @return ActionInterface
+     * @return static
      */
     public function setGenericData(DataContainerInterface $genericData)
     {
