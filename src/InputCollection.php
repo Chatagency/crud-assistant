@@ -40,6 +40,10 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      */
     protected $actionFactory;
 
+    protected $prepare = true;
+
+    protected $cleanup = true;
+
     /**
      * Sets inputs array.
      *
@@ -133,6 +137,20 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return \count($this->getInputs());
     }
 
+    public function disablePrepare()
+    {
+        $this->prepare = false;
+
+        return $this;
+    }
+
+    public function disableCleanup()
+    {
+        $this->cleanup = false;
+
+        return $this;
+    }
+
     /**
      * Checks if input exists.
      *
@@ -219,9 +237,11 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         if ($action->controlsExecution()) {
             return $this->executeAll($action);
         }
-
-        $action->prepare();
-
+        
+        if ($this->prepare) {
+            $action->prepare();
+        }
+        
         foreach ($this->getInputs() as $input) {
             
             if (CrudAssistant::isInputCollection($input) && $action->isTree()) {
@@ -230,10 +250,18 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
                 continue;
             }
 
+            if (CrudAssistant::isInputCollection($input)) {
+                $input
+                    ->disablePrepare()
+                    ->disableCleanup();
+            }
+            
             $input->execute($action);
         }
 
-        $action->cleanup();
+        if ($this->cleanup) {
+            $action->cleanup();
+        }
 
         return $action->getOutput();
     }
