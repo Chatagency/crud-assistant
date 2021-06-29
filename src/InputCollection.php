@@ -6,7 +6,6 @@ namespace Chatagency\CrudAssistant;
 
 use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
-use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Countable;
@@ -40,8 +39,18 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      */
     protected $actionFactory;
 
+    /**
+     * Run prepare
+     *
+     * @var boolean
+     */
     protected $prepare = true;
 
+    /**
+     * Run cleanup
+     *
+     * @var boolean
+     */
     protected $cleanup = true;
 
     /**
@@ -101,7 +110,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     public function setPartialCollection(array $partialCollection)
     {
         if (!\count($partialCollection)) {
-            throw new Exception('The array passed to '.__METHOD__.' is empty', 500);
+            throw new Exception('The array passed is empty', 500);
         }
 
         $inputs = $this->getInputs();
@@ -137,6 +146,11 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return \count($this->getInputs());
     }
 
+    /**
+     * Disables prepare execution
+     *
+     * @return self
+     */
     public function disablePrepare()
     {
         $this->prepare = false;
@@ -144,6 +158,11 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $this;
     }
 
+    /**
+     * Disables cleanup execution
+     *
+     * @return self
+     */
     public function disableCleanup()
     {
         $this->cleanup = false;
@@ -244,15 +263,14 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         
         foreach ($this->getInputs() as $input) {
             
-            if (CrudAssistant::isInputCollection($input) && $action->isTree()) {
+            if (CrudAssistant::isInputCollection($input) && $action->controlsRecursion()) {
                 
                 $action->execute($input);
                 continue;
             }
 
             if (CrudAssistant::isInputCollection($input)) {
-                $input
-                    ->disablePrepare()
+                $input->disablePrepare()
                     ->disableCleanup();
             }
             
