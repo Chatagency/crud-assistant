@@ -29,7 +29,7 @@ class LabelValueAction extends Action implements ActionInterface
      *
      * @var bool
      */
-    protected $isTree = true;
+    protected $controlsRecursion = true;
 
     /**
      * Undocumented function

@@ -28,11 +28,11 @@ abstract class Action
     protected $output;
 
     /**
-     * Returns tree in tree form.
+     * Controls recursion
      *
      * @var bool
      */
-    protected $isTree = false;
+    protected $controlsRecursion = false;
 
     /**
      * Action control the
@@ -118,9 +118,9 @@ abstract class Action
      *
      * @return bool
      */
-    public function isTree()
+    public function controlsRecursion()
     {
-        return $this->isTree;
+        return $this->controlsRecursion;
     }
 
     /**

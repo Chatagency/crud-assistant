@@ -61,7 +61,7 @@ interface ActionInterface
      *
      * @return bool
      */
-    public function isTree();
+    public function controlsRecursion();
 
     /**
      * Notifies the collection the action
