@@ -106,6 +106,16 @@ trait RecipeTrait
     }
 
     /**
+     * Checks if recipe has modifiers
+     *
+     * @return boolean
+     */
+    public function hasModifiers()
+    {
+        return (bool) count($this->getModifiers());
+    }
+
+    /**
      * Checks if input is ignored.
      *
      * @return bool
