@@ -39,7 +39,7 @@ class SanitationAction extends Action implements ActionInterface
     /**
      * Pre Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
     public function prepare()
     {
