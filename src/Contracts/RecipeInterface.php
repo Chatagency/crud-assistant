@@ -41,6 +41,13 @@ interface RecipeInterface
     public function getModifiers();
 
     /**
+     * Checks if recipe has modifiers
+     *
+     * @return boolean
+     */
+    public function hasModifiers();
+
+    /**
      * Sets the ignore value.
      *
      * @param mixed $ignore
