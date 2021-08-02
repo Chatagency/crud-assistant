@@ -35,6 +35,18 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     }
 
     /**
+     * Creates new instance of the class.
+     *
+     * @param array $args
+     *
+     * @return static
+     */
+    public static function make(...$args)
+    {
+        return (new static(...$args));
+    }
+
+    /**
      * Magic set method.
      */
     public function __get(string $name)
