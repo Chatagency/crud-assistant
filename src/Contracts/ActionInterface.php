@@ -17,7 +17,14 @@ interface ActionInterface
      * @return self
      */
     public function __construct(DataContainerInterface $output = null);
-
+    
+    /**
+     * Returns recipe identifier
+     *
+     * @return string
+     */
+    public static function getIdentifier();
+    
     /**
      * Sets generic set genericData.
      *

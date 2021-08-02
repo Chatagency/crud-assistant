@@ -68,6 +68,16 @@ abstract class Action
     }
 
     /**
+     * Returns recipe accessor
+     *
+     * @return string
+     */
+    public static function getIdentifier()
+    {
+        return Static::class;
+    }
+
+    /**
      * Sets generic set genericData.
      *
      * @param DataContainerInterface $genericData
