@@ -100,7 +100,21 @@ class GenericRecipeTest extends TestCase
     }
     
     /** @test */
-    public function modifiers_and_ignore_can_be_used_on_the_generic()
+    public function modifiers_can_be_used_on_the_generic_recipe()
+    {
+        $genericRecipe = new GenericRecipe();
+        $genericRecipe->setIdentifier(LabelValueAction::class);
+
+        $genericRecipe->setModifiers([
+            new BooleanModifier()
+        ]);
+
+        $this->assertTrue($genericRecipe->hasModifiers());
+        
+    }
+
+    /** @test */
+    public function ignore_can_be_used_on_the_generic_recipe()
     {
         $genericRecipe = new GenericRecipe();
         $genericRecipe->setIdentifier(LabelValueAction::class);

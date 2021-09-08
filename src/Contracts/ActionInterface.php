@@ -10,6 +10,22 @@ namespace Chatagency\CrudAssistant\Contracts;
 interface ActionInterface
 {
     /**
+     * Construct
+     *
+     * @param DataContainerInterface $output
+     * 
+     * @return self
+     */
+    public function __construct(DataContainerInterface $output = null);
+    
+    /**
+     * Returns recipe identifier
+     *
+     * @return string
+     */
+    public static function getIdentifier();
+    
+    /**
      * Sets generic set genericData.
      *
      * @param DataContainerInterface $genericData
@@ -21,30 +37,30 @@ interface ActionInterface
     /**
      * Returns generic set genericData.
      *
-     * @return DataContainerInterface
+     * @return self
      */
     public function getGenericData();
     
     /**
      * Pre Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
-    public function prepare(DataContainerInterface $output);
+    public function prepare();
 
     /**
      * Execute action on input.
-     *
+     * 
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input, DataContainerInterface $output);
+    public function execute(InputInterface $input);
 
     /**
      * Post Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
-    public function cleanup(DataContainerInterface $output);
+    public function cleanup();
 
     /**
      * Notifies the collection the output
@@ -52,7 +68,7 @@ interface ActionInterface
      *
      * @return bool
      */
-    public function isTree();
+    public function controlsRecursion();
 
     /**
      * Notifies the collection the action
@@ -63,4 +79,11 @@ interface ActionInterface
      * @return bool
      */
     public function controlsExecution();
+
+    /**
+     * Returns output
+     *
+     * @return DataContainerInterface
+     */
+    public function getOutput();
 }

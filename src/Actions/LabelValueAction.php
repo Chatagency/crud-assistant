@@ -11,7 +11,6 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\DataContainer;
 use InvalidArgumentException;
-use Symfony\Component\Finder\Comparator\DateComparator;
 use Traversable;
 
 /**
@@ -30,7 +29,7 @@ class LabelValueAction extends Action implements ActionInterface
      *
      * @var bool
      */
-    protected $isTree = true;
+    protected $controlsRecursion = true;
 
     /**
      * Undocumented function
@@ -51,8 +50,9 @@ class LabelValueAction extends Action implements ActionInterface
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input, DataContainerInterface $output)
+    public function execute(InputInterface $input)
     {
+        $output = $this->output;
         $model = $this->model;
 
         if(!$model) {
@@ -63,6 +63,23 @@ class LabelValueAction extends Action implements ActionInterface
 
         if ($recipe && $recipe->isIgnored()) {
             return $output;
+        }
+
+        /**
+         * Internal collection
+         */
+        if(CrudAssistant::isInputCollection($input)) {
+    
+            $inputName = $input->getName();
+            
+            $subAction = static::make()->setModel($model);
+            foreach($input as $subInput) {
+                $subOutput = $subAction->execute($subInput);
+            }
+
+            $output->$inputName = $subOutput;
+
+            return;
         }
 
         $name = $input->getName() ?? null;
@@ -82,24 +99,6 @@ class LabelValueAction extends Action implements ActionInterface
         $value = $this->modifiers($value, $input, $model);
 
         $output->$label = $value;
-
-        
-        /**
-         * Internal collection
-         */
-        if(CrudAssistant::isInputCollection($input)) {
-    
-            $inputName = $input->getName();
-
-            $subOutput = new DataContainer();
-
-            foreach($input as $subInput) {
-                $subOutput = $this->execute($subInput, $subOutput);
-            }
-
-            $output->$inputName = $subOutput;
-        }
-
 
         return $output;
     }

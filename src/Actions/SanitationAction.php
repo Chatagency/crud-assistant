@@ -39,17 +39,17 @@ class SanitationAction extends Action implements ActionInterface
     /**
      * Pre Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
-    public function prepare(DataContainerInterface $output)
+    public function prepare()
     {
         if(!is_array($this->requestArray) || empty($this->requestArray)) {
             throw new InvalidArgumentException("The requestArray is required", 500);
         }
 
-        $output->requestArray = $this->requestArray;
+        $this->output->requestArray = $this->requestArray;
 
-        return $output;
+        return $this;
     }
 
     /**
@@ -57,8 +57,9 @@ class SanitationAction extends Action implements ActionInterface
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input, DataContainerInterface $output)
+    public function execute(InputInterface $input)
     {
+        $output = $this->output;
         $recipe = $input->getRecipe(static::class);
         $requestArray = $output->requestArray;
         $inputName = $input->getName();

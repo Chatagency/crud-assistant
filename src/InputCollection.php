@@ -6,7 +6,6 @@ namespace Chatagency\CrudAssistant;
 
 use ArrayIterator;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
-use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Countable;
@@ -39,6 +38,20 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      * @var ActionFactory
      */
     protected $actionFactory;
+
+    /**
+     * Run prepare
+     *
+     * @var boolean
+     */
+    protected $prepare = true;
+
+    /**
+     * Run cleanup
+     *
+     * @var boolean
+     */
+    protected $cleanup = true;
 
     /**
      * Sets inputs array.
@@ -97,7 +110,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     public function setPartialCollection(array $partialCollection)
     {
         if (!\count($partialCollection)) {
-            throw new Exception('The array passed to '.__METHOD__.' is empty', 500);
+            throw new Exception('The array passed is empty', 500);
         }
 
         $inputs = $this->getInputs();
@@ -131,6 +144,30 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     public function count()
     {
         return \count($this->getInputs());
+    }
+
+    /**
+     * Disables prepare execution
+     *
+     * @return self
+     */
+    public function disablePrepare()
+    {
+        $this->prepare = false;
+
+        return $this;
+    }
+
+    /**
+     * Disables cleanup execution
+     *
+     * @return self
+     */
+    public function disableCleanup()
+    {
+        $this->cleanup = false;
+
+        return $this;
     }
 
     /**
@@ -212,49 +249,53 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     /**
      * Executes Action.
      *
-     * @param DataContainer $output
-     *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action, DataContainerInterface $output = null)
+    public function execute(ActionInterface $action)
     {
         if ($action->controlsExecution()) {
-            return $this->executeAll($action, $output);
+            return $this->executeAll($action);
         }
-
-        $output = $output ?? new DataContainer();
-        $output = $action->prepare($output);
-
+        
+        if ($this->prepare) {
+            $action->prepare();
+        }
+        
         foreach ($this->getInputs() as $input) {
             
-            if (CrudAssistant::isInputCollection($input) && $action->isTree()) {
+            if (CrudAssistant::isInputCollection($input) && $action->controlsRecursion()) {
                 
-                $output = $action->execute($input, $output);
+                $action->execute($input);
                 continue;
             }
 
-            $input->execute($action, $output);
+            if (CrudAssistant::isInputCollection($input)) {
+                $input->disablePrepare()
+                    ->disableCleanup();
+            }
+            
+            $input->execute($action);
         }
 
-        $output = $action->cleanup($output);
+        if ($this->cleanup) {
+            $action->cleanup();
+        }
 
-        return $output;
+        return $action->getOutput();
     }
 
     /**
      * Pass whole collection to the action.
      *
-     * @param DataContainer $output
-     *
      * @return DataContainer
      */
-    public function executeAll(ActionInterface $action, DataContainerInterface $output = null)
+    public function executeAll(ActionInterface $action)
     {
-        $output = $output ?? new DataContainer();
+        $action->prepare();
+        $action->execute($this);
+        $action->cleanup();
 
-        $output = $action->prepare($output);
-        $output = $action->execute($this, $output);
-        return $action->cleanup($output);
+        return $action->getOutput();
     }
 
     /**

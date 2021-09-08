@@ -46,17 +46,17 @@ class FilterAction extends Action implements ActionInterface
     /**
      * Pre Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
-    public function prepare(DataContainerInterface $output)
+    public function prepare()
     {
         if(!is_array($this->data) || empty($this->data)) {
             throw new InvalidArgumentException("The data is required", 500);
         }
         
-        $output->data = $this->data;
+        $this->output->data = $this->data;
 
-        return $output;
+        return $this;
     }
 
     /**
@@ -64,21 +64,23 @@ class FilterAction extends Action implements ActionInterface
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input, DataContainerInterface $output)
+    public function execute(InputInterface $input)
     {
+        $output = $this->output;
+        
         if (CrudAssistant::isInputCollection($input)) {
             foreach ($input as $val) {
                 if (CrudAssistant::isInputCollection($val)) {
                     $output = $this->execute($val, $output);
                 } else {
-                    $output = $this->executeOne($val, $output);
+                    $output = $this->executeOne($val);
                 }
             }
 
             return $output;
         }
 
-        return $this->executeOne($input, $output);
+        return $this->executeOne($input);
     }
 
     /**
@@ -98,9 +100,9 @@ class FilterAction extends Action implements ActionInterface
      *
      * @return DataContainerInterface
      */
-    protected function executeOne(InputInterface $input, DataContainerInterface $output)
+    protected function executeOne(InputInterface $input)
     {
-
+        $output = $this->output;
         $data = $output->data;
 
         $name = $input->getName();

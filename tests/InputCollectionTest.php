@@ -242,7 +242,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_with_internal_collections_save_output_in_tree_if_the_is_tree_option_is_true()
+    public function an_input_collection_with_internal_collections_calls_is_called_recursively_if_the_is_tree_option_is_true()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -341,7 +341,9 @@ class InputCollectionTest extends TestCase
         ]);
 
         $form = new InputCollection();
+        $form2 = new InputCollection();
         $form->setInputs([$name, $email, $address, $internal,]);
+        $form2->setInputs([$name, $email, $address, $internal,]);
         
         $data = [
             'name' => "Victor Sánchez",
@@ -353,7 +355,8 @@ class InputCollectionTest extends TestCase
         $action = FilterAction::make()->setData($data);
 
         $output = $form->executeAll($action);
-        $output2 = $form->execute($action);
+        
+        $output2 = $form2->execute($action);
 
         $this->assertEquals($output, $output2);
 

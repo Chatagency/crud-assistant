@@ -7,7 +7,7 @@ namespace Chatagency\CrudAssistant\Contracts;
 /**
  * Input Collection Interface.
  */
-interface InputCollectionInterface
+interface InputCollectionInterface extends InputInterface
 {
     /**
      * Sets inputs array.
@@ -93,15 +93,6 @@ interface InputCollectionInterface
      * @return array
      */
     public function getInputLabels();
-
-    /**
-     * Executes Action.
-     *
-     * @param DataContainer $output
-     *
-     * @return DataContainer
-     */
-    public function execute(ActionInterface $action, DataContainerInterface $output = null);
 
     /**
      * Pass whole collection to the action.

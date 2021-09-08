@@ -24,9 +24,9 @@ class LabelValueRecipe extends RecipeBase implements RecipeInterface
     public $value;
 
     /**
-     * Recipe identifier.
+     * Recipe action.
      *
      * @var string
      */
-    protected $identifier = LabelValueAction::class;
+    protected $action = LabelValueAction::class;
 }

@@ -6,7 +6,6 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\Contracts\ActionInterface;
 
 /**
  * Action base class.
@@ -14,18 +13,25 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 abstract class Action
 {
     /**
-     * Data.
+     * Generic Data.
      *
      * @var DataContainerInterface
      */
     protected $genericData;
 
     /**
-     * Returns tree in tree form.
+     * Output.
+     *
+     * @var DataContainerInterface
+     */
+    protected $output;
+
+    /**
+     * Controls recursion
      *
      * @var bool
      */
-    protected $isTree = false;
+    protected $controlsRecursion = false;
 
     /**
      * Action control the
@@ -34,6 +40,20 @@ abstract class Action
      * @var bool
      */
     protected $controlsExecution = false;
+
+    /**
+     * Construct
+     *
+     * @param DataContainerInterface $output
+     * 
+     * @return self
+     */
+    public function __construct(DataContainerInterface $output = null)
+    {
+        $this->output = $output ?? new DataContainer();
+
+        return $this;
+    }
 
     /**
      * Creates new instance of the class.
@@ -48,11 +68,21 @@ abstract class Action
     }
 
     /**
+     * Returns recipe accessor
+     *
+     * @return string
+     */
+    public static function getIdentifier()
+    {
+        return Static::class;
+    }
+
+    /**
      * Sets generic set genericData.
      *
      * @param DataContainerInterface $genericData
      * 
-     * @return ActionInterface
+     * @return static
      */
     public function setGenericData(DataContainerInterface $genericData)
     {
@@ -74,21 +104,21 @@ abstract class Action
     /**
      * Pre Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
-    public function prepare(DataContainerInterface $output)
+    public function prepare()
     {
-        return $output;
+        return $this;
     }
 
     /**
      * Post Execution.
      *
-     * @return DataContainerInterface
+     * @return self
      */
-    public function cleanup(DataContainerInterface $output)
+    public function cleanup()
     {
-        return $output;
+        return $this;
     }
 
     /**
@@ -97,9 +127,9 @@ abstract class Action
      *
      * @return bool
      */
-    public function isTree()
+    public function controlsRecursion()
     {
-        return $this->isTree;
+        return $this->controlsRecursion;
     }
 
     /**
@@ -165,5 +195,15 @@ abstract class Action
     protected function executeModifier(Modifier $modifier, $value, $model = null)
     {
         return $modifier->modify($value, $modifier->getData(), $model);
+    }
+
+    /**
+     * Returns output
+     *
+     * @return DataContainerInterface
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 }

@@ -63,6 +63,8 @@ abstract class Input implements InputInterface
     protected $recipes = [];
 
     /**
+     * Construct
+     * 
      * @return self
      */
     public function __construct(string $name = null, string $label = null)
@@ -266,10 +268,8 @@ abstract class Input implements InputInterface
      *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action, DataContainerInterface $output = null)
+    public function execute(ActionInterface $action)
     {
-        $output = $output ?? new DataContainer();
-
-        return $action->execute($this, $output);
+        return $action->execute($this);
     }
 }

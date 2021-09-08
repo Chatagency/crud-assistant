@@ -130,5 +130,5 @@ interface InputInterface
      *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action, DataContainerInterface $output = null);
+    public function execute(ActionInterface $action);
 }

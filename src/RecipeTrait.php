@@ -19,6 +19,14 @@ trait RecipeTrait
     protected $identifier;
 
     /**
+     * Recipe Action. Takes precedent
+     * over $identifier
+     *
+     * @var string
+     */
+    protected $action;
+    
+    /**
      * Ignore input.
      *
      * @var bool
@@ -51,6 +59,10 @@ trait RecipeTrait
      */
     public function getIdentifier()
     {
+        if($this->action) {
+            return  ($this->action)::make()->getIdentifier();
+        }
+
         return $this->identifier;
     }
 
@@ -103,6 +115,16 @@ trait RecipeTrait
     public function getModifiers()
     {
         return $this->modifiers;
+    }
+
+    /**
+     * Checks if recipe has modifiers
+     *
+     * @return boolean
+     */
+    public function hasModifiers()
+    {
+        return (bool) count($this->getModifiers());
     }
 
     /**

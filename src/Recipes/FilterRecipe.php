@@ -30,9 +30,10 @@ class FilterRecipe extends RecipeBase implements RecipeInterface
     public Closure $callback;
 
     /**
-     * Recipe identifier.
+     * Recipe Action.
      *
      * @var string
      */
-    protected $identifier = FilterAction::class;
+    protected $action = FilterAction::class;
+
 }
