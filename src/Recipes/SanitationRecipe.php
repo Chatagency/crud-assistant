@@ -21,9 +21,9 @@ class SanitationRecipe extends RecipeBase implements RecipeInterface
     public $type;
 
     /**
-     * Recipe identifier.
+     * Recipe action.
      *
      * @var string
      */
-    protected $identifier = SanitationAction::class;
+    protected $action = SanitationAction::class;
 }
