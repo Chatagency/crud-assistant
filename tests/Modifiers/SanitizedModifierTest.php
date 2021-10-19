@@ -15,7 +15,7 @@ class SanitizedModifierTest extends TestCase
         $value = "This aren't true";
         $valueEncoded = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
         
-        $newValue = $modifier->modify($valueEncoded, new DataContainer([]));
+        $newValue = $modifier->modify($valueEncoded);
         
         $this->assertEquals($value, $newValue);
         $this->assertNotEquals($valueEncoded, $newValue);

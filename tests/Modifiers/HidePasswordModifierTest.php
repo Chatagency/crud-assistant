@@ -16,7 +16,7 @@ class HidePasswordModifierTest extends TestCase
 
     $modifier = new HidePasswordModifier();
 
-    $modifiedPassword = $modifier->modify($password, new DataContainer());
+    $modifiedPassword = $modifier->modify($password);
 
     $this->assertNotEquals($password, $modifiedPassword);
     $this->assertEquals($modifiedPassword, $modifier->getDefaultValue());
@@ -28,11 +28,11 @@ class HidePasswordModifierTest extends TestCase
     $password = 'secure_password';
     $value = '000000';
 
-    $modifier = new HidePasswordModifier();
-
-    $modifiedPassword = $modifier->modify($password, new DataContainer([
-      'value' => $value,
+    $modifier = new HidePasswordModifier(new DataContainer([
+        'value' => $value,
     ]));
+
+    $modifiedPassword = $modifier->modify($password);
 
     $this->assertNotEquals($password, $modifiedPassword);
     $this->assertEquals($modifiedPassword, $value);
