@@ -194,7 +194,7 @@ abstract class Action
      */
     protected function executeModifier(Modifier $modifier, $value, $model = null)
     {
-        return $modifier->modify($value, $modifier->getData(), $model);
+        return $modifier->modify($value, $model);
     }
 
     /**
