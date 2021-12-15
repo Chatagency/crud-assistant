@@ -8,6 +8,7 @@ use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use BadMethodCallException;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 class CrudAssistantTest extends TestCase
@@ -76,5 +77,21 @@ class CrudAssistantTest extends TestCase
 
         $this->expectException(BadMethodCallException::class);
         $manager->randomMethod();
+    }
+
+    /** @test */
+    public function the_is_input_collection_helper_checks_if__parameter_is_an_input_collection()
+    {
+        $this->assertTrue(CrudAssistant::isInputCollection(new InputCollection()));
+        
+        $this->assertFalse(CrudAssistant::isInputCollection(new TextInput()));
+    }
+
+    /** @test */
+    public function the_is_closure_helper_checks_if_parameter_is_a_closure()
+    {
+        $this->assertTrue(CrudAssistant::isClosure(function(){}));
+        
+        $this->assertFalse(CrudAssistant::isClosure('array_map'));
     }
 }
