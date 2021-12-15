@@ -122,8 +122,9 @@ abstract class Action
     }
 
     /**
-     * Notifies the collection the output
-     * result must be in a tree format.
+     * Notifies the collection the action
+     * controls the recursion for of
+     * inner collection.
      *
      * @return bool
      */
