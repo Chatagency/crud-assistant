@@ -87,4 +87,14 @@ class CrudAssistant
     {
         return is_a($input, InputCollectionInterface::class);
     }
+
+    /**
+     * Verifies if an object id a closure
+     *
+     * @param $instance
+     * @return boolean
+     */
+    public static function isClosure($instance) {
+        return $instance instanceof \Closure;
+    }
 }
