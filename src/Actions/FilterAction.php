@@ -9,6 +9,7 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\CrudAssistant;
+use InvalidArgumentException;
 
 /**
  * Filter action.
@@ -24,33 +25,74 @@ class FilterAction extends Action implements ActionInterface
     protected $controlsExecution = true;
 
     /**
+     * Data to be filtered.
+     * @var array
+     */
+    protected $data = [];
+    
+    /**
+     * Sets the data param.
+     *
+     * @param array $data
+     * @return self
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Pre Execution.
+     *
+     * @return self
+     */
+    public function prepare()
+    {
+        if(!is_array($this->data) || empty($this->data)) {
+            throw new InvalidArgumentException("The data is required", 500);
+        }
+        
+        $this->output->data = $this->data;
+
+        return $this;
+    }
+
+    /**
      * Execute action on input.
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input, DataContainerInterface $output)
+    public function execute(InputInterface $input)
     {
-        $params = $this->getParams();
-
-        $this->checkRequiredParams($params, ['data']);
-
-        if (!isset($output->data)) {
-            $output->data = $params->data;
-        }
-
+        $output = $this->output;
+        
         if (CrudAssistant::isInputCollection($input)) {
             foreach ($input as $val) {
                 if (CrudAssistant::isInputCollection($val)) {
                     $output = $this->execute($val, $output);
                 } else {
-                    $output = $this->executeOne($val, $output);
+                    $output = $this->executeOne($val);
                 }
             }
 
             return $output;
         }
 
-        return $this->executeOne($input, $output);
+        return $this->executeOne($input);
+    }
+
+    /**
+     * Sets $controlsExecution.
+     *
+     * @return self
+     */
+    public function setControlsExecution(bool $controlsExecution)
+    {
+        $this->controlsExecution = $controlsExecution;
+
+        return $this;
     }
 
     /**
@@ -58,10 +100,9 @@ class FilterAction extends Action implements ActionInterface
      *
      * @return DataContainerInterface
      */
-    protected function executeOne(InputInterface $input, DataContainerInterface $output)
+    protected function executeOne(InputInterface $input)
     {
-        $params = $this->getParams();
-
+        $output = $this->output;
         $data = $output->data;
 
         $name = $input->getName();
@@ -75,8 +116,8 @@ class FilterAction extends Action implements ActionInterface
         }
 
         if (\is_callable($callback)) {
-            $data = $callback($input, $params, $data);
-        } elseif (isset($recipe['filter']) && $recipe['filter']) {
+            $data = $callback($input, $data);
+        } elseif (isset($recipe->filter) && $recipe->filter) {
             unset($data[$name]);
         }
 

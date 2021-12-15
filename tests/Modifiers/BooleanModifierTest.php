@@ -13,27 +13,27 @@ class BooleanModifierTest extends TestCase
     {
         $modifier = new BooleanModifier();
         
-        $newTrueValue = $modifier->modify(true, new DataContainer([]));
+        $newTrueValue = $modifier->modify(true);
         $this->assertEquals('Yes', $newTrueValue);
         
-        $newFalseValue = $modifier->modify(false, new DataContainer([]));
+        $newFalseValue = $modifier->modify(false);
         $this->assertEquals('No', $newFalseValue);
     }
     
     /** @test */
     public function the_is_boolean_modifier_labels_can_be_changed_using_the_second_argument()
     {
-        $modifier = new BooleanModifier();
-        
         $data = new DataContainer([
-            'trueLabel' => 'Corrent',
-            'falseLabel' => 'Incorrent',
+            'trueLabel' => 'Correct',
+            'falseLabel' => 'Incorrect',
         ]);
         
-        $newTrueValue = $modifier->modify(true, $data);
+        $modifier = new BooleanModifier($data);
+        
+        $newTrueValue = $modifier->modify(true);
         $this->assertEquals($data->trueLabel, $newTrueValue);
         
-        $newFalseValue = $modifier->modify(false, $data);
+        $newFalseValue = $modifier->modify(false);
         $this->assertEquals($data->falseLabel, $newFalseValue);
     }
     

@@ -5,11 +5,33 @@ namespace Chatagency\CrudAssistant\Tests\Actions;
 use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterRecipe;
 use PHPUnit\Framework\TestCase;
 
 class FilterActionTest extends TestCase
 {
+
+    /** @test */
+    public function make_can_be_used_to_get_an_instance_of_filter_action()
+    {
+        $recipe = FilterAction::make();
+
+        $this->assertInstanceOf(FilterAction::class, $recipe);
+    }
+
+    /** @test */
+    public function all_actions_have_a_generic_data_setter_and_getter()
+    {
+        $recipe = FilterAction::make();
+
+        $data = [
+            'name' => 'John Doe'
+        ];
+        $recipe->setGenericData(new DataContainer($data));
+
+        $this->assertEquals($data['name'], $recipe->getGenericData()->name);
+    }
+    
     /** @test */
     public function a_filter_action_is_used_to_exclude_input_data_from_dataset()
     {
@@ -19,7 +41,7 @@ class FilterActionTest extends TestCase
         
         $email = new TextInput('email', 'Email');
 
-        $recipe = new FilterActionRecipe();
+        $recipe = new FilterRecipe();
         $recipe->filter = true;
         
         $email->setRecipe($recipe);
@@ -28,16 +50,15 @@ class FilterActionTest extends TestCase
         
         $inputs = [$email, $name, $description];
         
-        $container = new DataContainer();
-        $container->data = [
+        $filter = new FilterAction();
+        $filter->setData([
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
-            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-        ];
-
-        $filter = new FilterAction($container);
+            'description' => 'Lorem ipsum dolor sit',
+        ]);
 
         $output = new DataContainer();
+        $filter->prepare($output);
         foreach($inputs as $input) {
             $filtered = $filter->execute($input, $output);
         }
@@ -54,8 +75,8 @@ class FilterActionTest extends TestCase
         
         $email = new TextInput('email', 'Email');
         
-        $recipe = new FilterActionRecipe();
-        $recipe->callback = function($input, $params, $data){
+        $recipe = new FilterRecipe();
+        $recipe->callback = function($input, $data){
             unset($data[$input->getName()]);
             return $data;
         };
@@ -66,16 +87,15 @@ class FilterActionTest extends TestCase
         
         $inputs = [$name, $email, $description];
         
-        $container = new DataContainer();
-        $container->data = [
+        $filter = new FilterAction();
+        $filter->setData([
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
-            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-        ];
-
-        $filter = new FilterAction($container);
+            'description' => 'Lorem ipsum dolor sit',
+        ]);
 
         $output = new DataContainer();
+        $filter->prepare($output);
         foreach($inputs as $input) {
             $filtered = $filter->execute($input, $output);
         }
@@ -91,7 +111,7 @@ class FilterActionTest extends TestCase
         
         $email = new TextInput('email', 'Email');
 
-        $recipe = (new FilterActionRecipe());
+        $recipe = new FilterRecipe();
         $recipe->ignoreIfEmpty = true;
         
         $email->setRecipe($recipe);
@@ -99,17 +119,16 @@ class FilterActionTest extends TestCase
         $description = new TextInput('description', 'Description');
         
         $inputs = [$name, $email, $description];
-        
-        $container = new DataContainer();
-        $container->data = [
+
+        $filter = new FilterAction();
+        $filter->setData([
             'name' => "Victor Sánchez",
             'email' => '',
-            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-        ];
-
-        $filter = new FilterAction($container);
+            'description' => 'Lorem ipsum dolor sit',
+        ]);
 
         $output = new DataContainer();
+        $filter->prepare($output);
         foreach($inputs as $input) {
             $filtered = $filter->execute($input, $output);
         }
@@ -118,11 +137,21 @@ class FilterActionTest extends TestCase
     }
 
     /** @test */
+    public function if_data_is_missing_or_empty_an_exception_is_thrown ()
+    {
+        $this->expectException(\Exception::class);
+        
+        $filter = new FilterAction();
+        $filter->prepare(new DataContainer());
+        
+    }
+
+    /** @test */
     public function if_an_invalid_value_is_passed_to_the_recipe_an_exception_is_thrown()
     {
         $this->expectException(\Exception::class);
         
-        $recipe = (new FilterActionRecipe());
+        $recipe = new FilterRecipe();
         $recipe->NotValid = true;
         
     }

@@ -7,7 +7,7 @@ namespace Chatagency\CrudAssistant\Contracts;
 /**
  * Input Collection Interface.
  */
-interface InputCollectionInterface
+interface InputCollectionInterface extends InputInterface
 {
     /**
      * Sets inputs array.

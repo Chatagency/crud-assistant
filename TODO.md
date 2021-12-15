@@ -6,8 +6,8 @@
 - ✅ Create an OptionInput class for the select
 - ✅ Enable passing version number to `MigrationAction` when setting recipe
 - ✅ Modify `ActionFactory` to be able to initiate without params
-- ✅ Pass model id available to `Modifiers`
-- ✅ Enable passing versions of the field to `MigrationAction` when setting recipe
+- ✅ Pass model id available to `Modifiers` (moved to the extras package)
+- ✅ Enable passing versions of the field to `MigrationAction` when setting recipe (moved to the extras package)
 - ✅ Change Action calling to composition
 - ✅ Eliminate config file and change action factory
 - ✅ Validate action exists when setting a recipe
@@ -18,3 +18,15 @@
 - ✅ Rethink action parameters (specific `DataContainer` classes)
 - ✅ Add `tree` option for recursive forms output
 - ✅ Rethink recipes parameters (new Recipe class)
+- ✅ Decouple recipe methods into a trait
+- ✅ Add prepare and cleanup methods to actions
+- ✅ Remove the output as a parameter for the `InputCollection` and let `Actions` manage their own state
+- ✅ Rename `isTree` to `handlesRecursion`
+- ✅ Add get accessor method to action
+- ✅ Change modifiers' method definition
+- ⬜️ Implement ignore on the `InputCollection`'s execute method
+- ⬜️ Implement history in modifiers
+- ⬜️ Change `DataContainer`'s `add` method to `merge`
+- ⬜️ Add `push` method to `DataContainer`
+- ⬜️ Test in lower php versions
+- ⬜️ Package cleanup

@@ -29,12 +29,13 @@ class BooleanModifier extends Modifier
     /**
      * Modifies value.
      *
-     * @param mixed         $value
-     * @param DataContainer $data
-     * @param $model
+     * @param mixed      $value
+     * @param mixed|null $model
      */
-    public function modify($value, DataContainer $data = null, $model = null)
+    public function modify($value,  $model = null)
     {
+        $data = $this->getData();
+        
         $trueLabel = $data->trueLabel ?? $this->trueLabel;
         $falseLabel = $data->falseLabel ?? $this->falseLabel;
 

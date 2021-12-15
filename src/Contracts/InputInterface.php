@@ -16,7 +16,7 @@ interface InputInterface
      *
      * @return self
      */
-    public function __construct(string $name = null, string $label = null, ActionFactoryInterface $actionFactory = null);
+    public function __construct(string $name = null, string $label = null);
 
     /**
      * Sets input name.
@@ -130,5 +130,5 @@ interface InputInterface
      *
      * @return DataContainer
      */
-    public function execute(ActionInterface $action, DataContainerInterface $output = null);
+    public function execute(ActionInterface $action);
 }

@@ -6,7 +6,6 @@ namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use InvalidArgumentException;
 
 /**
  * Action base class.
@@ -14,19 +13,25 @@ use InvalidArgumentException;
 abstract class Action
 {
     /**
-     * Data.
+     * Generic Data.
      *
      * @var DataContainerInterface
      */
-    protected $params;
+    protected $genericData;
 
     /**
-     * Result is a tree instead
-     * of flat.
+     * Output.
+     *
+     * @var DataContainerInterface
+     */
+    protected $output;
+
+    /**
+     * Controls recursion
      *
      * @var bool
      */
-    protected $isTree = false;
+    protected $controlsRecursion = false;
 
     /**
      * Action control the
@@ -37,27 +42,95 @@ abstract class Action
     protected $controlsExecution = false;
 
     /**
-     * Construct.
+     * Construct
      *
-     * @param DataContainerInterface $params
+     * @param DataContainerInterface $output
+     * 
+     * @return self
      */
-    public function __construct(DataContainerInterface $params = null)
+    public function __construct(DataContainerInterface $output = null)
     {
-        $this->params = $params ?? new DataContainer();
+        $this->output = $output ?? new DataContainer();
 
         return $this;
     }
 
     /**
-     * Notifies the collection the output
-     * result must be in a tree format
-     * instead of a flat output.
+     * Creates new instance of the class.
+     *
+     * @param array $args
+     *
+     * @return static
+     */
+    public static function make(...$args)
+    {
+        return new static(...$args);
+    }
+
+    /**
+     * Returns recipe accessor
+     *
+     * @return string
+     */
+    public static function getIdentifier()
+    {
+        return Static::class;
+    }
+
+    /**
+     * Sets generic set genericData.
+     *
+     * @param DataContainerInterface $genericData
+     * 
+     * @return static
+     */
+    public function setGenericData(DataContainerInterface $genericData)
+    {
+        $this->genericData = $genericData;
+
+        return $this;
+    }
+
+    /**
+     * Returns generic set genericData.
+     *
+     * @return DataContainerInterface
+     */
+    public function getGenericData()
+    {
+        return $this->genericData;
+    }
+
+    /**
+     * Pre Execution.
+     *
+     * @return self
+     */
+    public function prepare()
+    {
+        return $this;
+    }
+
+    /**
+     * Post Execution.
+     *
+     * @return self
+     */
+    public function cleanup()
+    {
+        return $this;
+    }
+
+    /**
+     * Notifies the collection the action
+     * controls the recursion for of
+     * inner collection.
      *
      * @return bool
      */
-    public function isTree()
+    public function controlsRecursion()
     {
-        return $this->isTree;
+        return $this->controlsRecursion;
     }
 
     /**
@@ -82,33 +155,7 @@ abstract class Action
      */
     public function isEmpty($value)
     {
-        return '' == $value || null === $value;
-    }
-
-    /**
-     * Returns runtime args.
-     *
-     * @return DataContainerInterface
-     */
-    protected function getParams()
-    {
-        return $this->params;
-    }
-
-    /**
-     * Checks params integrity.
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return bool
-     */
-    protected function checkRequiredParams(DataContainerInterface $data, array $checks)
-    {
-        if ($missing = $data->missing($checks)) {
-            throw new InvalidArgumentException('The argument '.$missing.' is missing for the '.static::class.' action', 500);
-        }
-
-        return true;
+        return $value === '' || $value === null;
     }
 
     /**
@@ -148,6 +195,16 @@ abstract class Action
      */
     protected function executeModifier(Modifier $modifier, $value, $model = null)
     {
-        return $modifier->modify($value, $modifier->getData(), $model);
+        return $modifier->modify($value, $model);
+    }
+
+    /**
+     * Returns output
+     *
+     * @return DataContainerInterface
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 }

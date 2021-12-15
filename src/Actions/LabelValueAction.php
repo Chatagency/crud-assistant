@@ -8,6 +8,10 @@ use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\DataContainer;
+use InvalidArgumentException;
+use Traversable;
 
 /**
  * Label Value Action.
@@ -15,25 +19,45 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 class LabelValueAction extends Action implements ActionInterface
 {
     /**
+     * Model.
+     */
+    protected $model;
+    
+    /**
      * Result is a tree instead
      * of flat.
      *
      * @var bool
      */
-    protected $isTree = true;
+    protected $controlsRecursion = true;
+
+    /**
+     * Undocumented function
+     *
+     * @param Traversable $model
+     * 
+     * @return self
+     */
+    public function setModel(Traversable  $model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
 
     /**
      * Execute action on input.
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input, DataContainerInterface $output)
+    public function execute(InputInterface $input)
     {
-        $params = $this->getParams();
+        $output = $this->output;
+        $model = $this->model;
 
-        $this->checkRequiredParams($params, ['model']);
-
-        $model = $params->model;
+        if(!$model) {
+            throw new InvalidArgumentException("The model is required", 500);
+        }
 
         $recipe = $input->getRecipe(static::class);
 
@@ -41,18 +65,35 @@ class LabelValueAction extends Action implements ActionInterface
             return $output;
         }
 
-        $name = $input->getName() ?? null;
+        /**
+         * Internal collection
+         */
+        if(CrudAssistant::isInputCollection($input)) {
+    
+            $inputName = $input->getName();
+            
+            $subAction = static::make()->setModel($model);
+            foreach($input as $subInput) {
+                $subOutput = $subAction->execute($subInput);
+            }
 
-        $label = $recipe['label'] ?? $input->getLabel() ?? null;
+            $output->$inputName = $subOutput;
 
-        if (\is_callable($label)) {
-            $label = $label($input, $params);
+            return;
         }
 
-        $value = $recipe['value'] ?? $model->$name ?? null;
+        $name = $input->getName() ?? null;
+
+        $label = $recipe->label ?? $input->getLabel() ?? null;
+
+        if (\is_callable($label)) {
+            $label = $label($input, $model);
+        }
+
+        $value = $recipe->value ?? $model->$name ?? null;
 
         if (\is_callable($value)) {
-            $value = $value($input, $params);
+            $value = $value($input, $model);
         }
 
         $value = $this->modifiers($value, $input, $model);

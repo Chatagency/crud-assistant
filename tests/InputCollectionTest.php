@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterRecipe;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -85,9 +85,9 @@ class InputCollectionTest extends TestCase
             'email' => 'john#@email.com',
         ]);
 
-        $labelValue = $form->execute(new LabelValueAction(
-            new DataContainer(['model' => $model])
-        ));
+        $labelValue = $form->execute(
+            LabelValueAction::make()->setModel($model)
+        );
 
         $this->assertCount(2, $labelValue);
     }
@@ -242,7 +242,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_with_internal_collections_save_action_output_in_tree_if_the_is_tree_option_is_true()
+    public function an_input_collection_with_internal_collections_calls_is_called_recursively_if_the_is_tree_option_is_true()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -256,55 +256,68 @@ class InputCollectionTest extends TestCase
         $form = new InputCollection();
         $form->setInputs([$name, $email, $address, $internal,]);
         
-        $runtime = new DataContainer([
-            'model' => new DataContainer([
-                'name' => "Victor Sánchez",
-                'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-                'age' => 35,
-            ])
+        $model =  new DataContainer([
+            'name' => "Victor Sánchez",
+            'email' => 'email@email.com',
+            'address' => 'Lorem ipsum dolor sit.',
+            'age' => 35,
         ]);
 
-        $output = $form->execute(new LabelValueAction($runtime));
-        
+        $output = $form->execute(
+            LabelValueAction::make()->setModel($model)
+        );
+
         $this->assertCount(4, $output);
         $this->assertInstanceOf(DataContainer::class, $output->secondary_info);
         $this->assertCount(1, $output->secondary_info);
-        $this->assertEquals($runtime->model->age, $output->secondary_info->{$internal->getInput('age')->getLabel()});
+        $this->assertEquals($model->age, $output->secondary_info->{$internal->getInput('age')->getLabel()});
     }
 
     /** @test */
-    public function if_an_internal_collection_does_not_have_a_name_an_exception_is_thrown()
+    public function an_input_collection_with_internal_collections_without_the_tree_option_goes_with_the_normal_flow()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'Your Address');
 
-        /**
-         * Collection has no name
-         */
-        $internal = new InputCollection();
+        $internal = new InputCollection('secondary_info');
+
+        $ageInput = new TextInput('age', 'Your age');
+        $ageInput->setRecipe(
+            (new FilterRecipe([
+                'filter' => true
+            ]))
+        );
+
         $internal->setInputs([
-            new TextInput('age', 'Your age'),
+            $ageInput,
         ]);
 
         $form = new InputCollection();
         $form->setInputs([$name, $email, $address, $internal,]);
         
-        $runtime = new DataContainer([
-            'model' => new DataContainer([
-                'name' => "Victor Sánchez",
-                'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-                'age' => 35,
-            ])
-        ]);
+        $data = [
+            'name' => "Victor Sánchez",
+            'email' => 'email@email.com',
+            'address' => 'Lorem ipsum dolor sit.',
+            'age' => 35,
+        ];
 
-        $this->expectException(\Exception::class);
+        $action = FilterAction::make()
+            ->setData($data)
+            /**
+             * Delegates execution to the 
+             * input collection
+             */
+            ->setControlsExecution(false);
 
-        $form->execute(new LabelValueAction($runtime));
+        $output = $form->execute($action);
+
+        $this->assertCount(3, $output->data);
+        $this->assertArrayHasKey('name', $output->data);
+        $this->assertArrayNotHasKey('age', $output->data);
     }
-    
+
     /** @test */
     public function an_action_can_take_control_of_the_whole_execution_using_execute_all()
     {
@@ -318,7 +331,7 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
         $address = new TextInput('address', 'Your Address');
-        $address->setRecipe(new FilterActionRecipe([
+        $address->setRecipe(new FilterRecipe([
             'filter' => true
         ]));
 
@@ -328,25 +341,28 @@ class InputCollectionTest extends TestCase
         ]);
 
         $form = new InputCollection();
+        $form2 = new InputCollection();
         $form->setInputs([$name, $email, $address, $internal,]);
+        $form2->setInputs([$name, $email, $address, $internal,]);
         
-        $runtime = new DataContainer([
-            'data' => [
-                'name' => "Victor Sánchez",
-                'email' => 'email@email.com',
-                'address' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-                'age' => 35,
-            ]
-        ]);
+        $data = [
+            'name' => "Victor Sánchez",
+            'email' => 'email@email.com',
+            'address' => 'Lorem ipsum dolor sit.',
+            'age' => 35,
+        ];
 
-        $output = $form->executeAll(new FilterAction($runtime));
-        $output2 = $form->execute(new FilterAction($runtime));
+        $action = FilterAction::make()->setData($data);
+
+        $output = $form->executeAll($action);
+        
+        $output2 = $form2->execute($action);
 
         $this->assertEquals($output, $output2);
 
         $this->assertCount(3, $output->data);
-        $this->assertContains($runtime->data['name'], $output->data);
-        $this->assertNotContains($runtime->data['address'], $output->data);
+        $this->assertContains($data['name'], $output->data);
+        $this->assertNotContains($data['address'], $output->data);
     }
 
 }

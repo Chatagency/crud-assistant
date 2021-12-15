@@ -2,12 +2,21 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\DataContainer;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\TestCase;
 
 class DataContainerTest extends TestCase
 {
+    /** @test */
+    public function make_can_be_used_to_instantiate_a_container()
+    {
+        $container = DataContainer::make();
+
+        $this->assertInstanceOf(DataContainerInterface::class, $container);
+    }
+
     /** @test */
     public function an_arbitrary_key_and_value_pair_can_be_set()
     {

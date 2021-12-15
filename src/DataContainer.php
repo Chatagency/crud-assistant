@@ -35,6 +35,18 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     }
 
     /**
+     * Creates new instance of the class.
+     *
+     * @param array $args
+     *
+     * @return static
+     */
+    public static function make(...$args)
+    {
+        return (new static(...$args));
+    }
+
+    /**
      * Magic set method.
      */
     public function __get(string $name)
@@ -179,19 +191,19 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return array
      */
-    public function all()
+    public function toArray()
     {
         return $this->data;
     }
 
     /**
-     * all() method alias.
+     * toArray() method alias.
      *
      * @return array
      */
-    public function toArray()
+    public function all()
     {
-        return $this->all();
+        return $this->toArray();
     }
 
     /**
@@ -204,7 +216,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      */
     public function offsetSet($offset, $value)
     {
-        if (null === $offset) {
+        if ($offset === null) {
             $this->data[] = $value;
         } else {
             $this->data[$offset] = $value;

@@ -88,6 +88,13 @@ interface DataContainerInterface
      *
      * @return array
      */
+    public function toArray();
+
+    /**
+     * toArray() method alias.
+     *
+     * @return array
+     */
     public function all();
 
     /**

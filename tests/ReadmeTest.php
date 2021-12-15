@@ -5,14 +5,13 @@ namespace Chatagency\CrudAssistant\Tests;
 use PHPUnit\Framework\TestCase;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\InputCollection;
-use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Inputs\SelectInput;
 use Chatagency\CrudAssistant\Inputs\OptionInput;
 use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\Actions\SanitationAction;
-use Chatagency\CrudAssistant\Recipes\FilterActionRecipe;
-use Chatagency\CrudAssistant\Recipes\SanitationActionRecipe;
+use Chatagency\CrudAssistant\Recipes\FilterRecipe;
+use Chatagency\CrudAssistant\Recipes\SanitationRecipe;
 
 class ReadmeTest extends TestCase
 {
@@ -44,7 +43,7 @@ class ReadmeTest extends TestCase
     public function  docs_collection_one_test()
     {
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-        $name->setRecipe(new \Chatagency\CrudAssistant\Recipes\SanitationActionRecipe([
+        $name->setRecipe(new \Chatagency\CrudAssistant\Recipes\SanitationRecipe([
             'type' => FILTER_SANITIZE_SPECIAL_CHARS
         ]));
     }
@@ -62,11 +61,14 @@ class ReadmeTest extends TestCase
         $collection = new InputCollection();
         $collection->setInputs([$name, $email]);
 
-        $data = new DataContainer([
-            'requestArray' => []
-        ]);
+        $requestArray = [
+            'email' => 'john@doe.com'
+        ];
         
-        $actionResult = $collection->execute(new \Chatagency\CrudAssistant\Actions\SanitationAction($data));
+        $actionResult = $collection->execute(
+            \Chatagency\CrudAssistant\Actions\SanitationAction::make()
+                ->setRequestArray($requestArray)
+        );
     }
 
     /** 
@@ -99,10 +101,10 @@ class ReadmeTest extends TestCase
     {
         // Input
         $name = new TextInput($inputName = 'name', $inputLabel = 'Your Name');
-        $name->setRecipe(new SanitationActionRecipe([
+        $name->setRecipe(new SanitationRecipe([
             'type' => FILTER_SANITIZE_SPECIAL_CHARS
         ]));
-        $name->setRecipe(new FilterActionRecipe([
+        $name->setRecipe(new FilterRecipe([
             'filter' => true
         ]) );
 
@@ -110,17 +112,17 @@ class ReadmeTest extends TestCase
         $collection->setInputs([$name]);
 
         // sanitizes values
-        $sanitized = $collection->execute(new SanitationAction(
-            new DataContainer([
-                'requestArray' => []
+        $sanitized = $collection->execute(
+            SanitationAction::make()->setRequestArray([
+                'name' => 'John Dow'
             ])
-        ));
+        );
         // returns filtered values
-        $rules = $collection->execute(new FilterAction(
-            new DataContainer([
-                'data' => []
+        $rules = $collection->execute(
+            FilterAction::make()->setData([
+                'name' => 'John Dow'
             ])
-        ));
+        );
     }
 
     /** 
@@ -148,19 +150,18 @@ class ReadmeTest extends TestCase
     public function  docs_assistant_two_test()
     {
         $name = new TextInput('name');
-        $name->setRecipe(new FilterActionRecipe([
+        $name->setRecipe(new FilterRecipe([
             'filter' => true
         ]));
         
         $manager = CrudAssistant::make([$name]);
         
-        $rules = $manager->execute(new FilterAction(
-            new DataContainer([
-                'data' => [
-                    'name' => 'John Doe'
-                ]
-            ])
-        ));
+        $action = new FilterAction();
+        $action->setData([
+            'name' => 'John Doe'
+        ]);
+
+        $rules = $manager->execute($action);
     
     }
 

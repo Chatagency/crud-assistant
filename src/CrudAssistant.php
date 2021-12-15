@@ -25,9 +25,9 @@ class CrudAssistant
      *
      * @return self
      */
-    public function __construct(array $inputs = [])
+    public function __construct(array $inputs = [], string $name = null, string $label = null, InputCollectionInterface $collection = null)
     {
-        $this->collection = new InputCollection();
+        $this->collection = $collection ?? new InputCollection($name, $label);
         $this->collection->setInputs($inputs);
 
         return $this;
@@ -53,25 +53,25 @@ class CrudAssistant
             return \call_user_func_array($object_array, $arguments);
         }
 
-        throw new BadMethodCallException('Method '.$name.' not exists in '.__CLASS__, 500);
+        throw new BadMethodCallException('Method '.$name.' not exists in '.static::class, 500);
     }
 
     /**
-     * Creates new instance of this class.
+     * Creates new instance of the class.
      *
      * @param array $args
      *
-     * @return self
+     * @return InputCollectionInterface
      */
     public static function make(...$args)
     {
-        return new static(...$args);
+        return (new static(...$args))->getCollection();
     }
 
     /**
      * Returns input collection.
      *
-     * @return InputCollection
+     * @return InputCollectionInterface
      */
     public function getCollection()
     {
@@ -86,5 +86,15 @@ class CrudAssistant
     public static function isInputCollection(InputInterface $input)
     {
         return is_a($input, InputCollectionInterface::class);
+    }
+
+    /**
+     * Verifies if an object id a closure
+     *
+     * @param $instance
+     * @return boolean
+     */
+    public static function isClosure($instance) {
+        return $instance instanceof \Closure;
     }
 }

@@ -31,6 +31,12 @@ $rules = [
     'list_syntax' => ["syntax" => "short"],
     'phpdoc_types_order' => ['null_adjustment'=> 'always_last'],
     'single_line_comment_style' => true,
+    'is_null' => ["use_yoda_style" => false],
+    'yoda_style' => [
+        'equal' => false,
+        'identical' => false,
+        'less_and_greater' => false,
+    ],
 ];
 
 $exclude = [
@@ -38,6 +44,7 @@ $exclude = [
     'tests',
     'build',
     'vendor',
+    'helpers',
 ];
 
 $finder = PhpCsFixer\Finder::create()

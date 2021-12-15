@@ -8,6 +8,7 @@ use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
+use InvalidArgumentException;
 
 /**
  * Sanitation action.
@@ -15,24 +16,54 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 class SanitationAction extends Action implements ActionInterface
 {
     /**
+     * Request array.
+     *
+     * @var array
+     */
+    protected $requestArray = [];
+
+    /**
+     * Sets request array.
+     *
+     * @param array $requestArray
+     * 
+     * @return self
+     */
+    public function setRequestArray(array $requestArray)
+    {
+        $this->requestArray = $requestArray;
+
+        return $this;
+    }
+
+    /**
+     * Pre Execution.
+     *
+     * @return self
+     */
+    public function prepare()
+    {
+        if(!is_array($this->requestArray) || empty($this->requestArray)) {
+            throw new InvalidArgumentException("The requestArray is required", 500);
+        }
+
+        $this->output->requestArray = $this->requestArray;
+
+        return $this;
+    }
+
+    /**
      * Execute action on input.
      *
      * @return DataContainerInterface
      */
-    public function execute(InputInterface $input, DataContainerInterface $output)
+    public function execute(InputInterface $input)
     {
-        $params = $this->getParams();
-
-        if (!isset($output->requestArray)) {
-            $output->requestArray = $params->requestArray;
-        }
-
-        $this->checkRequiredParams($params, ['requestArray']);
-
+        $output = $this->output;
         $recipe = $input->getRecipe(static::class);
         $requestArray = $output->requestArray;
         $inputName = $input->getName();
-        $type = $recipe['type'] ?? null;
+        $type = $recipe->type ?? null;
 
         if (isset($requestArray[$inputName]) && $type) {
             if (\is_array($type)) {
