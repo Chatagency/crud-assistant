@@ -45,6 +45,15 @@ class LabelValueAction extends Action implements ActionInterface
         return $this;
     }
 
+    public function prepare()
+    {
+        if(!$this->model) {
+            throw new InvalidArgumentException("The model is required", 500);
+        }
+
+        return parent::prepare();
+    }
+
     /**
      * Execute action on input.
      *
@@ -52,34 +61,24 @@ class LabelValueAction extends Action implements ActionInterface
      */
     public function execute(InputInterface $input)
     {
-        $output = $this->output;
-        $model = $this->model;
+        /**
+         * Internal collection
+         */
+        if(CrudAssistant::isInputCollection($input) && $this->controlsRecursion) {
+    
+            foreach($input as $subInput) {
+                $this->execute($subInput);
+            }
 
-        if(!$model) {
-            throw new InvalidArgumentException("The model is required", 500);
+            return;
         }
+        
+        $model = $this->model;
 
         $recipe = $input->getRecipe(static::class);
 
         if ($recipe && $recipe->isIgnored()) {
-            return $output;
-        }
-
-        /**
-         * Internal collection
-         */
-        if(CrudAssistant::isInputCollection($input)) {
-    
-            $inputName = $input->getName();
-            
-            $subAction = static::make()->setModel($model);
-            foreach($input as $subInput) {
-                $subOutput = $subAction->execute($subInput);
-            }
-
-            $output->$inputName = $subOutput;
-
-            return;
+            return $this->output;
         }
 
         $name = $input->getName() ?? null;
@@ -98,8 +97,8 @@ class LabelValueAction extends Action implements ActionInterface
 
         $value = $this->modifiers($value, $input, $model);
 
-        $output->$label = $value;
+        $this->output->$label = $value;
 
-        return $output;
+        return $this->output;
     }
 }

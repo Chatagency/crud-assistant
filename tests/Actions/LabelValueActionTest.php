@@ -49,10 +49,11 @@ class LabelValueActionTest extends TestCase
         $action = new LabelValueAction();
         $action->setModel($model);
         
-        $output = new DataContainer();
+        $action->prepare();
         foreach($inputs as $input) {
-            $output = $action->execute($input, $output);
+            $action->execute($input);
         }
+        $output = $action->getOutput();
 
         $emailName = $email->getName();
         $emailLabel = $email->getLabel();
@@ -73,9 +74,9 @@ class LabelValueActionTest extends TestCase
 
         $action =  new LabelValueAction(new DataContainer());
         
-        $output = new DataContainer();
+        $action->prepare();
         foreach($inputs as $input) {
-            $output = $action->execute($input, $output);
+            $action->execute($input);
         }
     }
 
@@ -98,10 +99,11 @@ class LabelValueActionTest extends TestCase
         $action =  new LabelValueAction();
         $action->setModel($model);
         
-        $output = new DataContainer();
+        $action->prepare();
         foreach($inputs as $input) {
-            $output = $action->execute($input, $output);
+            $action->execute($input);
         }
+        $output = $action->getOutput();
 
         $this->assertCount(1, $output);
         $this->assertNotContains($model->name, $output);
@@ -142,10 +144,11 @@ class LabelValueActionTest extends TestCase
         $action =  (new LabelValueAction());
         $action->setModel($model);
         
-        $output = new DataContainer();
+        $action->prepare();
         foreach($inputs as $input) {
-            $output = $action->execute($input, $output);
+            $action->execute($input);
         }
+        $output = $action->getOutput();
 
         $nameLabel = sprintf($nameFormat, $name->getLabel());
         $emailLabel = $email->getLabel();
@@ -182,10 +185,11 @@ class LabelValueActionTest extends TestCase
         $action =  new LabelValueAction();
         $action->setModel($model);
         
-        $output = new DataContainer();
+        $action->prepare();
         foreach($inputs as $input) {
-            $output = $action->execute($input, $output);
+            $action->execute($input);
         }
+        $output = $action->getOutput();
 
         $this->assertEquals($modifierData->trueLabel, $output->{$accept->getLabel()});
 
