@@ -3,6 +3,7 @@
 namespace Chatagency\CrudAssistant\Tests\Actions;
 
 use Chatagency\CrudAssistant\Actions\FilterAction;
+use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Recipes\FilterRecipe;
@@ -48,7 +49,7 @@ class FilterActionTest extends TestCase
         
         $description = new TextInput('description', 'Description');
         
-        $inputs = [$email, $name, $description];
+        $crud = CrudAssistant::make([$email, $name, $description]);
         
         $filter = new FilterAction();
         $filter->setData([
@@ -57,10 +58,8 @@ class FilterActionTest extends TestCase
             'description' => 'Lorem ipsum dolor sit',
         ]);
 
-        $filter->prepare();
-        foreach($inputs as $input) {
-            $filtered = $filter->executeOne($input);
-        }
+        
+        $filtered = $crud->execute($filter);
 
         $this->assertCount(2, $filtered->data);
         $this->assertFalse(isset($filtered->data[$email->getName()]));
@@ -95,8 +94,9 @@ class FilterActionTest extends TestCase
 
         $filter->prepare();
         foreach($inputs as $input) {
-            $filtered = $filter->executeOne($input);
+            $filter->executeOne($input);
         }
+        $filtered = $filter->getOutput();
 
         $this->assertCount(2, $filtered->data);
         $this->assertFalse(isset($filtered->data[$email->getName()]));
@@ -127,8 +127,9 @@ class FilterActionTest extends TestCase
 
         $filter->prepare();
         foreach($inputs as $input) {
-            $filtered = $filter->executeOne($input);
+            $filter->executeOne($input);
         }
+        $filtered = $filter->getOutput();
 
         $this->assertCount(2, $filtered->data);
     }
