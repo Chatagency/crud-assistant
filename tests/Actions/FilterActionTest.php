@@ -57,10 +57,9 @@ class FilterActionTest extends TestCase
             'description' => 'Lorem ipsum dolor sit',
         ]);
 
-        $output = new DataContainer();
-        $filter->prepare($output);
+        $filter->prepare();
         foreach($inputs as $input) {
-            $filtered = $filter->execute($input, $output);
+            $filtered = $filter->executeOne($input);
         }
 
         $this->assertCount(2, $filtered->data);
@@ -94,10 +93,9 @@ class FilterActionTest extends TestCase
             'description' => 'Lorem ipsum dolor sit',
         ]);
 
-        $output = new DataContainer();
-        $filter->prepare($output);
+        $filter->prepare();
         foreach($inputs as $input) {
-            $filtered = $filter->execute($input, $output);
+            $filtered = $filter->executeOne($input);
         }
 
         $this->assertCount(2, $filtered->data);
@@ -127,10 +125,9 @@ class FilterActionTest extends TestCase
             'description' => 'Lorem ipsum dolor sit',
         ]);
 
-        $output = new DataContainer();
-        $filter->prepare($output);
+        $filter->prepare();
         foreach($inputs as $input) {
-            $filtered = $filter->execute($input, $output);
+            $filtered = $filter->executeOne($input);
         }
 
         $this->assertCount(2, $filtered->data);
@@ -142,7 +139,7 @@ class FilterActionTest extends TestCase
         $this->expectException(\Exception::class);
         
         $filter = new FilterAction();
-        $filter->prepare(new DataContainer());
+        $filter->prepare();
         
     }
 
