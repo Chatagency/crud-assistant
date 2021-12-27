@@ -37,6 +37,16 @@ class DataContainerTest extends TestCase
     }
 
     /** @test */
+    public function a_value_can_be_pushed_to_a_collection()
+    {
+        $container = new DataContainer();
+        $container->push('value');
+
+        $this->assertCount(1, $container);
+        $this->assertEquals('value', $container[0]);
+    }
+
+    /** @test */
     public function values_can_be_added_to_the_container_after_it_has_been_instantiated()
     {
         $container = new DataContainer([
