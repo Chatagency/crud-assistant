@@ -5,6 +5,7 @@ namespace Chatagency\CrudAssistant\Tests\Actions;
 use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Recipes\FilterRecipe;
 use PHPUnit\Framework\TestCase;
@@ -64,6 +65,49 @@ class FilterActionTest extends TestCase
         $this->assertCount(2, $filtered->data);
         $this->assertFalse(isset($filtered->data[$email->getName()]));
 
+    }
+
+    /** @test */
+    public function an_internal_input_collection_can_be_used_on_the_filter_action_for_organization_purposes()
+    {
+        $filter = new FilterAction();
+
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $description = new TextInput('description', 'Description');
+
+        $emailRecipe = new FilterRecipe();
+        $emailRecipe->filter = true;
+        $email->setRecipe($emailRecipe);
+
+        $nickname = new TextInput('nickname', 'Nickname');
+        $hobby = new TextInput('hobby', 'Hobby');
+
+        $nickRecipe = FilterRecipe::make();
+        $nickRecipe->filter = true;
+        $nickname->setRecipe($nickRecipe);
+
+        $extraInfo = new InputCollection('extra_info');
+        $extraInfo->setInputs([
+            $nickname,
+            $hobby
+        ]);
+        
+        $crud = CrudAssistant::make([$email, $name, $description, $extraInfo]);
+        
+        $filter = new FilterAction();
+        $filter->setData([
+            'name' => "Victor Sánchez",
+            'email' => 'email@email.com',
+            'description' => 'Lorem ipsum dolor sit',
+            'nickname' => 'Vic',
+            'hobby' => 'To code',
+        ]);
+
+        
+        $filtered = $crud->execute($filter);
+
+        $this->assertCount(3, $filtered->data);
     }
     
     /** @test */

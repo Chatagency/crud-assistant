@@ -24,15 +24,7 @@ class LabelValueAction extends Action implements ActionInterface
     protected $model;
     
     /**
-     * Result is a tree instead
-     * of flat.
-     *
-     * @var bool
-     */
-    protected $controlsRecursion = true;
-
-    /**
-     * Undocumented function
+     * Sets Model
      *
      * @param Traversable $model
      * 
@@ -45,6 +37,11 @@ class LabelValueAction extends Action implements ActionInterface
         return $this;
     }
 
+    /**
+     * Pre Execution.
+     *
+     * @return self
+     */
     public function prepare()
     {
         if(!$this->model) {
@@ -61,18 +58,6 @@ class LabelValueAction extends Action implements ActionInterface
      */
     public function execute(InputInterface $input)
     {
-        /**
-         * Internal collection
-         */
-        if(CrudAssistant::isInputCollection($input) && $this->controlsRecursion) {
-    
-            foreach($input as $subInput) {
-                $this->execute($subInput);
-            }
-
-            return;
-        }
-        
         $model = $this->model;
 
         $recipe = $input->getRecipe(static::class);

@@ -3,8 +3,10 @@
 namespace Chatagency\CrudAssistant\Tests\Actions;
 
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
+use Chatagency\CrudAssistant\CrudAssistant;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Input;
+use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Modifiers\BooleanModifier;
 use Chatagency\CrudAssistant\Recipes\LabelValueRecipe;
@@ -14,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 class LabelValueActionTest extends TestCase
 {
     /** @test */
-    public function make_can_be_used_to_get_an_instance_of_filter_action()
+    public function make_can_be_used_to_get_an_instance_of_label_action()
     {
         $recipe = LabelValueAction::make();
 
@@ -61,6 +63,79 @@ class LabelValueActionTest extends TestCase
         $this->assertCount(2, $output);
         $this->assertEquals($model->$emailName, $output->$emailLabel);
 
+    }
+
+    /** @test */
+    public function an_internal_collection_can_be_used_on_the_label_action_for_organization_purposes()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+
+        $nickname = new TextInput('nickname', 'Nickname');
+        $hobby = new TextInput('hobby', 'Hobby');
+
+        $extraInfo = new InputCollection('extra_info');
+        $extraInfo->setInputs([
+            $nickname,
+            $hobby
+        ]);
+        
+        $inputs = [$name, $email, $extraInfo];
+
+        $model = new DataContainer([
+            'name' => 'John Doe',
+            'email' => 'john@email.com',
+            'nickname' => 'Joe',
+            'hobby' => 'To Read',
+        ]);
+        
+        $crud = CrudAssistant::make($inputs);
+        $output = $crud->execute(
+            LabelValueAction::make()
+                ->setModel($model)
+        );
+
+        $this->assertCount(4, $output);
+
+    }
+
+    /** @test */
+    public function if_the_control_recursion_option_is_set_to_true_on_the_label_action_the_internal_loop_is_not_done()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+
+        $nickname = new TextInput('nickname', 'Nickname');
+        $hobby = new TextInput('hobby', 'Hobby');
+
+        $extraInfo = new InputCollection('extra_info');
+        $extraInfo->setInputs([
+            $nickname,
+            $hobby
+        ]);
+        
+        $inputs = [$name, $email, $extraInfo];
+
+        $model = new DataContainer([
+            'name' => 'John Doe',
+            'email' => 'john@email.com',
+            'nickname' => 'Joe',
+            'hobby' => 'To Read',
+        ]);
+        
+        $crud = CrudAssistant::make($inputs);
+        $action = LabelValueAction::make()
+            /**
+             * The action is responsible
+             * for the concurrency
+             */
+            ->setControlsRecursion(true)
+            ->setModel($model);
+        
+        $output = $crud->execute($action);
+
+        $this->assertCount(3, $output);
+        
     }
 
     /** @test */
