@@ -3,6 +3,7 @@
 namespace Chatagency\CrudAssistant\Tests;
 
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
+use Chatagency\CrudAssistant\Actions\PrepareCleanupAction;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
@@ -221,7 +222,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_can_contain_one_or_more_input_collection()
+    public function an_input_collection_can_contain_other_input_collection()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -239,5 +240,35 @@ class InputCollectionTest extends TestCase
         $this->assertInstanceOf(InputCollection::class, $form->getInput('secondary_info'));
     }
 
+    /** @test */
+    public function the_prepare_and_cleanup_execution_can_be_disabled()
+    {
+        $collection = new InputCollection('collection_1');
+        $collection
+            ->setInputs([
+                new TextInput('name', 'Name')
+            ]);
+
+        $output = $collection->execute(
+            new PrepareCleanupAction()
+        );
+
+        $this->assertCount(3, $output);
+
+        $collection2 = new InputCollection('collection_1');
+        $collection2
+            ->setInputs([
+                new TextInput('name', 'Name')
+            ])
+            ->disablePrepare()
+            ->disableCleanup();
+        
+        $output2 = $collection2->execute(
+            new PrepareCleanupAction()
+        );
+
+        $this->assertCount(1, $output2);
+        
+    }
 
 }
