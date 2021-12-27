@@ -2,13 +2,12 @@
 
 namespace Chatagency\CrudAssistant\Tests;
 
-use Chatagency\CrudAssistant\Actions\FilterAction;
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
+use Chatagency\CrudAssistant\Actions\PrepareCleanupAction;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
-use Chatagency\CrudAssistant\Recipes\FilterRecipe;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -223,7 +222,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_can_contain_one_or_more_input_collection()
+    public function an_input_collection_can_contain_other_input_collection()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -242,127 +241,34 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function an_input_collection_with_internal_collections_calls_is_called_recursively_if_the_is_tree_option_is_true()
+    public function the_prepare_and_cleanup_execution_can_be_disabled()
     {
-        $name = new TextInput('name', 'Name');
-        $email = new TextInput('email', 'Email');
-        $address = new TextInput('address', 'Your Address');
+        $collection = new InputCollection('collection_1');
+        $collection
+            ->setInputs([
+                new TextInput('name', 'Name')
+            ]);
 
-        $internal = new InputCollection('secondary_info');
-        $internal->setInputs([
-            new TextInput('age', 'Your age'),
-        ]);
-
-        $form = new InputCollection();
-        $form->setInputs([$name, $email, $address, $internal,]);
-        
-        $model =  new DataContainer([
-            'name' => "Victor Sánchez",
-            'email' => 'email@email.com',
-            'address' => 'Lorem ipsum dolor sit.',
-            'age' => 35,
-        ]);
-
-        $output = $form->execute(
-            LabelValueAction::make()->setModel($model)
+        $output = $collection->execute(
+            new PrepareCleanupAction()
         );
 
-        $this->assertCount(4, $output);
-        $this->assertInstanceOf(DataContainer::class, $output->secondary_info);
-        $this->assertCount(1, $output->secondary_info);
-        $this->assertEquals($model->age, $output->secondary_info->{$internal->getInput('age')->getLabel()});
-    }
+        $this->assertCount(3, $output);
 
-    /** @test */
-    public function an_input_collection_with_internal_collections_without_the_tree_option_goes_with_the_normal_flow()
-    {
-        $name = new TextInput('name', 'Name');
-        $email = new TextInput('email', 'Email');
-        $address = new TextInput('address', 'Your Address');
-
-        $internal = new InputCollection('secondary_info');
-
-        $ageInput = new TextInput('age', 'Your age');
-        $ageInput->setRecipe(
-            (new FilterRecipe([
-                'filter' => true
-            ]))
+        $collection2 = new InputCollection('collection_1');
+        $collection2
+            ->setInputs([
+                new TextInput('name', 'Name')
+            ])
+            ->disablePrepare()
+            ->disableCleanup();
+        
+        $output2 = $collection2->execute(
+            new PrepareCleanupAction()
         );
 
-        $internal->setInputs([
-            $ageInput,
-        ]);
-
-        $form = new InputCollection();
-        $form->setInputs([$name, $email, $address, $internal,]);
+        $this->assertCount(1, $output2);
         
-        $data = [
-            'name' => "Victor Sánchez",
-            'email' => 'email@email.com',
-            'address' => 'Lorem ipsum dolor sit.',
-            'age' => 35,
-        ];
-
-        $action = FilterAction::make()
-            ->setData($data)
-            /**
-             * Delegates execution to the 
-             * input collection
-             */
-            ->setControlsExecution(false);
-
-        $output = $form->execute($action);
-
-        $this->assertCount(3, $output->data);
-        $this->assertArrayHasKey('name', $output->data);
-        $this->assertArrayNotHasKey('age', $output->data);
-    }
-
-    /** @test */
-    public function an_action_can_take_control_of_the_whole_execution_using_execute_all()
-    {
-        /**
-         * If the action must take control of the whole
-         * execution the method executeAll must be 
-         * used or the option controlsExecution
-         * must be set to true
-         */
-
-        $name = new TextInput('name', 'Name');
-        $email = new TextInput('email', 'Email');
-        $address = new TextInput('address', 'Your Address');
-        $address->setRecipe(new FilterRecipe([
-            'filter' => true
-        ]));
-
-        $internal = new InputCollection('secondary_info');
-        $internal->setInputs([
-            new TextInput('age', 'Your age'),
-        ]);
-
-        $form = new InputCollection();
-        $form2 = new InputCollection();
-        $form->setInputs([$name, $email, $address, $internal,]);
-        $form2->setInputs([$name, $email, $address, $internal,]);
-        
-        $data = [
-            'name' => "Victor Sánchez",
-            'email' => 'email@email.com',
-            'address' => 'Lorem ipsum dolor sit.',
-            'age' => 35,
-        ];
-
-        $action = FilterAction::make()->setData($data);
-
-        $output = $form->executeAll($action);
-        
-        $output2 = $form2->execute($action);
-
-        $this->assertEquals($output, $output2);
-
-        $this->assertCount(3, $output->data);
-        $this->assertContains($data['name'], $output->data);
-        $this->assertNotContains($data['address'], $output->data);
     }
 
 }

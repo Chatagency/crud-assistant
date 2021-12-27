@@ -92,6 +92,20 @@ abstract class Action
     }
 
     /**
+     * Set controls recursion.
+     *
+     * @param bool  $controlsRecursion
+     *
+     * @return static
+     */ 
+    public function setControlsRecursion(bool $controlsRecursion)
+    {
+        $this->controlsRecursion = $controlsRecursion;
+
+        return $this;
+    }
+
+    /**
      * Returns generic set genericData.
      *
      * @return DataContainerInterface
@@ -207,4 +221,5 @@ abstract class Action
     {
         return $this->output;
     }
+
 }

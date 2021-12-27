@@ -264,14 +264,15 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         foreach ($this->getInputs() as $input) {
             
             if (CrudAssistant::isInputCollection($input) && $action->controlsRecursion()) {
-                
                 $action->execute($input);
                 continue;
             }
 
             if (CrudAssistant::isInputCollection($input)) {
-                $input->disablePrepare()
-                    ->disableCleanup();
+                foreach ($input as $internalInput) {
+                    $internalInput->execute($action);
+                }
+                continue;
             }
             
             $input->execute($action);
