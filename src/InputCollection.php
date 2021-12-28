@@ -263,6 +263,12 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         
         foreach ($this->getInputs() as $input) {
             
+            $recipe = $input->getRecipe($action->getIdentifier());
+
+            if ($recipe && $recipe->isIgnored()) {
+                continue;
+            }
+            
             if (CrudAssistant::isInputCollection($input) && $action->controlsRecursion()) {
                 $action->execute($input);
                 continue;
