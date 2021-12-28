@@ -22,6 +22,22 @@ class LabelValueAction extends Action implements ActionInterface
      * Model.
      */
     protected $model;
+
+    /**
+     * Ignores input.
+     * Only for testing purposes
+     *
+     * @var bool
+     */
+    protected $ignore = true;
+
+    /**
+     * Internal recursion option.
+     * Only for testing purposes
+     *
+     * @var bool
+     */
+    protected $recursion = true;
     
     /**
      * Sets Model
@@ -37,6 +53,34 @@ class LabelValueAction extends Action implements ActionInterface
         return $this;
     }
 
+    /**
+     * Set only for testing purposes
+     *
+     * @param  bool  $ignore  Only for testing purposes
+     *
+     * @return  self
+     */ 
+    public function setIgnore(bool $ignore)
+    {
+        $this->ignore = $ignore;
+
+        return $this;
+    }
+
+    /**
+     * Set only for testing purposes
+     *
+     * @param  bool  $recursion  Only for testing purposes
+     *
+     * @return  self
+     */ 
+    public function setRecursion(bool $recursion)
+    {
+        $this->recursion = $recursion;
+
+        return $this;
+    }
+    
     /**
      * Pre Execution.
      *
@@ -58,11 +102,18 @@ class LabelValueAction extends Action implements ActionInterface
      */
     public function execute(InputInterface $input)
     {
+        if ($this->recursion && CrudAssistant::isInputCollection($input) && $this->controlsRecursion) {
+            foreach ($input as $internalInput) {
+                $this->execute($internalInput);
+            }
+            return true;
+        }
+        
         $model = $this->model;
 
         $recipe = $input->getRecipe(static::class);
-
-        if ($recipe && $recipe->isIgnored()) {
+        
+        if ($this->ignore && $recipe && $recipe->isIgnored()) {
             return $this->output;
         }
 

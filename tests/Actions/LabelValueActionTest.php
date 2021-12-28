@@ -126,6 +126,10 @@ class LabelValueActionTest extends TestCase
         $crud = CrudAssistant::make($inputs);
         $action = LabelValueAction::make()
             /**
+             * Internal option for testing only
+             */
+            ->setRecursion(false)
+            /**
              * The action is responsible
              * for the concurrency
              */

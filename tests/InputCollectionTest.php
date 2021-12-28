@@ -8,6 +8,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
+use Chatagency\CrudAssistant\Recipes\LabelValueRecipe;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -89,6 +90,31 @@ class InputCollectionTest extends TestCase
         );
 
         $this->assertCount(2, $labelValue);
+    }
+
+    /** @test */
+    public function if_ignore_is_set_on_the_recipe_of_an_input_that_input_will_not_be_sent_to_the_action()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $email->setRecipe(
+            LabelValueRecipe::make()
+                ->ignore()
+        );
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email]);
+
+        $model = new DataContainer([
+            'name' => 'John',
+            'email' => 'john#@email.com',
+        ]);
+
+        $labelValue = $form->execute(
+            LabelValueAction::make()->setModel($model)
+        );
+
+        $this->assertCount(1, $labelValue);
     }
 
     /** @test */
@@ -216,7 +242,7 @@ class InputCollectionTest extends TestCase
         $form = new InputCollection();
         $form->setInputs([$name, $email, $address]);
         
-        foreach($form as $inputName => $input) {
+        foreach($form as $input) {
             $this->assertInstanceOf(InputInterface::class, $input);
         }
     }
@@ -238,6 +264,45 @@ class InputCollectionTest extends TestCase
 
         $this->assertCount(4, $form);
         $this->assertInstanceOf(InputCollection::class, $form->getInput('secondary_info'));
+    }
+
+    /** @test */
+    public function if_ignore_is_set_on_the_recipe_of_an_input_and_control_recursion_is__set_to_true_the_action_must_handle_ignored_inputs_on_internal_collections()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'address');
+        $age = new TextInput('age', 'Your age');
+
+        $age->setRecipe(
+            LabelValueRecipe::make()
+                ->ignore()
+        );
+
+        $collection = new InputCollection('secondary_info');
+        $collection->setInputs([
+            $address,
+            $age,
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $collection]);
+
+        $model = new DataContainer([
+            'name' => 'John',
+            'email' => 'john#@email.com',
+            'address' => '123 6 street',
+            'age' => 26,
+        ]);
+
+        $output = $form->execute(
+            LabelValueAction::make()
+                ->setModel($model)
+                ->setIgnore(false)
+                ->setControlsRecursion(true)
+        );
+
+        $this->assertCount(4, $output);
     }
 
     /** @test */
