@@ -131,23 +131,16 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     }
 
     /**
-     * Get an iterator for the items.
+     * Pushes a value to the data array.
      *
-     * @return \ArrayIterator
+     * @param mixed $value
+     * @return self
      */
-    public function getIterator()
+    public function push($value)
     {
-        return new ArrayIterator($this->data);
-    }
+        array_push($this->data, $value);
 
-    /**
-     * Implement countable interface.
-     *
-     * @return int
-     */
-    public function count()
-    {
-        return \count($this->data);
+        return $this;
     }
 
     /**
@@ -204,6 +197,26 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     public function all()
     {
         return $this->toArray();
+    }
+
+    /**
+     * Get an iterator for the items.
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->data);
+    }
+
+    /**
+     * Implement countable interface.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return \count($this->data);
     }
 
     /**

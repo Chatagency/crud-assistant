@@ -54,11 +54,11 @@ class SanitationActionTest extends TestCase
         ];
         $sanitation->setRequestArray($requestArrayOriginal);
         
-        $output = new DataContainer();
-        $sanitation->prepare($output);
+        $sanitation->prepare();
         foreach($inputs as $input) {
-            $output = $sanitation->execute($input,  $output);
+            $sanitation->execute($input);
         }
+        $output = $sanitation->getOutput();
         
         $requestArray = $output->requestArray;
 
@@ -85,11 +85,11 @@ class SanitationActionTest extends TestCase
         $sanitation = new SanitationAction();
         $sanitation->setRequestArray($requestArrayOriginal);
         
-        $output = new DataContainer();
-        $sanitation->prepare($output);
+        $sanitation->prepare();
         foreach($inputs as $input) {
-            $output = $sanitation->execute($input, $output);
+            $sanitation->execute($input);
         }
+        $output = $sanitation->getOutput();
 
         $requestArray = $output->requestArray;
 
@@ -117,11 +117,11 @@ class SanitationActionTest extends TestCase
         $sanitation = new SanitationAction();
         $sanitation->setRequestArray($requestArrayOriginal);
 
-        $output = new DataContainer();
-        $sanitation->prepare($output);
+        $sanitation->prepare();
         foreach($inputs as $input) {
-            $output = $sanitation->execute($input, $output);
+            $sanitation->execute($input);
         }
+        $output = $sanitation->getOutput();
 
         $requestArray = $output->requestArray;
 
@@ -149,11 +149,11 @@ class SanitationActionTest extends TestCase
         $sanitation = new SanitationAction();
         $sanitation->setRequestArray($requestArrayOriginal);
         
-        $output = new DataContainer();
-        $sanitation->prepare($output);
+        $sanitation->prepare();
         foreach($inputs as $input) {
-            $output = $sanitation->execute($input, $output);
+            $sanitation->execute($input);
         }
+        $output = $sanitation->getOutput();
 
         $requestArray = $output->requestArray;
 

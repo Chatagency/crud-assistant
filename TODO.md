@@ -24,9 +24,9 @@
 - ✅ Rename `isTree` to `handlesRecursion`
 - ✅ Add get accessor method to action
 - ✅ Change modifiers' method definition
-- ⬜️ Implement ignore on the `InputCollection`'s execute method
+- ✅ Add `push` method to `DataContainer`
+- ✅ Implement ignore on the `InputCollection`'s execute method
 - ⬜️ Implement history in modifiers
 - ⬜️ Change `DataContainer`'s `add` method to `merge`
-- ⬜️ Add `push` method to `DataContainer`
 - ⬜️ Test in lower php versions
 - ⬜️ Package cleanup

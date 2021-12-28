@@ -25,6 +25,14 @@ class FilterAction extends Action implements ActionInterface
     protected $controlsExecution = true;
 
     /**
+     * Action control the
+     * whole execution.
+     *
+     * @var bool
+     */
+    protected $controlsRecursion = true;
+
+    /**
      * Data to be filtered.
      * @var array
      */
@@ -66,33 +74,11 @@ class FilterAction extends Action implements ActionInterface
      */
     public function execute(InputInterface $input)
     {
-        $output = $this->output;
-        
-        if (CrudAssistant::isInputCollection($input)) {
-            foreach ($input as $val) {
-                if (CrudAssistant::isInputCollection($val)) {
-                    $output = $this->execute($val, $output);
-                } else {
-                    $output = $this->executeOne($val);
-                }
-            }
-
-            return $output;
+        foreach ($input as $val) {
+            $this->executeOne($val);
         }
-
-        return $this->executeOne($input);
-    }
-
-    /**
-     * Sets $controlsExecution.
-     *
-     * @return self
-     */
-    public function setControlsExecution(bool $controlsExecution)
-    {
-        $this->controlsExecution = $controlsExecution;
-
-        return $this;
+        
+        return $this->output;
     }
 
     /**
@@ -100,8 +86,15 @@ class FilterAction extends Action implements ActionInterface
      *
      * @return DataContainerInterface
      */
-    protected function executeOne(InputInterface $input)
+    public function executeOne(InputInterface $input)
     {
+        if (CrudAssistant::isInputCollection($input) && $this->controlsRecursion) {
+            foreach ($input as $val) {
+                $this->executeOne($val);
+            }
+            return true;
+        }
+        
         $output = $this->output;
         $data = $output->data;
 
@@ -114,7 +107,7 @@ class FilterAction extends Action implements ActionInterface
         if ($ignoreIfEmpty && $this->isEmpty($value)) {
             unset($data[$name]);
         }
-
+        
         if (\is_callable($callback)) {
             $data = $callback($input, $data);
         } elseif (isset($recipe->filter) && $recipe->filter) {

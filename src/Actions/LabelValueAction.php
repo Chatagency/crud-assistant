@@ -22,17 +22,25 @@ class LabelValueAction extends Action implements ActionInterface
      * Model.
      */
     protected $model;
-    
+
     /**
-     * Result is a tree instead
-     * of flat.
+     * Ignores input.
+     * Only for testing purposes
      *
      * @var bool
      */
-    protected $controlsRecursion = true;
+    protected $ignore = true;
 
     /**
-     * Undocumented function
+     * Internal recursion option.
+     * Only for testing purposes
+     *
+     * @var bool
+     */
+    protected $recursion = true;
+    
+    /**
+     * Sets Model
      *
      * @param Traversable $model
      * 
@@ -46,40 +54,67 @@ class LabelValueAction extends Action implements ActionInterface
     }
 
     /**
+     * Set only for testing purposes
+     *
+     * @param  bool  $ignore  Only for testing purposes
+     *
+     * @return  self
+     */ 
+    public function setIgnore(bool $ignore)
+    {
+        $this->ignore = $ignore;
+
+        return $this;
+    }
+
+    /**
+     * Set only for testing purposes
+     *
+     * @param  bool  $recursion  Only for testing purposes
+     *
+     * @return  self
+     */ 
+    public function setRecursion(bool $recursion)
+    {
+        $this->recursion = $recursion;
+
+        return $this;
+    }
+    
+    /**
+     * Pre Execution.
+     *
+     * @return self
+     */
+    public function prepare()
+    {
+        if(!$this->model) {
+            throw new InvalidArgumentException("The model is required", 500);
+        }
+
+        return parent::prepare();
+    }
+
+    /**
      * Execute action on input.
      *
      * @return DataContainerInterface
      */
     public function execute(InputInterface $input)
     {
-        $output = $this->output;
+        if ($this->recursion && CrudAssistant::isInputCollection($input) && $this->controlsRecursion) {
+            foreach ($input as $internalInput) {
+                $this->execute($internalInput);
+            }
+            return true;
+        }
+        
         $model = $this->model;
 
-        if(!$model) {
-            throw new InvalidArgumentException("The model is required", 500);
-        }
-
         $recipe = $input->getRecipe(static::class);
-
-        if ($recipe && $recipe->isIgnored()) {
-            return $output;
-        }
-
-        /**
-         * Internal collection
-         */
-        if(CrudAssistant::isInputCollection($input)) {
-    
-            $inputName = $input->getName();
-            
-            $subAction = static::make()->setModel($model);
-            foreach($input as $subInput) {
-                $subOutput = $subAction->execute($subInput);
-            }
-
-            $output->$inputName = $subOutput;
-
-            return;
+        
+        if ($this->ignore && $recipe && $recipe->isIgnored()) {
+            return $this->output;
         }
 
         $name = $input->getName() ?? null;
@@ -98,8 +133,8 @@ class LabelValueAction extends Action implements ActionInterface
 
         $value = $this->modifiers($value, $input, $model);
 
-        $output->$label = $value;
+        $this->output->$label = $value;
 
-        return $output;
+        return $this->output;
     }
 }
