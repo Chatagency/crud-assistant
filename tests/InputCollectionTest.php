@@ -267,7 +267,7 @@ class InputCollectionTest extends TestCase
     }
 
     /** @test */
-    public function if_ignore_is_set_on_the_recipe_of_an_input_and_control_recursion_is__set_to_true_the_action_must_handle_ignored_inputs_on_internal_collections()
+    public function if_ignore_is_set_on_the_recipe_of_an_input_and_control_recursion_is_set_to_true_the_action_must_handle_ignored_inputs_on_internal_collections()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -305,6 +305,47 @@ class InputCollectionTest extends TestCase
         $this->assertCount(4, $output);
     }
 
+    /** @test */
+    public function if_process_internal_collection_is_true_the_internal_collection_is_processed_like_a_normal_input()
+    {
+        $name = new TextInput('name', 'Name');
+        $email = new TextInput('email', 'Email');
+        $address = new TextInput('address', 'address');
+        $age = new TextInput('age', 'Your age');
+
+        $collection = new InputCollection('collection_value');
+        $collection->setInputs([
+            $address,
+            $age,
+        ]);
+
+        $form = new InputCollection();
+        $form->setInputs([$name, $email, $collection]);
+
+        $model = new DataContainer([
+            'name' => 'John',
+            'email' => 'john#@email.com',
+            'address' => '123 6 street',
+            'age' => 26,
+            'collection_value' => 'This is your collection value',
+        ]);
+
+        $output = $form->execute(
+            LabelValueAction::make()
+                ->setModel($model)
+        );
+
+        $this->assertCount(4, $output);
+
+        $output2 = $form->execute(
+            LabelValueAction::make()
+                ->setModel($model)
+                ->setProcessInternalCollection(true)
+        );
+
+        $this->assertCount(5, $output2);
+    }
+    
     /** @test */
     public function the_prepare_and_cleanup_execution_can_be_disabled()
     {
