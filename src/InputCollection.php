@@ -278,6 +278,14 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
                 foreach ($input as $internalInput) {
                     $internalInput->execute($action);
                 }
+
+                if($action->processInternalCollection()) {
+                    $input->disablePrepare();
+                    $input->disableCleanup();
+                    
+                    $action->execute($input);
+                }
+                
                 continue;
             }
             
