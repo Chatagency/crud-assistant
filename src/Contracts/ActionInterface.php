@@ -33,6 +33,15 @@ interface ActionInterface
      * @return ActionInterface
      */
     public function setGenericData(DataContainerInterface $genericData);
+    
+    /**
+     * Set processed
+     *
+     * @param bool $processInternalCollection processed
+     *
+     * @return self
+     */ 
+    public function setProcessInternalCollection(bool $processInternalCollection);
 
     /**
      * Returns generic set genericData.
@@ -79,6 +88,15 @@ interface ActionInterface
      * @return bool
      */
     public function controlsExecution();
+    
+    /**
+     * Process an internal input collection
+     * the same way a regular input is
+     * processed
+     *
+     * @return  boolean
+     */ 
+    public function processInternalCollection();
 
     /**
      * Returns output

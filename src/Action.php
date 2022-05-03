@@ -42,6 +42,13 @@ abstract class Action
     protected $controlsExecution = false;
 
     /**
+     * Process internal collection
+     *
+     * @var boolean
+     */
+    protected $processInternalCollection = false;
+
+    /**
      * Construct
      *
      * @param DataContainerInterface $output
@@ -106,6 +113,20 @@ abstract class Action
     }
 
     /**
+     * Set processed
+     *
+     * @param bool $processInternalCollection processed
+     *
+     * @return static
+     */ 
+    public function setProcessInternalCollection(bool $processInternalCollection)
+    {
+        $this->processInternalCollection = $processInternalCollection;
+
+        return $this;
+    }
+
+    /**
      * Returns generic set genericData.
      *
      * @return DataContainerInterface
@@ -158,6 +179,18 @@ abstract class Action
     public function controlsExecution()
     {
         return $this->controlsExecution;
+    }
+
+    /**
+     * Process an internal input collection
+     * the same way a regular input is
+     * processed
+     *
+     * @return  boolean
+     */ 
+    public function processInternalCollection()
+    {
+        return $this->processInternalCollection;
     }
 
     /**
@@ -221,5 +254,4 @@ abstract class Action
     {
         return $this->output;
     }
-
 }
