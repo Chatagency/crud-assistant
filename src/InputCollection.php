@@ -322,6 +322,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      *
      * @return \ArrayIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->getInputs());
