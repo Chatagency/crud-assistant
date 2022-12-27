@@ -204,6 +204,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return \ArrayIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->data);
@@ -214,6 +215,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return \count($this->data);
@@ -227,6 +229,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if ($offset === null) {
@@ -243,6 +246,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->data[$offset]);
@@ -255,6 +259,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->data[$offset]);
