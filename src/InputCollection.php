@@ -141,6 +141,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return \count($this->getInputs());

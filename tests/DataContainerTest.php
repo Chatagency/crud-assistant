@@ -64,7 +64,7 @@ class DataContainerTest extends TestCase
     public function if_a_non_existing_value_is_accessed_a_php_notice_is_triggered()
     {
         $container = new DataContainer();
-        $this->expectException(Notice::class);
+        $this->expectNotice(Notice::class);
         $container->nope;
     }
 
@@ -179,7 +179,7 @@ class DataContainerTest extends TestCase
     {
         $container = new DataContainer();
         
-        $this->expectException(Notice::class);
+        $this->expectNotice(Notice::class);
 
         $container['nope'];
     }
