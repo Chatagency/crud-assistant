@@ -272,6 +272,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (!\array_key_exists($offset, $this->data)) {

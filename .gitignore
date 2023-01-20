@@ -3,3 +3,4 @@ docs
 vendor
 coverage
 phpDocumentor.phar
+.phpunit.result.cache
