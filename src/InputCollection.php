@@ -276,17 +276,12 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
             }
 
             if (CrudAssistant::isInputCollection($input)) {
-                foreach ($input as $internalInput) {
-                    
-                    $internalInputRecipe = $internalInput->getRecipe($action->getIdentifier());
+                
+                $input->disablePrepare()
+                    ->disableCleanup();
 
-                    if ($internalInputRecipe && $internalInputRecipe->isIgnored()) {
-                        continue;
-                    }
-
-                    $internalInput->execute($action);
-                }
-
+                $input->execute($action);
+                
                 if($action->processInternalCollection()) {
                     $action->execute($input);
                 }
