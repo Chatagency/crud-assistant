@@ -10,13 +10,11 @@ namespace Chatagency\CrudAssistant\Contracts;
 interface ActionInterface
 {
     /**
-     * Construct
+     * Initialize output
      *
-     * @param DataContainerInterface $output
-     * 
-     * @return self
+     * @return static
      */
-    public function __construct(DataContainerInterface $output = null);
+    public function initOutput();
     
     /**
      * Returns recipe identifier

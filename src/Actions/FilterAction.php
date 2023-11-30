@@ -61,8 +61,10 @@ class FilterAction extends Action implements ActionInterface
         if(!is_array($this->data) || empty($this->data)) {
             throw new InvalidArgumentException("The data is required", 500);
         }
+
+        $output = $this->getOutput();
         
-        $this->output->data = $this->data;
+        $output->data = $this->data;
 
         return $this;
     }
@@ -95,7 +97,7 @@ class FilterAction extends Action implements ActionInterface
             return true;
         }
         
-        $output = $this->output;
+        $output = $this->getOutput();
         $data = $output->data;
 
         $name = $input->getName();
