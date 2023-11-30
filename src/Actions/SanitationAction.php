@@ -47,7 +47,9 @@ class SanitationAction extends Action implements ActionInterface
             throw new InvalidArgumentException("The requestArray is required", 500);
         }
 
-        $this->output->requestArray = $this->requestArray;
+        $output = $this->getOutput();
+
+        $output->requestArray = $this->requestArray;
 
         return $this;
     }
@@ -59,7 +61,8 @@ class SanitationAction extends Action implements ActionInterface
      */
     public function execute(InputInterface $input)
     {
-        $output = $this->output;
+        $output = $this->getOutput();
+        
         $recipe = $input->getRecipe(static::class);
         $requestArray = $output->requestArray;
         $inputName = $input->getName();
