@@ -112,9 +112,11 @@ class LabelValueAction extends Action implements ActionInterface
         $model = $this->model;
 
         $recipe = $input->getRecipe(static::class);
+
+        $output = $this->getOutput();
         
         if ($this->ignore && $recipe && $recipe->isIgnored()) {
-            return $this->output;
+            return $output;
         }
 
         $name = $input->getName() ?? null;
@@ -133,8 +135,8 @@ class LabelValueAction extends Action implements ActionInterface
 
         $value = $this->modifiers($value, $input, $model);
 
-        $this->output->$label = $value;
+        $output->$label = $value;
 
-        return $this->output;
+        return $output;
     }
 }

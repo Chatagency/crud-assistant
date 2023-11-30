@@ -49,20 +49,6 @@ abstract class Action
     protected $processInternalCollection = false;
 
     /**
-     * Construct
-     *
-     * @param DataContainerInterface $output
-     * 
-     * @return self
-     */
-    public function __construct(DataContainerInterface $output = null)
-    {
-        $this->output = $output ?? new DataContainer();
-
-        return $this;
-    }
-
-    /**
      * Creates new instance of the class.
      *
      * @param array $args
@@ -72,6 +58,20 @@ abstract class Action
     public static function make(...$args)
     {
         return new static(...$args);
+    }
+
+    /**
+     * Initialize output
+     *
+     * @return static
+     */
+    public function initOutput()
+    {
+        if(!$this->output) {
+            $this->output = new DataContainer();
+        }
+        
+        return $this;
     }
 
     /**
@@ -252,6 +252,8 @@ abstract class Action
      */
     public function getOutput()
     {
+        $this->initOutput();
+        
         return $this->output;
     }
 }
