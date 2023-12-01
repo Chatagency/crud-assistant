@@ -38,17 +38,10 @@ class FilterAction extends Action implements ActionInterface
      */
     protected $data = [];
     
-    /**
-     * Sets the data param.
-     *
-     * @param array $data
-     * @return self
-     */
-    public function setData(array $data)
+
+    public function __construct(array $data)
     {
         $this->data = $data;
-
-        return $this;
     }
 
     /**
@@ -58,10 +51,6 @@ class FilterAction extends Action implements ActionInterface
      */
     public function prepare()
     {
-        if(!is_array($this->data) || empty($this->data)) {
-            throw new InvalidArgumentException("The data is required", 500);
-        }
-
         $output = $this->getOutput();
         
         $output->data = $this->data;

@@ -42,7 +42,7 @@ class GenericRecipeTest extends TestCase
         ];
 
         $output = $collection->execute(
-            FilterAction::make()->setData($data)
+            FilterAction::make($data)
         );
 
         $data = $output->data;
@@ -60,7 +60,7 @@ class GenericRecipeTest extends TestCase
         $email->setRecipe($genericRecipe2);
 
         $output2 = $collection->execute(
-            FilterAction::make()->setData($data)
+            FilterAction::make($data)
         );
 
         $this->assertCount(0, $output2->data);
