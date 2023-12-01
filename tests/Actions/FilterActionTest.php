@@ -16,7 +16,7 @@ class FilterActionTest extends TestCase
     /** @test */
     public function make_can_be_used_to_get_an_instance_of_filter_action()
     {
-        $recipe = FilterAction::make();
+        $recipe = FilterAction::make([]);
 
         $this->assertInstanceOf(FilterAction::class, $recipe);
     }
@@ -24,7 +24,7 @@ class FilterActionTest extends TestCase
     /** @test */
     public function all_actions_have_a_generic_data_setter_and_getter()
     {
-        $recipe = FilterAction::make();
+        $recipe = FilterAction::make([]);
 
         $data = [
             'name' => 'John Doe'
@@ -37,7 +37,7 @@ class FilterActionTest extends TestCase
     /** @test */
     public function a_filter_action_is_used_to_exclude_input_data_from_dataset()
     {
-        $filter = new FilterAction();
+        $filter = new FilterAction([]);
 
         $name = new TextInput('name', 'Name');
         
@@ -52,13 +52,11 @@ class FilterActionTest extends TestCase
         
         $crud = CrudAssistant::make([$email, $name, $description]);
         
-        $filter = new FilterAction();
-        $filter->setData([
+        $filter = new FilterAction([
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
             'description' => 'Lorem ipsum dolor sit',
         ]);
-
         
         $filtered = $crud->execute($filter);
 
@@ -70,7 +68,7 @@ class FilterActionTest extends TestCase
     /** @test */
     public function an_internal_input_collection_can_be_used_on_the_filter_action_for_organization_purposes()
     {
-        $filter = new FilterAction();
+        $filter = new FilterAction([]);
 
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -95,15 +93,13 @@ class FilterActionTest extends TestCase
         
         $crud = CrudAssistant::make([$email, $name, $description, $extraInfo]);
         
-        $filter = new FilterAction();
-        $filter->setData([
+        $filter = new FilterAction([
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
             'description' => 'Lorem ipsum dolor sit',
             'nickname' => 'Vic',
             'hobby' => 'To code',
         ]);
-
         
         $filtered = $crud->execute($filter);
 
@@ -129,8 +125,7 @@ class FilterActionTest extends TestCase
         
         $inputs = [$name, $email, $description];
         
-        $filter = new FilterAction();
-        $filter->setData([
+        $filter = new FilterAction([
             'name' => "Victor Sánchez",
             'email' => 'email@email.com',
             'description' => 'Lorem ipsum dolor sit',
@@ -162,8 +157,7 @@ class FilterActionTest extends TestCase
         
         $inputs = [$name, $email, $description];
 
-        $filter = new FilterAction();
-        $filter->setData([
+        $filter = new FilterAction([
             'name' => "Victor Sánchez",
             'email' => '',
             'description' => 'Lorem ipsum dolor sit',
@@ -179,21 +173,11 @@ class FilterActionTest extends TestCase
     }
 
     /** @test */
-    public function if_data_is_missing_or_empty_an_exception_is_thrown ()
-    {
-        $this->expectException(\Exception::class);
-        
-        $filter = new FilterAction();
-        $filter->prepare();
-        
-    }
-
-    /** @test */
     public function if_an_invalid_value_is_passed_to_the_recipe_an_exception_is_thrown()
     {
         $this->expectException(\Exception::class);
         
-        $recipe = new FilterRecipe();
+        $recipe = new FilterRecipe([]);
         $recipe->NotValid = true;
         
     }

@@ -30,3 +30,4 @@
 - ⬜️ Change `DataContainer`'s `add` method to `merge`
 - ⬜️ Test in lower php versions
 - ⬜️ Package cleanup
+- ⬜️ Redo Readme

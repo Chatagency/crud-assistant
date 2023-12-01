@@ -60,7 +60,7 @@ trait RecipeTrait
     public function getIdentifier()
     {
         if($this->action) {
-            return  ($this->action)::make()->getIdentifier();
+            return  ($this->action)::getIdentifier();
         }
 
         return $this->identifier;
