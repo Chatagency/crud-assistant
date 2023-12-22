@@ -51,8 +51,6 @@ abstract class Action
     /**
      * Creates new instance of the class.
      *
-     * @param array $args
-     *
      * @return static
      */
     public static function make(...$args)
