@@ -15,5 +15,5 @@ class OptionInput extends Input implements InputInterface
     /**
      * Input type.
      */
-    protected $type = 'option';
+    protected string|null $type = 'option';
 }

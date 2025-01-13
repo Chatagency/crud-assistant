@@ -27,7 +27,6 @@ abstract class RecipeBase implements RecipeInterface
             $this->$key = $value;
         }
 
-        return $this;
     }
 
     /**

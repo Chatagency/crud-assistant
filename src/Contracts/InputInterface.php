@@ -11,124 +11,41 @@ use Chatagency\CrudAssistant\Recipe;
  */
 interface InputInterface
 {
-    /**
-     * Class construct.
-     *
-     * @return self
-     */
-    public function __construct(string $name = null, string $label = null);
+    public function setName(string $name): static;
+  
+    public function setLabel(string $label): static;
 
-    /**
-     * Sets input name.
-     *
-     * @return self
-     */
-    public function setName(string $name);
+    public function setAttribute(string $name, $value): static;
 
-    /**
-     * Sets input label.
-     *
-     * @return self
-     */
-    public function setLabel(string $label);
+    public function setSubElements(InputCollectionInterface $subElements): static;
 
-    /**
-     * Sets input attributes.
-     *
-     * @param mixed $value
-     */
-    public function setAttribute(string $name, $value);
+    public function setVersion(int $version): static;
 
-    /**
-     * Sets input sub elements.
-     *
-     * @return self
-     */
-    public function setSubElements(InputCollectionInterface $subElements);
+    public function setType(string $type): static;
 
-    /**
-     * Sets input version.
-     *
-     * @return self
-     */
-    public function setVersion(int $version);
+    public function getName(): string;
 
-    /**
-     * Sets input type.
-     *
-     * @return self
-     */
-    public function setType(string $type);
+    public function getLabel(): string;
 
-    /**
-     * Returns input name.
-     *
-     * @return string
-     */
-    public function getName();
+    public function getVersion(): int;
 
-    /**
-     * Returns input label.
-     *
-     * @return string
-     */
-    public function getLabel();
+    public function getType():string|null;
 
-    /**
-     * Returns input version.
-     *
-     * @return int
-     */
-    public function getVersion();
 
-    /**
-     * Returns input type.
-     *
-     * @return string
-     */
-    public function getType();
+    public function getAttribute(string $name): mixed;
 
-    /**
-     * Returns Input attributes.
-     *
-     * @return string|null
-     */
-    public function getAttribute(string $name);
+ 
+    public function getAttributes(): array;
 
-    /**
-     * Returns Input attributes.
-     *
-     * @return array
-     */
-    public function getAttributes();
+    public function unsetAttribute(string $key): static;
 
-    /**
-     * Returns input sub elements.
-     *
-     * @return InputCollectionInterface
-     */
-    public function getSubElements();
 
-    /**
-     * Sets Recipe.
-     *
-     * @return self
-     */
-    public function setRecipe(RecipeInterface $recipe);
+    public function getSubElements(): InputCollectionInterface;
 
-    /**
-     * Returns recipe by type.
-     *
-     * @return Recipe
-     */
-    public function getRecipe(string $type);
+    public function setRecipe(RecipeInterface $recipe): static;
 
-    /**
-     * Executes Action.
-     *
-     * @param DataContainer $output
-     *
-     * @return DataContainer
-     */
-    public function execute(ActionInterface $action);
+    public function getRecipe(string $recipe): RecipeInterface|null;
+
+
+    public function execute(ActionInterface $action): DataContainerInterface;
 }

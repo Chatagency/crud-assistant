@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use ArrayIterator;
-use Chatagency\CrudAssistant\Contracts\ActionInterface;
-use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
-use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Countable;
 use Exception;
-use InvalidArgumentException;
+use ArrayIterator;
 use IteratorAggregate;
+use InvalidArgumentException;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
+use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 
 /**
  * Input Collection Class.
@@ -31,13 +32,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      * @var array
      */
     protected $partialCollection = [];
-
-    /**
-     * Action Factory.
-     *
-     * @var ActionFactory
-     */
-    protected $actionFactory;
 
     /**
      * Run prepare
@@ -142,7 +136,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      * @return int
      */
     #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return \count($this->getInputs());
     }
@@ -250,9 +244,9 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
     /**
      * Executes Action.
      *
-     * @return DataContainer
+     * @return DataContainerInterface
      */
-    public function execute(ActionInterface $action)
+    public function execute(ActionInterface $action): DataContainerInterface
     {
         if ($action->controlsExecution()) {
             return $this->executeAll($action);
@@ -299,12 +293,8 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $action->getOutput();
     }
 
-    /**
-     * Pass whole collection to the action.
-     *
-     * @return DataContainer
-     */
-    public function executeAll(ActionInterface $action)
+
+    public function executeAll(ActionInterface $action): DataContainerInterface
     {
         $action->prepare();
         $action->execute($this);
@@ -319,7 +309,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      * @return \ArrayIterator
      */
     #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->getInputs());
     }

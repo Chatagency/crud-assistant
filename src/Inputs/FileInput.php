@@ -15,5 +15,5 @@ class FileInput extends Input implements InputInterface
     /**
      * Input type.
      */
-    protected $type = 'file';
+    protected string|null $type = 'file';
 }

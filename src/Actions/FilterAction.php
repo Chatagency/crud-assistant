@@ -9,7 +9,6 @@ use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\CrudAssistant;
-use InvalidArgumentException;
 
 /**
  * Filter action.
@@ -83,7 +82,6 @@ class FilterAction extends Action implements ActionInterface
             foreach ($input as $val) {
                 $this->executeOne($val);
             }
-            return true;
         }
         
         $output = $this->getOutput();

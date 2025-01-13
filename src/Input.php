@@ -15,184 +15,91 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
  */
 abstract class Input implements InputInterface
 {
-    /**
-     * Name.
-     *
-     * @var string
-     */
-    protected $name;
 
-    /**
-     * Label.
-     *
-     * @var string
-     */
-    protected $label;
+    protected string $name;
 
-    /**
-     * Version.
-     *
-     * @var bool
-     */
-    protected $version = 1;
+    protected string $label;
 
-    /**
-     * Input attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [];
+    protected int $version = 1;
 
-    /**
-     * Input Sub Elements.
-     *
-     * @var array
-     */
-    protected $subElements = [];
+    protected array $attributes = [];
 
-    /**
-     * Input Type.
-     */
-    protected $type = null;
+    protected InputCollectionInterface $subElements;
 
-    /**
-     * Input Recipes.
-     *
-     * @var array
-     */
-    protected $recipes = [];
+    protected string|null $type = null;
+  
+    protected array $recipes = [];
 
-    /**
-     * Construct
-     * 
-     * @return self
-     */
     public function __construct(string $name = null, string $label = null)
     {
         $this->name = $name;
         $this->label = $label ?? $name;
-
-        return $this;
     }
 
-    /**
-     * Sets input name.
-     *
-     * @return self
-     */
-    public function setName(string $name)
+    public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Sets input label.
-     *
-     * @return self
-     */
-    public function setLabel(string $label)
+  
+    public function setLabel(string $label): static
     {
         $this->label = $label;
 
         return $this;
     }
 
-    /**
-     * Sets input attributes.
-     *
-     * @param string $value
-     */
-    public function setAttribute(string $name, $value)
+    public function setAttribute(string $name, $value): static
     {
         $this->attributes[$name] = $value;
 
         return $this;
     }
 
-    /**
-     * Sets input sub elements.
-     *
-     * @return self
-     */
-    public function setSubElements(InputCollectionInterface $subElements)
+    public function setSubElements(InputCollectionInterface $subElements): static
     {
         $this->subElements = $subElements;
 
         return $this;
     }
 
-    /**
-     * Sets input version.
-     *
-     * @return self
-     */
-    public function setVersion(int $version)
+    public function setVersion(int $version): static
     {
         $this->version = $version;
 
         return $this;
     }
 
-    /**
-     * Sets input type.
-     *
-     * @return self
-     */
-    public function setType(string $type)
+    public function setType(string $type): static
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * Returns input name.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Returns input label.
-     *
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * Returns input version.
-     *
-     * @return int
-     */
-    public function getVersion()
+    public function getVersion(): int
     {
         return $this->version;
     }
 
-    /**
-     * Returns input type.
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType():string|null
     {
         return $this->type;
     }
 
-    /**
-     * Returns Input attributes.
-     *
-     * @return string|null
-     */
-    public function getAttribute(string $name)
+    public function getAttribute(string $name): mixed
     {
         if (isset($this->attributes[$name])) {
             return $this->attributes[$name];
@@ -201,22 +108,12 @@ abstract class Input implements InputInterface
         return null;
     }
 
-    /**
-     * Returns Input attributes.
-     *
-     * @return array
-     */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
 
-    /**
-     * Unset attribute.
-     *
-     * @return self
-     */
-    public function unsetAttribute(string $key)
+    public function unsetAttribute(string $key): static
     {
         if (isset($this->attributes[$key])) {
             unset($this->attributes[$key]);
@@ -225,34 +122,21 @@ abstract class Input implements InputInterface
         return $this;
     }
 
-    /**
-     * Returns input sub elements.
-     *
-     * @return InputCollectionInterface
-     */
-    public function getSubElements()
+
+    public function getSubElements(): InputCollectionInterface
     {
         return $this->subElements;
     }
 
-    /**
-     * Sets Recipe.
-     *
-     * @return self
-     */
-    public function setRecipe(RecipeInterface $recipe)
+
+    public function setRecipe(RecipeInterface $recipe): static
     {
         $this->recipes[$recipe->getIdentifier()] = $recipe;
 
         return $this;
     }
 
-    /**
-     * Returns recipe by type.
-     *
-     * @return Recipe|null
-     */
-    public function getRecipe(string $recipe)
+    public function getRecipe(string $recipe): RecipeInterface|null
     {
         if (isset($this->recipes[$recipe])) {
             return $this->recipes[$recipe];
@@ -261,14 +145,8 @@ abstract class Input implements InputInterface
         return null;
     }
 
-    /**
-     * Executes Action.
-     *
-     * @param DataContainer $output
-     *
-     * @return DataContainer
-     */
-    public function execute(ActionInterface $action)
+
+    public function execute(ActionInterface $action): DataContainerInterface
     {
         return $action->execute($this);
     }

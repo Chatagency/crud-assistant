@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 use Exception;
+use Chatagency\CrudAssistant\DataContainer;
+use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 
 /**
  * the recipe class stores input
@@ -27,17 +28,17 @@ abstract class RecipeContainer extends DataContainer implements RecipeInterface
     /**
      * {@inheritdoc}
      */
-    public function __set(string $name, $value)
+    public function __set(string $name, $value): void
     {
         $this->validateSetter($name);
 
-        return parent::__set($name, $value);
+        parent::__set($name, $value);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fill(array $data)
+    public function fill(array $data): static
     {
         $this->validateSetters($data);
 
@@ -47,20 +48,15 @@ abstract class RecipeContainer extends DataContainer implements RecipeInterface
     /**
      * {@inheritdoc}
      */
-    public function add(array $data)
+    public function add(array $data): static
     {
         $this->validateSetters($data);
 
         return parent::add($data);
     }
 
-    /**
-     * Validates if a key/value
-     * array has valid setters.
-     *
-     * @return self
-     */
-    public function validateSetters(array $data)
+
+    public function validateSetters(array $data): static
     {
         foreach ($data as $setter => $value) {
             $this->validateSetter($setter);
@@ -76,7 +72,7 @@ abstract class RecipeContainer extends DataContainer implements RecipeInterface
      *
      * @return void
      */
-    protected function validateSetter($setter)
+    protected function validateSetter($setter): void
     {
         // Check if in setters array
         if (\count($this->setters) && !\in_array($setter, $this->setters)) {

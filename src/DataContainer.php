@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use Countable;
 use ArrayAccess;
 use ArrayIterator;
-use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
-use Countable;
 use IteratorAggregate;
+use InvalidArgumentException;
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
  * DataContainer.
@@ -30,8 +31,6 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
     public function __construct(array $data = [])
     {
         $this->fill($data);
-
-        return $this;
     }
 
     /**
@@ -41,24 +40,16 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return static
      */
-    public static function make(...$args)
+    public static function make(array $data = [])
     {
-        return (new static(...$args));
+        return (new static($data));
     }
 
-    /**
-     * Magic set method.
-     */
-    public function __get(string $name)
+
+    public function __get(string $name): mixed
     {
         if (!\array_key_exists($name, $this->data)) {
-            $trace = debug_backtrace();
-            trigger_error(
-                'Undefined property via __get(): '.$name.
-                ' in '.$trace[0]['file'].
-                ' on line '.$trace[0]['line'],
-                E_USER_NOTICE
-            );
+            throw new \InvalidArgumentException();
         }
 
         return $this->data[$name];
@@ -69,7 +60,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @param $value
      */
-    public function __set(string $name, $value)
+    public function __set(string $name, $value): void
     {
         $this->data[$name] = $value;
     }
@@ -79,7 +70,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return bool
      */
-    public function __isset(string $name)
+    public function __isset(string $name): bool
     {
         return isset($this->data[$name]);
     }
@@ -89,7 +80,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return null
      */
-    public function __unset(string $name)
+    public function __unset(string $name): void
     {
         unset($this->data[$name]);
     }
@@ -111,7 +102,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return self
      */
-    public function fill(array $data)
+    public function fill(array $data): static
     {
         $this->data = $data;
 
@@ -123,7 +114,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return self
      */
-    public function add(array $data)
+    public function add(array $data): static
     {
         $this->data = array_merge($this->data, $data);
 
@@ -136,7 +127,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      * @param mixed $value
      * @return self
      */
-    public function push($value)
+    public function push($value): static
     {
         array_push($this->data, $value);
 
@@ -149,7 +140,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return bool
      */
-    public function contains(array $keys)
+    public function contains(array $keys): bool
     {
         foreach ($keys as $key) {
             if (!isset($this->data[$key])) {
@@ -168,7 +159,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return bool|string
      */
-    public function missing(array $keys)
+    public function missing(array $keys): mixed
     {
         foreach ($keys as $key) {
             if (!isset($this->data[$key])) {
@@ -184,7 +175,7 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->data;
     }
@@ -194,43 +185,22 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
      *
      * @return array
      */
-    public function all()
+    public function all(): array
     {
         return $this->toArray();
     }
 
-    /**
-     * Get an iterator for the items.
-     *
-     * @return \ArrayIterator
-     */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->data);
     }
 
-    /**
-     * Implement countable interface.
-     *
-     * @return int
-     */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return \count($this->data);
     }
 
-    /**
-     * Offset set.
-     *
-     * @param mixed $offset
-     * @param mixed $value
-     *
-     * @return void
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($offset === null) {
             $this->data[] = $value;
@@ -239,50 +209,23 @@ class DataContainer implements DataContainerInterface, IteratorAggregate, Counta
         }
     }
 
-    /**
-     * Offset exists.
-     *
-     * @param mixed $offset
-     *
-     * @return void
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }
 
-    /**
-     * Offset unset.
-     *
-     * @param mixed $offset
-     *
-     * @return void
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
     }
 
     /**
-     * Offset set get.
-     *
-     * @param mixed $offset
-     *
-     * @return void
+     * @throws \InvalidArgumentException
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if (!\array_key_exists($offset, $this->data)) {
-            $trace = debug_backtrace();
-            trigger_error(
-                'Undefined property via __get(): '.$offset.
-                ' in '.$trace[0]['file'].
-                ' on line '.$trace[0]['line'],
-                E_USER_NOTICE
-            );
+            throw new InvalidArgumentException();
         }
 
         return $this->data[$offset];
