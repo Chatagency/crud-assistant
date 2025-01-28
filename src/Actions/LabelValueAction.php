@@ -86,7 +86,7 @@ class LabelValueAction extends Action implements ActionInterface
      *
      * @return self
      */
-    public function prepare()
+    public function prepare(): static
     {
         if(!$this->model) {
             throw new InvalidArgumentException("The model is required", 500);

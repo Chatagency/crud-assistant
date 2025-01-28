@@ -11,7 +11,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 /**
  * Crud Assistant Manager.
  */
-class CrudAssistant
+final class CrudAssistant
 {
     /**
      * Input collection.
@@ -54,13 +54,6 @@ class CrudAssistant
         throw new BadMethodCallException('Method '.$name.' not exists in '.static::class, 500);
     }
 
-    /**
-     * Creates new instance of the class.
-     *
-     * @param array $args
-     *
-     * @return InputCollectionInterface
-     */
     public static function make(array $inputs = [], string $name = null, string $label = null, InputCollectionInterface $collection = null)
     {
         return (new static($inputs, $name, $label, $collection))->getCollection();

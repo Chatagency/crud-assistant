@@ -11,6 +11,10 @@ namespace Chatagency\CrudAssistant\Contracts;
  */
 interface DataContainerInterface
 {
+    public function get(string $name);
+
+    public function set(string $name, mixed $value): static;
+    
     /**
      * Fills the container. It replaces
      * the current data array with

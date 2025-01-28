@@ -6,50 +6,19 @@ use Chatagency\CrudAssistant\Modifier;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Contracts\ModifierInterface;
 
 trait isAction
 {
-    /**
-     * Generic Data.
-     *
-     * @var DataContainerInterface
-     */
-    protected $genericData;
 
-    /**
-     * Output.
-     *
-     * @var DataContainerInterface
-     */
     protected $output;
 
-    /**
-     * Controls recursion
-     *
-     * @var bool
-     */
     protected $controlsRecursion = false;
 
-    /**
-     * Action control the
-     * whole execution.
-     *
-     * @var bool
-     */
     protected $controlsExecution = false;
 
-    /**
-     * Process internal collection
-     *
-     * @var boolean
-     */
     protected $processInternalCollection = false;
 
-    /**
-     * Initialize output
-     *
-     * @return static
-     */
     public function initOutput()
     {
         if(!$this->output) {
@@ -59,37 +28,11 @@ trait isAction
         return $this;
     }
 
-    /**
-     * Returns recipe accessor
-     *
-     * @return string
-     */
     public static function getIdentifier()
     {
         return Static::class;
     }
 
-    /**
-     * Sets generic set genericData.
-     *
-     * @param DataContainerInterface $genericData
-     * 
-     * @return static
-     */
-    public function setGenericData(DataContainerInterface $genericData)
-    {
-        $this->genericData = $genericData;
-
-        return $this;
-    }
-
-    /**
-     * Set controls recursion.
-     *
-     * @param bool  $controlsRecursion
-     *
-     * @return static
-     */ 
     public function setControlsRecursion(bool $controlsRecursion)
     {
         $this->controlsRecursion = $controlsRecursion;
@@ -97,13 +40,6 @@ trait isAction
         return $this;
     }
 
-    /**
-     * Set processed
-     *
-     * @param bool $processInternalCollection processed
-     *
-     * @return static
-     */ 
     public function setProcessInternalCollection(bool $processInternalCollection)
     {
         $this->processInternalCollection = $processInternalCollection;
@@ -111,93 +47,36 @@ trait isAction
         return $this;
     }
 
-    /**
-     * Returns generic set genericData.
-     *
-     * @return DataContainerInterface
-     */
-    public function getGenericData()
-    {
-        return $this->genericData;
-    }
-
-    /**
-     * Pre Execution.
-     *
-     * @return self
-     */
-    public function prepare()
+    public function prepare(): static
     {
         return $this;
     }
 
-    /**
-     * Post Execution.
-     *
-     * @return self
-     */
-    public function cleanup()
+    public function cleanup(): static
     {
         return $this;
     }
 
-    /**
-     * Notifies the collection the action
-     * controls the recursion for of
-     * inner collection.
-     *
-     * @return bool
-     */
     public function controlsRecursion()
     {
         return $this->controlsRecursion;
     }
 
-    /**
-     * Notifies the collection the action
-     * will take control of the whole
-     * execution. This triggers the
-     * method executeAll().
-     *
-     * @return bool
-     */
     public function controlsExecution()
     {
         return $this->controlsExecution;
     }
 
-    /**
-     * Process an internal input collection
-     * the same way a regular input is
-     * processed
-     *
-     * @return  boolean
-     */ 
     public function processInternalCollection()
     {
         return $this->processInternalCollection;
     }
 
-    /**
-     * Checks if the value is empty.
-     *
-     * @param $value
-     *
-     * @return bool
-     */
     public function isEmpty($value)
     {
         return $value === '' || $value === null;
     }
 
-    /**
-     * Applies all modifiers to the a value.
-     *
-     * @param $value
-     * @param mixed|null $model
-     *
-     * @return mixed
-     */
     protected function modifiers($value, InputInterface $input, $model = null)
     {
         $recipe = $input->getRecipe(static::class);
@@ -206,36 +85,21 @@ trait isAction
             return $value;
         }
 
-        $modifiers = $recipe->getModifiers() ?? null;
+        $modifiers = $recipe->getModifiers();
 
-        if (\is_array($modifiers)) {
-            foreach ($modifiers as $modifier) {
-                $value = $this->executeModifier($modifier, $value, $model);
-            }
+        foreach ($modifiers as $modifier) {
+            $value = $this->executeModifier($modifier, $value, $model);
         }
-
+        
         return $value;
     }
 
-    /**
-     * Executes single modifier.
-     *
-     * @param $value
-     * @param mixed $model
-     *
-     * @return mixed
-     */
-    protected function executeModifier(Modifier $modifier, $value, $model = null)
+    protected function executeModifier(ModifierInterface $modifier, $value, $model = null)
     {
         return $modifier->modify($value, $model);
     }
 
-    /**
-     * Returns output
-     *
-     * @return DataContainerInterface
-     */
-    public function getOutput()
+    public function getOutput(): DataContainer
     {
         $this->initOutput();
         
