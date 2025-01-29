@@ -6,6 +6,7 @@ namespace Chatagency\CrudAssistant;
 
 use Countable;
 use Exception;
+use Traversable;
 use ArrayIterator;
 use IteratorAggregate;
 use InvalidArgumentException;
@@ -17,41 +18,17 @@ use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 /**
  * Input Collection Class.
  */
-class InputCollection extends Input implements InputCollectionInterface, IteratorAggregate, Countable
+class InputCollection extends Input implements InputInterface, InputCollectionInterface, IteratorAggregate, Countable
 {
-    /**
-     * Inputs array.
-     *
-     * @var array
-     */
-    protected $inputsArray = [];
 
-    /**
-     * Partial Inputs.
-     *
-     * @var array
-     */
-    protected $partialCollection = [];
+    protected array $inputsArray = [];
 
-    /**
-     * Run prepare
-     *
-     * @var boolean
-     */
-    protected $prepare = true;
+    protected array $partialCollection = [];
 
-    /**
-     * Run cleanup
-     *
-     * @var boolean
-     */
-    protected $cleanup = true;
+    protected bool $prepare = true;
 
-    /**
-     * Sets inputs array.
-     *
-     * @return self
-     */
+    protected bool $cleanup = true;
+
     public function setInputs(array $inputsArray)
     {
         foreach ($inputsArray as $input) {
@@ -61,13 +38,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $this;
     }
 
-    /**
-     * Adds input to the array.
-     *
-     * @param string $key
-     *
-     * @return self
-     */
     public function addInput(InputInterface $input, string $key = null)
     {
         $key = $key ?? $input->getName();
@@ -77,11 +47,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $this;
     }
 
-    /**
-     * Removes input from the array if exists.
-     *
-     * @return self
-     */
     public function removeInput(string $key)
     {
         if (isset($this->inputsArray[$key])) {
@@ -94,13 +59,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $this;
     }
 
-    /**
-     * Sets the array of partial inputs.
-     *
-     * @throws Exception
-     *
-     * @return self
-     */
+
     public function setPartialCollection(array $partialCollection)
     {
         if (!\count($partialCollection)) {
@@ -120,32 +79,16 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $this;
     }
 
-    /**
-     * Returns the array of partial inputs.
-     *
-     * @return array
-     */
     public function getPartialCollection()
     {
         return $this->partialCollection;
     }
 
-    /**
-     * Returns inputs array count.
-     *
-     * @return int
-     */
-    #[\ReturnTypeWillChange]
     public function count(): int
     {
         return \count($this->getInputs());
     }
 
-    /**
-     * Disables prepare execution
-     *
-     * @return self
-     */
     public function disablePrepare()
     {
         $this->prepare = false;
@@ -153,11 +96,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $this;
     }
 
-    /**
-     * Disables cleanup execution
-     *
-     * @return self
-     */
     public function disableCleanup()
     {
         $this->cleanup = false;
@@ -165,23 +103,11 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $this;
     }
 
-    /**
-     * Checks if input exists.
-     *
-     * @return bool
-     */
     public function isset(string $key)
     {
         return isset($this->inputsArray[$key]);
     }
 
-    /**
-     * Returns inputs array.
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return InputInterface
-     */
     public function getInput(string $key)
     {
         if (isset($this->inputsArray[$key])) {
@@ -195,8 +121,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
      * Returns inputs array.
      * If partial inputs have been set
      * it returns partial inputs.
-     *
-     * @return array
      */
     public function getInputs(bool $all = false)
     {
@@ -209,11 +133,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $this->inputsArray;
     }
 
-    /**
-     * Returns Input Names.
-     *
-     * @return array
-     */
     public function getInputNames()
     {
         $names = [];
@@ -225,11 +144,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $names;
     }
 
-    /**
-     * Returns Input Labels.
-     *
-     * @return array
-     */
     public function getInputLabels()
     {
         $labels = [];
@@ -241,11 +155,6 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $labels;
     }
 
-    /**
-     * Executes Action.
-     *
-     * @return DataContainerInterface
-     */
     public function execute(ActionInterface $action): DataContainerInterface
     {
         if ($action->controlsExecution()) {
@@ -303,13 +212,7 @@ class InputCollection extends Input implements InputCollectionInterface, Iterato
         return $action->getOutput();
     }
 
-    /**
-     * Get an iterator for the items.
-     *
-     * @return \ArrayIterator
-     */
-    #[\ReturnTypeWillChange]
-    public function getIterator(): ArrayIterator
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->getInputs());
     }

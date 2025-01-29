@@ -2,10 +2,8 @@
 
 namespace Chatagency\CrudAssistant\Concerns;
 
-use Chatagency\CrudAssistant\Modifier;
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Contracts\ModifierInterface;
 
 trait isAction

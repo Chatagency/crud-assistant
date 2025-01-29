@@ -9,7 +9,7 @@ use Exception;
 /**
  * Input Collection Interface.
  */
-interface InputCollectionInterface extends InputInterface
+interface InputCollectionInterface
 {
 
     public function setInputs(array $inputsArray);

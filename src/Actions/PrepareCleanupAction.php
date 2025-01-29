@@ -2,9 +2,11 @@
 
 namespace Chatagency\CrudAssistant\Actions;
 
+use IteratorAggregate;
 use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 
 class PrepareCleanupAction extends Action implements ActionInterface
 {
@@ -18,7 +20,7 @@ class PrepareCleanupAction extends Action implements ActionInterface
         return parent::prepare();
     }
 
-    public function execute(InputInterface $input)
+    public function execute(InputInterface|InputCollectionInterface|IteratorAggregate  $input)
     {
         $output = $this->getOutput();
         

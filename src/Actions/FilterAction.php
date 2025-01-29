@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Actions;
 
+use IteratorAggregate;
 use Chatagency\CrudAssistant\Action;
+use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
-use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\CrudAssistant;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 
 /**
  * Filter action.
@@ -43,12 +45,7 @@ class FilterAction extends Action implements ActionInterface
         $this->data = $data;
     }
 
-    /**
-     * Pre Execution.
-     *
-     * @return self
-     */
-    public function prepare()
+    public function prepare(): static
     {
         $output = $this->getOutput();
         
@@ -57,12 +54,7 @@ class FilterAction extends Action implements ActionInterface
         return $this;
     }
 
-    /**
-     * Execute action on input.
-     *
-     * @return DataContainerInterface
-     */
-    public function execute(InputInterface $input)
+    public function execute(InputInterface|InputCollectionInterface|IteratorAggregate $input)
     {
         foreach ($input as $val) {
             $this->executeOne($val);
@@ -71,12 +63,7 @@ class FilterAction extends Action implements ActionInterface
         return $this->output;
     }
 
-    /**
-     * Executes single input.
-     *
-     * @return DataContainerInterface
-     */
-    public function executeOne(InputInterface $input)
+    public function executeOne(InputInterface|InputCollectionInterface|IteratorAggregate $input)
     {
         if (CrudAssistant::isInputCollection($input) && $this->controlsRecursion) {
             foreach ($input as $val) {
