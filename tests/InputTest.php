@@ -33,7 +33,7 @@ class InputTest extends TestCase
 
         $input = new TextInput('email', 'Email');
         $input->setType('email');
-        $input->setRecipe(new LabelValueRecipe($value));
+        $input->setRecipe(new LabelValueRecipe($value['label']));
 
         $this->assertEquals($input->getRecipe(LabelValueAction::class)->label, $value['label']);
 

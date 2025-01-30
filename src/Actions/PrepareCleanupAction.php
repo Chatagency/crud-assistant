@@ -10,11 +10,10 @@ use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 
 class PrepareCleanupAction extends Action implements ActionInterface
 {
-
     public function prepare(): static
     {
         $output = $this->getOutput();
-        
+
         $output->set('prepare', 1);
 
         return parent::prepare();
@@ -23,16 +22,16 @@ class PrepareCleanupAction extends Action implements ActionInterface
     public function execute(InputInterface|InputCollectionInterface|IteratorAggregate  $input)
     {
         $output = $this->getOutput();
-        
+
         $output->{$input->getName()} = $input->getLabel();
-        
+
         return $output;
     }
 
     public function cleanup(): static
     {
         $output = $this->getOutput();
-        
+
         $output->set('cleanup', 1);
 
         return parent::cleanup();

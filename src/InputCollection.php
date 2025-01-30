@@ -20,7 +20,6 @@ use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
  */
 class InputCollection extends Input implements InputInterface, InputCollectionInterface, IteratorAggregate, Countable
 {
-
     protected array $inputsArray = [];
 
     protected array $partialCollection = [];
@@ -160,38 +159,38 @@ class InputCollection extends Input implements InputInterface, InputCollectionIn
         if ($action->controlsExecution()) {
             return $this->executeAll($action);
         }
-        
+
         if ($this->prepare) {
             $action->prepare();
         }
-        
+
         foreach ($this->getInputs() as $input) {
-            
+
             $recipe = $input->getRecipe($action->getIdentifier());
 
             if ($recipe && $recipe->isIgnored()) {
                 continue;
             }
-            
+
             if (CrudAssistant::isInputCollection($input) && $action->controlsRecursion()) {
                 $action->execute($input);
                 continue;
             }
 
             if (CrudAssistant::isInputCollection($input)) {
-                
+
                 $input->disablePrepare()
                     ->disableCleanup();
 
                 $input->execute($action);
-                
-                if($action->processInternalCollection()) {
+
+                if ($action->processInternalCollection()) {
                     $action->execute($input);
                 }
-                
+
                 continue;
             }
-            
+
             $input->execute($action);
         }
 

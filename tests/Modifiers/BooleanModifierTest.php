@@ -28,7 +28,7 @@ class BooleanModifierTest extends TestCase
             'falseLabel' => 'Incorrect',
         ]);
         
-        $modifier = new BooleanModifier($data);
+        $modifier = new BooleanModifier($data['trueLabel'], $data['falseLabel']);
         
         $newTrueValue = $modifier->modify(true);
         $this->assertEquals($data->trueLabel, $newTrueValue);

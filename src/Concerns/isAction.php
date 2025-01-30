@@ -7,7 +7,8 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 
 trait isAction
-{    protected $output;
+{
+    protected $output;
 
     protected $controlsRecursion = false;
 
@@ -17,16 +18,16 @@ trait isAction
 
     public function initOutput()
     {
-        if(!$this->output) {
+        if (!$this->output) {
             $this->output = new DataContainer();
         }
-        
+
         return $this;
     }
 
     public static function getIdentifier()
     {
-        return Static::class;
+        return static::class;
     }
 
     public function setControlsRecursion(bool $controlsRecursion)
@@ -86,7 +87,7 @@ trait isAction
         foreach ($modifiers as $modifier) {
             $value = $this->executeModifier($modifier, $value, $model);
         }
-        
+
         return $value;
     }
 
@@ -98,7 +99,7 @@ trait isAction
     public function getOutput(): DataContainer
     {
         $this->initOutput();
-        
+
         return $this->output;
     }
 }

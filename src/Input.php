@@ -15,7 +15,6 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
  */
 abstract class Input implements InputInterface
 {
-
     protected string|null $name;
 
     protected string|null $label;
@@ -27,7 +26,7 @@ abstract class Input implements InputInterface
     protected InputCollectionInterface $subElements;
 
     protected string|null $type = null;
-  
+
     protected array $recipes = [];
 
     public function __construct(string $name = null, string $label = null)
@@ -43,7 +42,7 @@ abstract class Input implements InputInterface
         return $this;
     }
 
-  
+
     public function setLabel(string $label): static
     {
         $this->label = $label;
@@ -94,7 +93,7 @@ abstract class Input implements InputInterface
         return $this->version;
     }
 
-    public function getType():string|null
+    public function getType(): string|null
     {
         return $this->type;
     }

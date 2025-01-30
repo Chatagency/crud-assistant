@@ -12,15 +12,15 @@ use Closure;
 /**
  * Label Value Action Recipe.
  */
-class LabelValueRecipe extends RecipeBase implements RecipeInterface
+final class LabelValueRecipe extends RecipeBase implements RecipeInterface
 {
     public function __construct(
         public string|Closure|null $label = null,
         public $value = null,
-    ) 
-    {}
+    ) {
+    }
 
-    public  static function make(?string $label = null, $value = null,): LabelValueRecipe
+    public static function make(?string $label = null, $value = null): LabelValueRecipe
     {
         return new static($label, $value);
     }

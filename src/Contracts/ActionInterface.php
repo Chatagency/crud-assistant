@@ -13,9 +13,9 @@ use Chatagency\CrudAssistant\InputCollection;
 interface ActionInterface
 {
     public function initOutput();
-    
+
     public static function getIdentifier();
-    
+
     public function setProcessInternalCollection(bool $processInternalCollection);
 
     public function prepare(): static;
@@ -27,7 +27,7 @@ interface ActionInterface
     public function controlsRecursion();
 
     public function controlsExecution();
-    
+
     public function processInternalCollection();
 
     public function getOutput();

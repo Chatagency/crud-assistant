@@ -11,7 +11,6 @@ use Exception;
  */
 interface InputCollectionInterface
 {
-
     public function setInputs(array $inputsArray);
 
     public function addInput(InputInterface $input, string $key = null);
@@ -35,6 +34,6 @@ interface InputCollectionInterface
     public function getInputLabels();
 
     public function execute(ActionInterface $action);
-    
+
     public function executeAll(ActionInterface $action);
 }

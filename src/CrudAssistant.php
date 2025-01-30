@@ -12,7 +12,6 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
  */
 final class CrudAssistant
 {
-
     protected InputCollectionInterface $collection;
 
     public function __construct(array $inputs = [], string $name = null, string $label = null, InputCollectionInterface $collection = null)
@@ -21,7 +20,7 @@ final class CrudAssistant
         $this->collection->setInputs($inputs);
     }
 
-    public static function make(array $inputs = [], string $name = null, string $label = null, InputCollectionInterface $collection = null):  InputCollectionInterface
+    public static function make(array $inputs = [], string $name = null, string $label = null, InputCollectionInterface $collection = null): InputCollectionInterface
     {
         return (new static($inputs, $name, $label, $collection))->getCollection();
     }
@@ -37,7 +36,7 @@ final class CrudAssistant
         return is_a($input, InputCollectionInterface::class);
     }
 
-    public static function isClosure($instance): bool 
+    public static function isClosure($instance): bool
     {
         return $instance instanceof \Closure;
     }

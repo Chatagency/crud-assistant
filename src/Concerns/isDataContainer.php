@@ -55,19 +55,19 @@ trait isDataContainer
     /**
      * @throws \InvalidArgumentException
      */
-    public function get(string $name) 
+    public function get(string $name)
     {
-        if(!isset($this->data[$name])) {
+        if (!isset($this->data[$name])) {
             throw new InvalidArgumentException();
         }
-        
+
         return $this->data[$name];
     }
 
-    public function set(string $name, mixed $value): static 
+    public function set(string $name, mixed $value): static
     {
         $this->data[$name] = $value;
-        
+
         return $this;
     }
 

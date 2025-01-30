@@ -18,19 +18,14 @@ use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 /**
  * Label Value Action.
  */
-class LabelValueAction extends Action implements ActionInterface
+final class LabelValueAction extends Action implements ActionInterface
 {
-
-    protected bool $ignore = true;
-
-    protected bool $recursion = true;
-
     public function __construct(
         private $model
-    ) 
-    {}
+    ) {
+    }
 
-    public  static function make($model): LabelValueAction
+    public static function make($model): LabelValueAction
     {
         return new static($model);
     }
@@ -39,21 +34,7 @@ class LabelValueAction extends Action implements ActionInterface
     {
         return $this->model;
     }
- 
-    public function setIgnore(bool $ignore)
-    {
-        $this->ignore = $ignore;
 
-        return $this;
-    }
-
-    public function setRecursion(bool $recursion)
-    {
-        $this->recursion = $recursion;
-
-        return $this;
-    }
-    
     public function prepare(): static
     {
         return parent::prepare();
@@ -61,21 +42,12 @@ class LabelValueAction extends Action implements ActionInterface
 
     public function execute(InputInterface|InputCollectionInterface|IteratorAggregate $input)
     {
-        if (CrudAssistant::isInputCollection($input) && $this->recursion && $this->controlsRecursion) {
-            foreach ($input as $internalInput) {
-                $this->execute($internalInput);
-            }
-        }
-        
+
         $model = $this->model;
 
         $recipe = $input->getRecipe(static::class);
 
         $output = $this->getOutput();
-        
-        if ($this->ignore && $recipe && $recipe->isIgnored()) {
-            return $output;
-        }
 
         $name = $input->getName();
 

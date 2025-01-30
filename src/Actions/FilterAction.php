@@ -15,7 +15,7 @@ use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 /**
  * Filter action.
  */
-class FilterAction extends Action implements ActionInterface
+final class FilterAction extends Action implements ActionInterface
 {
     protected $controlsExecution = true;
 
@@ -23,9 +23,10 @@ class FilterAction extends Action implements ActionInterface
 
 
     public function __construct(private array $data = [])
-    { }
+    {
+    }
 
-    public  static function make( array $data = []): FilterAction
+    public static function make(array $data = []): FilterAction
     {
         return new static($data);
     }
@@ -33,7 +34,7 @@ class FilterAction extends Action implements ActionInterface
     public function prepare(): static
     {
         $output = $this->getOutput();
-        
+
         $output->data = $this->data;
 
         return $this;
@@ -44,7 +45,7 @@ class FilterAction extends Action implements ActionInterface
         foreach ($input as $val) {
             $this->executeOne($val);
         }
-        
+
         return $this->output;
     }
 
@@ -55,7 +56,7 @@ class FilterAction extends Action implements ActionInterface
                 $this->executeOne($val);
             }
         }
-        
+
         $output = $this->getOutput();
         $data = $output->data;
 
@@ -68,7 +69,7 @@ class FilterAction extends Action implements ActionInterface
         if ($ignoreIfEmpty && $this->isEmpty($value)) {
             unset($data[$name]);
         }
-        
+
         if (\is_callable($callback)) {
             $data = $callback($input, $data);
         } elseif (isset($recipe->filter) && $recipe->filter) {

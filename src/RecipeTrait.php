@@ -26,7 +26,7 @@ trait RecipeTrait
      * @var string
      */
     protected $action;
-    
+
     /**
      * Ignore input.
      *
@@ -48,7 +48,7 @@ trait RecipeTrait
      */
     public function getIdentifier()
     {
-        if($this->action) {
+        if ($this->action) {
             return  ($this->action)::getIdentifier();
         }
 

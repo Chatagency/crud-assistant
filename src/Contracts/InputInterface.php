@@ -12,7 +12,7 @@ use Chatagency\CrudAssistant\Recipe;
 interface InputInterface
 {
     public function setName(string $name): static;
-  
+
     public function setLabel(string $label): static;
 
     public function setAttribute(string $name, $value): static;
@@ -29,12 +29,12 @@ interface InputInterface
 
     public function getVersion(): int;
 
-    public function getType():string|null;
+    public function getType(): string|null;
 
 
     public function getAttribute(string $name): mixed;
 
- 
+
     public function getAttributes(): array;
 
     public function unsetAttribute(string $key): static;
