@@ -103,19 +103,17 @@ class LabelValueActionTest extends TestCase
 
         $nameFormat = 'The %s is';
 
-        $nameRecipe = new LabelValueRecipe();
-        $nameRecipe->label = function (Input $input, DataContainer $params) use ($nameFormat) {
+        $nameRecipe = new LabelValueRecipe(function (Input $input, DataContainer $params) use ($nameFormat) {
             return \sprintf($nameFormat, $input->getLabel());
-        };
+        });
 
         $name->setRecipe($nameRecipe);
 
         $emailFormat = 'The address is %s';
 
-        $emailRecipe = new LabelValueRecipe();
-        $emailRecipe->value = function (Input $input, $model) use ($emailFormat) {
+        $emailRecipe = new LabelValueRecipe(null, function (Input $input, $model) use ($emailFormat) {
             return \sprintf($emailFormat, $model->email);
-        };
+        });
 
         $email->setRecipe($emailRecipe);
 

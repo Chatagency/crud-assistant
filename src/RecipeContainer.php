@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use Chatagency\CrudAssistant\Concerns\isRecipe;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 
 /**
@@ -13,5 +14,5 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
  */
 abstract class RecipeContainer implements RecipeInterface
 {
-    use RecipeTrait;
+    use isRecipe;
 }

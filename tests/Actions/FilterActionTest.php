@@ -28,8 +28,7 @@ class FilterActionTest extends TestCase
 
         $email = new TextInput('email', 'Email');
 
-        $recipe = new FilterRecipe();
-        $recipe->filter = true;
+        $recipe = new FilterRecipe(true);
 
         $email->setRecipe($recipe);
 
@@ -57,15 +56,13 @@ class FilterActionTest extends TestCase
         $email = new TextInput('email', 'Email');
         $description = new TextInput('description', 'Description');
 
-        $emailRecipe = new FilterRecipe();
-        $emailRecipe->filter = true;
+        $emailRecipe = new FilterRecipe(true);
         $email->setRecipe($emailRecipe);
 
         $nickname = new TextInput('nickname', 'Nickname');
         $hobby = new TextInput('hobby', 'Hobby');
 
-        $nickRecipe = FilterRecipe::make();
-        $nickRecipe->filter = true;
+        $nickRecipe = FilterRecipe::make(true);
         $nickname->setRecipe($nickRecipe);
 
         $extraInfo = new InputCollection('extra_info');
@@ -95,12 +92,11 @@ class FilterActionTest extends TestCase
 
         $email = new TextInput('email', 'Email');
 
-        $recipe = new FilterRecipe();
-        $recipe->callback = function ($input, $data) {
+        $recipe = new FilterRecipe(true, false, function ($input, $data) {
             unset($data[$input->getName()]);
 
             return $data;
-        };
+        });
 
         $email->setRecipe($recipe);
 
@@ -130,8 +126,7 @@ class FilterActionTest extends TestCase
 
         $email = new TextInput('email', 'Email');
 
-        $recipe = new FilterRecipe();
-        $recipe->ignoreIfEmpty = true;
+        $recipe = new FilterRecipe(true, true);
 
         $email->setRecipe($recipe);
 
@@ -152,13 +147,5 @@ class FilterActionTest extends TestCase
         $filtered = $filter->getOutput();
 
         $this->assertCount(2, $filtered->data);
-    }
-
-    public function testIfAnInvalidValueIsPassedToTheRecipeAnExceptionIsThrown()
-    {
-        $this->expectException(\Exception::class);
-
-        $recipe = new FilterRecipe();
-        $recipe->NotValid = true;
     }
 }
