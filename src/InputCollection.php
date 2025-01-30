@@ -4,21 +4,15 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Countable;
-use Exception;
-use Traversable;
-use ArrayIterator;
-use IteratorAggregate;
-use InvalidArgumentException;
-use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
  * Input Collection Class.
  */
-class InputCollection extends Input implements InputInterface, InputCollectionInterface, IteratorAggregate, Countable
+class InputCollection extends Input implements InputInterface, InputCollectionInterface, \IteratorAggregate, \Countable
 {
     protected array $inputsArray = [];
 
@@ -37,9 +31,9 @@ class InputCollection extends Input implements InputInterface, InputCollectionIn
         return $this;
     }
 
-    public function addInput(InputInterface $input, string $key = null)
+    public function addInput(InputInterface $input, ?string $key = null)
     {
-        $key = $key ?? $input->getName();
+        $key ??= $input->getName();
 
         $this->inputsArray[$key] = $input;
 
@@ -58,17 +52,16 @@ class InputCollection extends Input implements InputInterface, InputCollectionIn
         return $this;
     }
 
-
     public function setPartialCollection(array $partialCollection)
     {
         if (!\count($partialCollection)) {
-            throw new Exception('The array passed is empty', 500);
+            throw new \Exception('The array passed is empty', 500);
         }
 
         $inputs = $this->getInputs();
 
         if (!\count($inputs)) {
-            throw new Exception('This collection cannot add partial inputs because it has no inputs', 500);
+            throw new \Exception('This collection cannot add partial inputs because it has no inputs', 500);
         }
 
         foreach ($partialCollection as $inputName) {
@@ -113,7 +106,7 @@ class InputCollection extends Input implements InputInterface, InputCollectionIn
             return $this->inputsArray[$key];
         }
 
-        throw new InvalidArgumentException('The '.$key.' Input has not been registered or does not exist', 500);
+        throw new \InvalidArgumentException('The '.$key.' Input has not been registered or does not exist', 500);
     }
 
     /**
@@ -165,7 +158,6 @@ class InputCollection extends Input implements InputInterface, InputCollectionIn
         }
 
         foreach ($this->getInputs() as $input) {
-
             $recipe = $input->getRecipe($action->getIdentifier());
 
             if ($recipe && $recipe->isIgnored()) {
@@ -174,11 +166,11 @@ class InputCollection extends Input implements InputInterface, InputCollectionIn
 
             if (CrudAssistant::isInputCollection($input) && $action->controlsRecursion()) {
                 $action->execute($input);
+
                 continue;
             }
 
             if (CrudAssistant::isInputCollection($input)) {
-
                 $input->disablePrepare()
                     ->disableCleanup();
 
@@ -201,7 +193,6 @@ class InputCollection extends Input implements InputInterface, InputCollectionIn
         return $action->getOutput();
     }
 
-
     public function executeAll(ActionInterface $action): DataContainerInterface
     {
         $action->prepare();
@@ -211,8 +202,8 @@ class InputCollection extends Input implements InputInterface, InputCollectionIn
         return $action->getOutput();
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): \Traversable
     {
-        return new ArrayIterator($this->getInputs());
+        return new \ArrayIterator($this->getInputs());
     }
 }

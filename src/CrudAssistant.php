@@ -12,24 +12,23 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
  */
 final class CrudAssistant
 {
-    protected InputCollectionInterface $collection;
+    private InputCollectionInterface $collection;
 
-    public function __construct(array $inputs = [], string $name = null, string $label = null, InputCollectionInterface $collection = null)
+    public function __construct(array $inputs = [], ?string $name = null, ?string $label = null, ?InputCollectionInterface $collection = null)
     {
         $this->collection = $collection ?? new InputCollection($name, $label);
         $this->collection->setInputs($inputs);
     }
 
-    public static function make(array $inputs = [], string $name = null, string $label = null, InputCollectionInterface $collection = null): InputCollectionInterface
+    public static function make(array $inputs = [], ?string $name = null, ?string $label = null, ?InputCollectionInterface $collection = null): InputCollectionInterface
     {
-        return (new static($inputs, $name, $label, $collection))->getCollection();
+        return (new self($inputs, $name, $label, $collection))->getCollection();
     }
 
     public function getCollection(): InputCollectionInterface
     {
         return $this->collection;
     }
-
 
     public static function isInputCollection(InputInterface $input): bool
     {

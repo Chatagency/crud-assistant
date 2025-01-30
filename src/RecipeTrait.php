@@ -21,7 +21,7 @@ trait RecipeTrait
 
     /**
      * Recipe Action. Takes precedent
-     * over $identifier
+     * over $identifier.
      *
      * @var string
      */
@@ -49,7 +49,7 @@ trait RecipeTrait
     public function getIdentifier()
     {
         if ($this->action) {
-            return  ($this->action)::getIdentifier();
+            return ($this->action)::getIdentifier();
         }
 
         return $this->identifier;
@@ -57,8 +57,6 @@ trait RecipeTrait
 
     /**
      * Sets the ignore value.
-     *
-     * @param mixed $ignore
      *
      * @return RecipeInterface
      */
@@ -107,13 +105,13 @@ trait RecipeTrait
     }
 
     /**
-     * Checks if recipe has modifiers
+     * Checks if recipe has modifiers.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasModifiers()
     {
-        return (bool) count($this->getModifiers());
+        return (bool) \count($this->getModifiers());
     }
 
     /**

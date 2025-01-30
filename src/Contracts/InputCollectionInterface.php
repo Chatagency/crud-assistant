@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
-use Exception;
-
 /**
  * Input Collection Interface.
  */
@@ -13,7 +11,7 @@ interface InputCollectionInterface
 {
     public function setInputs(array $inputsArray);
 
-    public function addInput(InputInterface $input, string $key = null);
+    public function addInput(InputInterface $input, ?string $key = null);
 
     public function removeInput(string $key);
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
-use Chatagency\CrudAssistant\Recipe;
-
 /**
  * Input Collection Interface.
  */
@@ -29,23 +27,19 @@ interface InputInterface
 
     public function getVersion(): int;
 
-    public function getType(): string|null;
-
+    public function getType(): ?string;
 
     public function getAttribute(string $name): mixed;
-
 
     public function getAttributes(): array;
 
     public function unsetAttribute(string $key): static;
 
-
     public function getSubElements(): InputCollectionInterface;
 
     public function setRecipe(RecipeInterface $recipe): static;
 
-    public function getRecipe(string $recipe): RecipeInterface|null;
-
+    public function getRecipe(string $recipe): ?RecipeInterface;
 
     public function execute(ActionInterface $action): DataContainerInterface;
 }

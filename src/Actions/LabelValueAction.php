@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Actions;
 
-use Traversable;
-use IteratorAggregate;
-use InvalidArgumentException;
 use Chatagency\CrudAssistant\Action;
-use Chatagency\CrudAssistant\CrudAssistant;
-use Chatagency\CrudAssistant\DataContainer;
-use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
-use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 /**
  * Label Value Action.
@@ -21,13 +15,13 @@ use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 final class LabelValueAction extends Action implements ActionInterface
 {
     public function __construct(
-        private $model
+        private $model,
     ) {
     }
 
-    public static function make($model): LabelValueAction
+    public static function make($model): self
     {
-        return new static($model);
+        return new self($model);
     }
 
     public function getModel()
@@ -40,9 +34,8 @@ final class LabelValueAction extends Action implements ActionInterface
         return parent::prepare();
     }
 
-    public function execute(InputInterface|InputCollectionInterface|IteratorAggregate $input)
+    public function execute(InputCollectionInterface|InputInterface|\IteratorAggregate $input)
     {
-
         $model = $this->model;
 
         $recipe = $input->getRecipe(static::class);
@@ -57,7 +50,7 @@ final class LabelValueAction extends Action implements ActionInterface
             $label = $label($input, $model);
         }
 
-        $value = $recipe->value ?? $model->$name ?? null;
+        $value = $recipe->value ?? $model->{$name} ?? null;
 
         if (\is_callable($value)) {
             $value = $value($input, $model);
@@ -65,7 +58,7 @@ final class LabelValueAction extends Action implements ActionInterface
 
         $value = $this->modifiers($value, $input, $model);
 
-        $output->$label = $value;
+        $output->{$label} = $value;
 
         return $output;
     }

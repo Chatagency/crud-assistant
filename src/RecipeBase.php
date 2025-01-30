@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant;
 
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use Exception;
 
 /**
  * the recipe class stores input
@@ -24,18 +23,15 @@ abstract class RecipeBase implements RecipeInterface
     public function __construct(array $data = [])
     {
         foreach ($data as $key => $value) {
-            $this->$key = $value;
+            $this->{$key} = $value;
         }
-
     }
 
     /**
      * Disable public attribute setting.
-     *
-     * @param mixed $value
      */
-    public function __set(string $name, $value)
+    public function __set(string $name, $value): void
     {
-        throw new Exception('The setter "'.$name.'" is not available on this recipe', 500);
+        throw new \Exception('The setter "'.$name.'" is not available on this recipe', 500);
     }
 }

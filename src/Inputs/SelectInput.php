@@ -15,5 +15,5 @@ class SelectInput extends Input implements InputInterface
     /**
      * Input type.
      */
-    protected string|null $type = 'select';
+    protected ?string $type = 'select';
 }

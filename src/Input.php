@@ -15,21 +15,21 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
  */
 abstract class Input implements InputInterface
 {
-    protected string|null $name;
+    protected ?string $name;
 
-    protected string|null $label;
+    protected ?string $label;
 
-    protected int|null $version = 1;
+    protected ?int $version = 1;
 
     protected array $attributes = [];
 
     protected InputCollectionInterface $subElements;
 
-    protected string|null $type = null;
+    protected ?string $type = null;
 
     protected array $recipes = [];
 
-    public function __construct(string $name = null, string $label = null)
+    public function __construct(?string $name = null, ?string $label = null)
     {
         $this->name = $name;
         $this->label = $label ?? $name;
@@ -41,7 +41,6 @@ abstract class Input implements InputInterface
 
         return $this;
     }
-
 
     public function setLabel(string $label): static
     {
@@ -93,7 +92,7 @@ abstract class Input implements InputInterface
         return $this->version;
     }
 
-    public function getType(): string|null
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -121,12 +120,10 @@ abstract class Input implements InputInterface
         return $this;
     }
 
-
     public function getSubElements(): InputCollectionInterface
     {
         return $this->subElements;
     }
-
 
     public function setRecipe(RecipeInterface $recipe): static
     {
@@ -135,7 +132,7 @@ abstract class Input implements InputInterface
         return $this;
     }
 
-    public function getRecipe(string $recipe): RecipeInterface|null
+    public function getRecipe(string $recipe): ?RecipeInterface
     {
         if (isset($this->recipes[$recipe])) {
             return $this->recipes[$recipe];
@@ -143,7 +140,6 @@ abstract class Input implements InputInterface
 
         return null;
     }
-
 
     public function execute(ActionInterface $action): DataContainerInterface
     {

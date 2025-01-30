@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Concerns;
 
-use ArrayIterator;
-use InvalidArgumentException;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 trait isDataContainer
@@ -15,18 +15,13 @@ trait isDataContainer
         $this->fill($data);
     }
 
-    public static function make(array $data = []): DataContainerInterface
-    {
-        return new static($data);
-    }
-
     /**
      * @throws \InvalidArgumentException
      */
     public function __get(string $name): mixed
     {
         if (!\array_key_exists($name, $this->data)) {
-            throw new InvalidArgumentException();
+            throw new \InvalidArgumentException();
         }
 
         return $this->data[$name];
@@ -52,13 +47,18 @@ trait isDataContainer
         return json_encode($this->data);
     }
 
+    public static function make(array $data = []): DataContainerInterface
+    {
+        return new static($data);
+    }
+
     /**
      * @throws \InvalidArgumentException
      */
     public function get(string $name)
     {
         if (!isset($this->data[$name])) {
-            throw new InvalidArgumentException();
+            throw new \InvalidArgumentException();
         }
 
         return $this->data[$name];
@@ -87,7 +87,7 @@ trait isDataContainer
 
     public function push($value): static
     {
-        array_push($this->data, $value);
+        $this->data[] = $value;
 
         return $this;
     }
@@ -133,9 +133,9 @@ trait isDataContainer
         return $this->toArray();
     }
 
-    public function getIterator(): ArrayIterator
+    public function getIterator(): \ArrayIterator
     {
-        return new ArrayIterator($this->data);
+        return new \ArrayIterator($this->data);
     }
 
     public function count(): int
@@ -168,7 +168,7 @@ trait isDataContainer
     public function offsetGet($offset): mixed
     {
         if (!\array_key_exists($offset, $this->data)) {
-            throw new InvalidArgumentException();
+            throw new \InvalidArgumentException();
         }
 
         return $this->data[$offset];

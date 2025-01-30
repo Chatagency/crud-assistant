@@ -15,5 +15,5 @@ class CheckboxInput extends Input implements InputInterface
     /**
      * Input type.
      */
-    protected string|null $type = 'checkbox';
+    protected ?string $type = 'checkbox';
 }

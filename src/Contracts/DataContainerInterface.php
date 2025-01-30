@@ -34,7 +34,6 @@ interface DataContainerInterface
     /**
      * Pushes a value to the data array.
      *
-     * @param mixed $value
      * @return self
      */
     public function push($value);
@@ -70,5 +69,4 @@ interface DataContainerInterface
      * @return array
      */
     public function all();
-
 }

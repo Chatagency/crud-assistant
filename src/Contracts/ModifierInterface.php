@@ -1,8 +1,8 @@
 <?php
 
-namespace Chatagency\CrudAssistant\Contracts;
+declare(strict_types=1);
 
-use Chatagency\CrudAssistant\DataContainer;
+namespace Chatagency\CrudAssistant\Contracts;
 
 interface ModifierInterface
 {

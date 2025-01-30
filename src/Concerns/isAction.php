@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Concerns;
 
-use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ModifierInterface;
+use Chatagency\CrudAssistant\DataContainer;
 
 trait isAction
 {
@@ -74,6 +76,13 @@ trait isAction
         return $value === '' || $value === null;
     }
 
+    public function getOutput(): DataContainer
+    {
+        $this->initOutput();
+
+        return $this->output;
+    }
+
     protected function modifiers($value, InputInterface $input, $model = null)
     {
         $recipe = $input->getRecipe(static::class);
@@ -94,12 +103,5 @@ trait isAction
     protected function executeModifier(ModifierInterface $modifier, $value, $model = null)
     {
         return $modifier->modify($value, $model);
-    }
-
-    public function getOutput(): DataContainer
-    {
-        $this->initOutput();
-
-        return $this->output;
     }
 }

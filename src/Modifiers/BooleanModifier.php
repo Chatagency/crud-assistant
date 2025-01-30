@@ -10,7 +10,7 @@ class BooleanModifier implements ModifierInterface
 {
     public function __construct(
         private string $trueLabel = 'Yes',
-        private string $falseLabel = 'No'
+        private string $falseLabel = 'No',
     ) {
     }
 

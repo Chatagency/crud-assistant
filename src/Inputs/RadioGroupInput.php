@@ -15,5 +15,5 @@ class RadioGroupInput extends Input implements InputInterface
     /**
      * Input type.
      */
-    protected string|null $type = 'radiogroup';
+    protected ?string $type = 'radiogroup';
 }
