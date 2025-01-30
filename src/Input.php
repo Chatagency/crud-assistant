@@ -16,11 +16,11 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 abstract class Input implements InputInterface
 {
 
-    protected string $name;
+    protected string|null $name;
 
-    protected string $label;
+    protected string|null $label;
 
-    protected int $version = 1;
+    protected int|null $version = 1;
 
     protected array $attributes = [];
 

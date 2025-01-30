@@ -4,6 +4,7 @@ namespace Chatagency\CrudAssistant\Tests;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\DataContainer;
+use InvalidArgumentException;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\TestCase;
 
@@ -63,8 +64,10 @@ class DataContainerTest extends TestCase
     /** @test */
     public function if_a_non_existing_value_is_accessed_a_php_notice_is_triggered()
     {
+        $this->expectException(InvalidArgumentException::class);
+        
         $container = new DataContainer();
-        $this->expectNotice(Notice::class);
+        
         $container->nope;
     }
 
@@ -177,9 +180,9 @@ class DataContainerTest extends TestCase
     /** @test */
     public function if_a_non_existing_value_is_accessed_as_an_array_a_php_notice_is_triggered()
     {
-        $container = new DataContainer();
+        $this->expectException(InvalidArgumentException::class);
         
-        $this->expectNotice(Notice::class);
+        $container = new DataContainer();
 
         $container['nope'];
     }

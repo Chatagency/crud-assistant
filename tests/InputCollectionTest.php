@@ -86,7 +86,7 @@ class InputCollectionTest extends TestCase
         ]);
 
         $labelValue = $form->execute(
-            LabelValueAction::make()->setModel($model)
+            LabelValueAction::make($model)
         );
 
         $this->assertCount(2, $labelValue);
@@ -98,7 +98,7 @@ class InputCollectionTest extends TestCase
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
         $email->setRecipe(
-            LabelValueRecipe::make()
+            LabelValueRecipe::make(new DataContainer())
                 ->ignore()
         );
 
@@ -111,7 +111,7 @@ class InputCollectionTest extends TestCase
         ]);
 
         $labelValue = $form->execute(
-            LabelValueAction::make()->setModel($model)
+            LabelValueAction::make($model)
         );
 
         $this->assertCount(1, $labelValue);
@@ -275,7 +275,7 @@ class InputCollectionTest extends TestCase
         $age = new TextInput('age', 'Your age');
 
         $age->setRecipe(
-            LabelValueRecipe::make()
+            LabelValueRecipe::make(new DataContainer())
                 ->ignore()
         );
 
@@ -296,8 +296,7 @@ class InputCollectionTest extends TestCase
         ]);
 
         $output = $form->execute(
-            LabelValueAction::make()
-                ->setModel($model)
+            LabelValueAction::make($model)
                 ->setIgnore(false)
                 ->setControlsRecursion(true)
         );
@@ -331,15 +330,13 @@ class InputCollectionTest extends TestCase
         ]);
 
         $output = $form->execute(
-            LabelValueAction::make()
-                ->setModel($model)
+            LabelValueAction::make($model)
         );
 
         $this->assertCount(4, $output);
 
         $output2 = $form->execute(
-            LabelValueAction::make()
-                ->setModel($model)
+            LabelValueAction::make($model)
                 ->setProcessInternalCollection(true)
         );
 

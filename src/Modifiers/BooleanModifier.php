@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Modifiers;
 
-use Chatagency\CrudAssistant\DataContainer;
-use Chatagency\CrudAssistant\Modifier;
-use Contracts\ModifierInterface;
+use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 
-/**
- * Boolean Modifier.
- */
+
 class BooleanModifier implements ModifierInterface
 {
 

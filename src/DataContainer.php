@@ -7,8 +7,8 @@ namespace Chatagency\CrudAssistant;
 use Countable;
 use ArrayAccess;
 use IteratorAggregate;
+use Chatagency\CrudAssistant\Concerns\isDataContainer;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
-use Concerns\isDataContainer;
 
 /**
  * DataContainer.

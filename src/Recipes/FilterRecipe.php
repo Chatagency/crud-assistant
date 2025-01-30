@@ -14,20 +14,22 @@ use Closure;
  */
 class FilterRecipe extends RecipeBase implements RecipeInterface
 {
-    /**
-     * Filter value.
-     */
-    public bool $filter = false;
 
-    /**
-     * Ignore if value is empty (null or empty string).
-     */
-    public bool $ignoreIfEmpty = false;
+    public function __construct(
+        public bool $filter = true,
+        public bool $ignoreIfEmpty = false,
+        public Closure|null $callback = null
+    ) 
+    {}
 
-    /**
-     * Custom filter via callback.
-     */
-    public Closure $callback;
+    public  static function make(bool $filter = true ,bool $ignoreIfEmpty = false,Closure|null $callback = null): FilterRecipe
+    {
+        return new static(
+            $filter,
+            $ignoreIfEmpty,
+            $callback
+        );
+    }
 
     /**
      * Recipe Action.

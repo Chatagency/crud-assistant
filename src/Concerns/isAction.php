@@ -4,12 +4,10 @@ namespace Chatagency\CrudAssistant\Concerns;
 
 use Chatagency\CrudAssistant\DataContainer;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Contracts\ModifierInterface;
+use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 
 trait isAction
-{
-
-    protected $output;
+{    protected $output;
 
     protected $controlsRecursion = false;
 

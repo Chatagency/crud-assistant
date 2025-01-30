@@ -10,7 +10,6 @@ use Chatagency\CrudAssistant\InputCollection;
 use Chatagency\CrudAssistant\Inputs\TextInput;
 use Chatagency\CrudAssistant\Modifiers\BooleanModifier;
 use Chatagency\CrudAssistant\Recipes\LabelValueRecipe;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class LabelValueActionTest extends TestCase
@@ -18,7 +17,12 @@ class LabelValueActionTest extends TestCase
     /** @test */
     public function make_can_be_used_to_get_an_instance_of_label_action()
     {
-        $recipe = LabelValueAction::make();
+        $model = new DataContainer([
+            'name' => 'John Doe',
+            'email' => 'john@email.com',
+        ]);
+        
+        $recipe = LabelValueAction::make($model);
 
         $this->assertInstanceOf(LabelValueAction::class, $recipe);
     }
@@ -26,14 +30,14 @@ class LabelValueActionTest extends TestCase
     /** @test */
     public function all_actions_have_a_generic_data_setter_and_getter()
     {
-        $recipe = LabelValueAction::make();
-
-        $data = [
+        $data = new DataContainer([
             'name' => 'John Doe'
-        ];
-        $recipe->setGenericData(new DataContainer($data));
+        ]);
 
-        $this->assertEquals($data['name'], $recipe->getGenericData()->name);
+        $action = LabelValueAction::make($data);
+
+
+        $this->assertEquals($data['name'], $action->getModel()->name);
     }
     
     /** @test */
@@ -48,8 +52,7 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
         
-        $action = new LabelValueAction();
-        $action->setModel($model);
+        $action = new LabelValueAction($model);
         
         $action->prepare();
         foreach($inputs as $input) {
@@ -91,8 +94,7 @@ class LabelValueActionTest extends TestCase
         
         $crud = CrudAssistant::make($inputs);
         $output = $crud->execute(
-            LabelValueAction::make()
-                ->setModel($model)
+            LabelValueAction::make($model)
         );
 
         $this->assertCount(4, $output);
@@ -124,7 +126,7 @@ class LabelValueActionTest extends TestCase
         ]);
         
         $crud = CrudAssistant::make($inputs);
-        $action = LabelValueAction::make()
+        $action = LabelValueAction::make($model)
             /**
              * Internal option for testing only
              */
@@ -133,30 +135,12 @@ class LabelValueActionTest extends TestCase
              * The action is responsible
              * for the concurrency
              */
-            ->setControlsRecursion(true)
-            ->setModel($model);
+            ->setControlsRecursion(true);
         
         $output = $crud->execute($action);
 
         $this->assertCount(3, $output);
         
-    }
-
-    /** @test */
-    public function if_the_model_is_not_specified_an_exception_is_throw()
-    {
-        $name = new TextInput('name', 'Name');
-        $email = new TextInput('email', 'Email');
-        $inputs = [$name, $email];
-
-        $this->expectException(InvalidArgumentException::class);
-
-        $action =  new LabelValueAction(new DataContainer());
-        
-        $action->prepare();
-        foreach($inputs as $input) {
-            $action->execute($input);
-        }
     }
 
     /** @test */
@@ -175,8 +159,7 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
 
-        $action =  new LabelValueAction();
-        $action->setModel($model);
+        $action =  new LabelValueAction($model);
         
         $action->prepare();
         foreach($inputs as $input) {
@@ -220,10 +203,9 @@ class LabelValueActionTest extends TestCase
             'email' => 'john@email.com',
         ]);
         
-        $action =  (new LabelValueAction());
-        $action->setModel($model);
-        
+        $action =  new LabelValueAction($model);
         $action->prepare();
+
         foreach($inputs as $input) {
             $action->execute($input);
         }
@@ -243,14 +225,12 @@ class LabelValueActionTest extends TestCase
     {
         $name = new TextInput('name', 'Name');
         $accept = new TextInput('accept', 'Accept Terms');
-
-        $modifierData = new DataContainer([
-            'trueLabel' => 'I Accept'
-        ]);
+        
+        $trueLabel = 'I Accept';
 
         $recipe = new LabelValueRecipe();
         $recipe->setModifiers([
-            new BooleanModifier($modifierData)
+            new BooleanModifier($trueLabel)
         ]);
         $accept->setRecipe($recipe);
 
@@ -261,8 +241,7 @@ class LabelValueActionTest extends TestCase
             'accept' => true,
         ]);
 
-        $action =  new LabelValueAction();
-        $action->setModel($model);
+        $action = new LabelValueAction($model);
         
         $action->prepare();
         foreach($inputs as $input) {
@@ -270,18 +249,8 @@ class LabelValueActionTest extends TestCase
         }
         $output = $action->getOutput();
 
-        $this->assertEquals($modifierData->trueLabel, $output->{$accept->getLabel()});
+        $this->assertEquals($trueLabel, $output->{$accept->getLabel()});
 
     }
 
-    /** @test */
-    public function if_an_invalid_value_is_passed_to_the_recipe_an_exception_is_thrown()
-    {
-        $this->expectException(\Exception::class);
-        
-        $recipe = (new LabelValueRecipe());
-        $recipe->NotValid = true;
-        
-    }
-    
 }

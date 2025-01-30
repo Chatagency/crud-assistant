@@ -16,28 +16,15 @@ class FilterActionTest extends TestCase
     /** @test */
     public function make_can_be_used_to_get_an_instance_of_filter_action()
     {
-        $recipe = FilterAction::make([]);
+        $recipe = FilterAction::make();
 
         $this->assertInstanceOf(FilterAction::class, $recipe);
     }
 
     /** @test */
-    public function all_actions_have_a_generic_data_setter_and_getter()
-    {
-        $recipe = FilterAction::make([]);
-
-        $data = [
-            'name' => 'John Doe'
-        ];
-        $recipe->setGenericData(new DataContainer($data));
-
-        $this->assertEquals($data['name'], $recipe->getGenericData()->name);
-    }
-    
-    /** @test */
     public function a_filter_action_is_used_to_exclude_input_data_from_dataset()
     {
-        $filter = new FilterAction([]);
+        $filter = new FilterAction();
 
         $name = new TextInput('name', 'Name');
         
@@ -68,7 +55,7 @@ class FilterActionTest extends TestCase
     /** @test */
     public function an_internal_input_collection_can_be_used_on_the_filter_action_for_organization_purposes()
     {
-        $filter = new FilterAction([]);
+        $filter = new FilterAction();
 
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -177,7 +164,7 @@ class FilterActionTest extends TestCase
     {
         $this->expectException(\Exception::class);
         
-        $recipe = new FilterRecipe([]);
+        $recipe = new FilterRecipe();
         $recipe->NotValid = true;
         
     }

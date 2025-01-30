@@ -17,32 +17,17 @@ use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
  */
 class FilterAction extends Action implements ActionInterface
 {
-    /**
-     * Action control the
-     * whole execution.
-     *
-     * @var bool
-     */
     protected $controlsExecution = true;
 
-    /**
-     * Action control the
-     * whole execution.
-     *
-     * @var bool
-     */
     protected $controlsRecursion = true;
 
-    /**
-     * Data to be filtered.
-     * @var array
-     */
-    protected $data = [];
-    
 
-    public function __construct(array $data)
+    public function __construct(private array $data = [])
+    { }
+
+    public  static function make( array $data = []): FilterAction
     {
-        $this->data = $data;
+        return new static($data);
     }
 
     public function prepare(): static

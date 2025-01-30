@@ -26,9 +26,19 @@ class LabelValueAction extends Action implements ActionInterface
     protected bool $recursion = true;
 
     public function __construct(
-        private iterable $model
+        private $model
     ) 
     {}
+
+    public  static function make($model): LabelValueAction
+    {
+        return new static($model);
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
  
     public function setIgnore(bool $ignore)
     {

@@ -34,5 +34,7 @@ interface InputCollectionInterface
 
     public function getInputLabels();
 
+    public function execute(ActionInterface $action);
+    
     public function executeAll(ActionInterface $action);
 }

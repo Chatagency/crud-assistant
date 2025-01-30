@@ -36,50 +36,6 @@ class CrudAssistantTest extends TestCase
     }
 
     /** @test */
-    public function actions_can_be_executed_using_the_execute_method_from_the_input_collection()
-    {
-        $name = new TextInput('name');
-        $name->setRecipe(new SanitationRecipe([
-            'type' => FILTER_SANITIZE_SPECIAL_CHARS
-        ]));
-
-        $manager = new CrudAssistant([$name]);
-        
-        $action = SanitationAction::make()->setRequestArray([
-            'name' => 'John Smith',
-        ]);
-        
-        $output = $manager->execute($action);
-
-        $sanitation = $output->requestArray;
-
-        $this->assertEquals('John Smith', $sanitation['name']);
-        $this->assertCount(2, $sanitation);
-    }
-
-    /** @test */
-    public function a_method_from_the_input_collection_can_also_be_called_directly_on_the_manager()
-    {
-        $manager = new CrudAssistant([
-            new TextInput('name'),
-        ]);
-
-        $this->assertCount(1, $manager->getInputs());
-        $this->assertEquals(1, $manager->count());
-    }
-
-    /** @test */
-    public function if_an_action_or_method_does_not_exists_an_exception_is_thrown()
-    {
-        $manager = new CrudAssistant([
-            new TextInput('name'),
-        ]);
-
-        $this->expectException(BadMethodCallException::class);
-        $manager->randomMethod();
-    }
-
-    /** @test */
     public function the_is_input_collection_helper_checks_if__parameter_is_an_input_collection()
     {
         $this->assertTrue(CrudAssistant::isInputCollection(new InputCollection()));

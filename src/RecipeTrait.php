@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
+use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 
 /**
@@ -73,7 +74,7 @@ trait RecipeTrait
      *
      * @return RecipeInterface
      */
-    public function setModifier(Modifier $modifier)
+    public function setModifier(ModifierInterface $modifier)
     {
         $this->modifiers[] = $modifier;
 

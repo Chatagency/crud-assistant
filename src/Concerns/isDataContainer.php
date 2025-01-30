@@ -1,6 +1,6 @@
 <?php
 
-namespace Concerns;
+namespace Chatagency\CrudAssistant\Concerns;
 
 use ArrayIterator;
 use InvalidArgumentException;
@@ -20,6 +20,9 @@ trait isDataContainer
         return new static($data);
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     public function __get(string $name): mixed
     {
         if (!\array_key_exists($name, $this->data)) {
@@ -49,8 +52,15 @@ trait isDataContainer
         return json_encode($this->data);
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     public function get(string $name) 
     {
+        if(!isset($this->data[$name])) {
+            throw new InvalidArgumentException();
+        }
+        
         return $this->data[$name];
     }
 

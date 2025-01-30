@@ -1,6 +1,6 @@
 <?php
 
-namespace Contracts;
+namespace Chatagency\CrudAssistant\Contracts;
 
 use Chatagency\CrudAssistant\DataContainer;
 
