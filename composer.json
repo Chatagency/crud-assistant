@@ -40,7 +40,7 @@
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
         "analyse": "vendor/bin/phpstan analyse",
-        "format": "./vendor/bin/php-cs-fixer fix src",
+        "format": "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php src tests",
         "phpstan": "vendor/bin/phpstan --memory-limit=1G",
         "qa": [
             "@composer run analyse",

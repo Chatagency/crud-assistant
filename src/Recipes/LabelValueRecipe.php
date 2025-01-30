@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Recipes;
 
+use Closure;
+use Chatagency\CrudAssistant\RecipeBase;
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use Chatagency\CrudAssistant\RecipeBase;
 
 /**
  * Label Value Action Recipe.
@@ -21,8 +22,8 @@ final class LabelValueRecipe extends RecipeBase implements RecipeInterface
     protected $action = LabelValueAction::class;
 
     public function __construct(
-        public \Closure|string|null $label = null,
-        public $value = null,
+        public Closure|string|null $label = null,
+        public Closure|string|null $value = null,
     ) {
     }
 

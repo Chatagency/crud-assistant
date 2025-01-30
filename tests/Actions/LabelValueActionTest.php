@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Tests\Actions;
 
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
@@ -14,34 +16,30 @@ use PHPUnit\Framework\TestCase;
 
 class LabelValueActionTest extends TestCase
 {
-    /** @test */
-    public function make_can_be_used_to_get_an_instance_of_label_action()
+    public function testMakeCanBeUsedToGetAnInstanceOfLabelAction()
     {
         $model = new DataContainer([
             'name' => 'John Doe',
             'email' => 'john@email.com',
         ]);
-        
+
         $recipe = LabelValueAction::make($model);
 
         $this->assertInstanceOf(LabelValueAction::class, $recipe);
     }
-    
-    /** @test */
-    public function all_actions_have_a_generic_data_setter_and_getter()
+
+    public function testAllActionsHaveAGenericDataSetterAndGetter()
     {
         $data = new DataContainer([
-            'name' => 'John Doe'
+            'name' => 'John Doe',
         ]);
 
         $action = LabelValueAction::make($data);
 
-
         $this->assertEquals($data['name'], $action->getModel()->name);
     }
-    
-    /** @test */
-    public function the_label_value_action_returns_an_container_with_labels_as_keys()
+
+    public function testTheLabelValueActionReturnsAnContainerWithLabelsAsKeys()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -51,11 +49,11 @@ class LabelValueActionTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john@email.com',
         ]);
-        
+
         $action = new LabelValueAction($model);
-        
+
         $action->prepare();
-        foreach($inputs as $input) {
+        foreach ($inputs as $input) {
             $action->execute($input);
         }
         $output = $action->getOutput();
@@ -65,11 +63,9 @@ class LabelValueActionTest extends TestCase
 
         $this->assertCount(2, $output);
         $this->assertEquals($model->$emailName, $output->$emailLabel);
-
     }
 
-    /** @test */
-    public function an_internal_collection_can_be_used_on_the_label_action_for_organization_purposes()
+    public function testAnInternalCollectionCanBeUsedOnTheLabelActionForOrganizationPurposes()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
@@ -80,9 +76,9 @@ class LabelValueActionTest extends TestCase
         $extraInfo = new InputCollection('extra_info');
         $extraInfo->setInputs([
             $nickname,
-            $hobby
+            $hobby,
         ]);
-        
+
         $inputs = [$name, $email, $extraInfo];
 
         $model = new DataContainer([
@@ -91,36 +87,34 @@ class LabelValueActionTest extends TestCase
             'nickname' => 'Joe',
             'hobby' => 'To Read',
         ]);
-        
+
         $crud = CrudAssistant::make($inputs);
         $output = $crud->execute(
             LabelValueAction::make($model)
         );
 
         $this->assertCount(4, $output);
-
     }
 
-    /** @test */
-    public function a_closure_can_be_used_to_alter_the_label_on_the_label_value_action()
+    public function testAClosureCanBeUsedToAlterTheLabelOnTheLabelValueAction()
     {
         $name = new TextInput('name', 'Name');
         $email = new TextInput('email', 'Email');
 
-        $nameFormat = "The %s is";
+        $nameFormat = 'The %s is';
 
         $nameRecipe = new LabelValueRecipe();
-        $nameRecipe->label = function(Input $input, DataContainer $params) use ($nameFormat) {
-            return sprintf($nameFormat, $input->getLabel());
+        $nameRecipe->label = function (Input $input, DataContainer $params) use ($nameFormat) {
+            return \sprintf($nameFormat, $input->getLabel());
         };
 
         $name->setRecipe($nameRecipe);
 
-        $emailFormat = "The address is %s";
+        $emailFormat = 'The address is %s';
 
         $emailRecipe = new LabelValueRecipe();
-        $emailRecipe->value = function(Input $input, $model) use ($emailFormat) {
-            return sprintf($emailFormat, $model->email);
+        $emailRecipe->value = function (Input $input, $model) use ($emailFormat) {
+            return \sprintf($emailFormat, $model->email);
         };
 
         $email->setRecipe($emailRecipe);
@@ -131,35 +125,33 @@ class LabelValueActionTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john@email.com',
         ]);
-        
-        $action =  new LabelValueAction($model);
+
+        $action = new LabelValueAction($model);
         $action->prepare();
 
-        foreach($inputs as $input) {
+        foreach ($inputs as $input) {
             $action->execute($input);
         }
         $output = $action->getOutput();
 
-        $nameLabel = sprintf($nameFormat, $name->getLabel());
+        $nameLabel = \sprintf($nameFormat, $name->getLabel());
         $emailLabel = $email->getLabel();
 
         $this->assertCount(2, $output);
         $this->assertEquals($output->$nameLabel, $model->name);
         $this->assertNotEquals($output->$emailLabel, $model->email);
-        
     }
-    
-    /** @test */
-    public function modifiers_can_be_added_to_the_label_value_action_recipe()
+
+    public function testModifiersCanBeAddedToTheLabelValueActionRecipe()
     {
         $name = new TextInput('name', 'Name');
         $accept = new TextInput('accept', 'Accept Terms');
-        
+
         $trueLabel = 'I Accept';
 
         $recipe = new LabelValueRecipe();
         $recipe->setModifiers([
-            new BooleanModifier($trueLabel)
+            new BooleanModifier($trueLabel),
         ]);
         $accept->setRecipe($recipe);
 
@@ -171,15 +163,13 @@ class LabelValueActionTest extends TestCase
         ]);
 
         $action = new LabelValueAction($model);
-        
+
         $action->prepare();
-        foreach($inputs as $input) {
+        foreach ($inputs as $input) {
             $action->execute($input);
         }
         $output = $action->getOutput();
 
         $this->assertEquals($trueLabel, $output->{$accept->getLabel()});
-
     }
-
 }
