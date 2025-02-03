@@ -4,41 +4,18 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Modifiers;
 
-use Chatagency\CrudAssistant\DataContainer;
-use Chatagency\CrudAssistant\Modifier;
+use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 
-/**
- * Boolean Modifier.
- */
-class BooleanModifier extends Modifier
+class BooleanModifier implements ModifierInterface
 {
-    /**
-     * True Label.
-     *
-     * @var string
-     */
-    protected $trueLabel = 'Yes';
+    public function __construct(
+        private string $trueLabel = 'Yes',
+        private string $falseLabel = 'No',
+    ) {
+    }
 
-    /**
-     * False Label.
-     *
-     * @var string
-     */
-    protected $falseLabel = 'No';
-
-    /**
-     * Modifies value.
-     *
-     * @param mixed      $value
-     * @param mixed|null $model
-     */
-    public function modify($value,  $model = null)
+    public function modify($value, $model = null)
     {
-        $data = $this->getData();
-        
-        $trueLabel = $data->trueLabel ?? $this->trueLabel;
-        $falseLabel = $data->falseLabel ?? $this->falseLabel;
-
-        return $value ? $trueLabel : $falseLabel;
+        return $value ? $this->trueLabel : $this->falseLabel;
     }
 }

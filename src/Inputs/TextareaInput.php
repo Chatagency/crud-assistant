@@ -15,5 +15,5 @@ class TextareaInput extends Input implements InputInterface
     /**
      * Input type.
      */
-    protected $type = 'textarea';
+    protected ?string $type = 'textarea';
 }

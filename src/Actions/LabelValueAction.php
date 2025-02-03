@@ -6,128 +6,51 @@ namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Action;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
-use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
-use Chatagency\CrudAssistant\CrudAssistant;
-use Chatagency\CrudAssistant\DataContainer;
-use InvalidArgumentException;
-use Traversable;
 
 /**
  * Label Value Action.
  */
-class LabelValueAction extends Action implements ActionInterface
+final class LabelValueAction extends Action implements ActionInterface
 {
-    /**
-     * Model.
-     */
-    protected $model;
-
-    /**
-     * Ignores input.
-     * Only for testing purposes
-     *
-     * @var bool
-     */
-    protected $ignore = true;
-
-    /**
-     * Internal recursion option.
-     * Only for testing purposes
-     *
-     * @var bool
-     */
-    protected $recursion = true;
-    
-    /**
-     * Sets Model
-     *
-     * @param Traversable $model
-     * 
-     * @return self
-     */
-    public function setModel(Traversable  $model)
-    {
-        $this->model = $model;
-
-        return $this;
+    public function __construct(
+        private $model,
+    ) {
     }
 
-    /**
-     * Set only for testing purposes
-     *
-     * @param  bool  $ignore  Only for testing purposes
-     *
-     * @return  self
-     */ 
-    public function setIgnore(bool $ignore)
+    public static function make($model): self
     {
-        $this->ignore = $ignore;
-
-        return $this;
+        return new self($model);
     }
 
-    /**
-     * Set only for testing purposes
-     *
-     * @param  bool  $recursion  Only for testing purposes
-     *
-     * @return  self
-     */ 
-    public function setRecursion(bool $recursion)
+    public function getModel()
     {
-        $this->recursion = $recursion;
-
-        return $this;
+        return $this->model;
     }
-    
-    /**
-     * Pre Execution.
-     *
-     * @return self
-     */
-    public function prepare()
-    {
-        if(!$this->model) {
-            throw new InvalidArgumentException("The model is required", 500);
-        }
 
+    public function prepare(): static
+    {
         return parent::prepare();
     }
 
-    /**
-     * Execute action on input.
-     *
-     * @return DataContainerInterface
-     */
-    public function execute(InputInterface $input)
+    public function execute(InputCollectionInterface|InputInterface|\IteratorAggregate $input)
     {
-        if ($this->recursion && CrudAssistant::isInputCollection($input) && $this->controlsRecursion) {
-            foreach ($input as $internalInput) {
-                $this->execute($internalInput);
-            }
-            return true;
-        }
-        
         $model = $this->model;
 
-        $recipe = $input->getRecipe(static::class);
+        $recipe = $input->getRecipe($this->getIdentifier());
 
         $output = $this->getOutput();
-        
-        if ($this->ignore && $recipe && $recipe->isIgnored()) {
-            return $output;
-        }
 
-        $name = $input->getName() ?? null;
+        $name = $input->getName();
 
-        $label = $recipe->label ?? $input->getLabel() ?? null;
+        $label = $recipe->label ?? $input->getLabel();
 
         if (\is_callable($label)) {
             $label = $label($input, $model);
         }
 
-        $value = $recipe->value ?? $model->$name ?? null;
+        $value = $recipe->value ?? $model->{$name} ?? null;
 
         if (\is_callable($value)) {
             $value = $value($input, $model);
@@ -135,7 +58,7 @@ class LabelValueAction extends Action implements ActionInterface
 
         $value = $this->modifiers($value, $input, $model);
 
-        $output->$label = $value;
+        $output->{$label} = $value;
 
         return $output;
     }

@@ -6,15 +6,14 @@ namespace Chatagency\CrudAssistant\Contracts;
 
 /**
  * Data DataContainer Interface.
+ *
+ * @property array $data
  */
 interface DataContainerInterface
 {
-    /**
-     * Construct can receive a data array.
-     *
-     * @return self
-     */
-    public function __construct(array $data = []);
+    public function get(string $name);
+
+    public function set(string $name, mixed $value): static;
 
     /**
      * Fills the container. It replaces
@@ -31,11 +30,10 @@ interface DataContainerInterface
      * @return self
      */
     public function add(array $data);
-    
+
     /**
      * Pushes a value to the data array.
      *
-     * @param mixed $value
      * @return self
      */
     public function push($value);
@@ -71,5 +69,4 @@ interface DataContainerInterface
      * @return array
      */
     public function all();
-
 }

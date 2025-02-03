@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Contracts;
 
-use Chatagency\CrudAssistant\Modifier;
-
 /**
  * Recipe Interface.
  */
@@ -23,7 +21,7 @@ interface RecipeInterface
      *
      * @return self
      */
-    public function setModifier(Modifier $modifier);
+    public function setModifier(ModifierInterface $modifier);
 
     /**
      * Adds multiple modifiers to the
@@ -41,16 +39,14 @@ interface RecipeInterface
     public function getModifiers();
 
     /**
-     * Checks if recipe has modifiers
+     * Checks if recipe has modifiers.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasModifiers();
 
     /**
      * Sets the ignore value.
-     *
-     * @param mixed $ignore
      *
      * @return self
      */
