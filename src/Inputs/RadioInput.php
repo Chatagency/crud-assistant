@@ -15,5 +15,5 @@ class RadioInput extends Input implements InputInterface
     /**
      * Input type.
      */
-    protected $type = 'radio';
+    protected ?string $type = 'radio';
 }

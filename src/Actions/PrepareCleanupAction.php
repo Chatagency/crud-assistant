@@ -1,54 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Action;
-use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
-use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
+use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
+use Chatagency\CrudAssistant\Contracts\InputInterface;
 
 class PrepareCleanupAction extends Action implements ActionInterface
 {
-    /**
-     * Pre Execution.
-     *
-     * @return self
-     */
-    public function prepare()
+    public function prepare(): static
     {
         $output = $this->getOutput();
-        
-        $output->prepare = 1;
+
+        $output->set('prepare', 1);
 
         return parent::prepare();
     }
 
-    /**
-     * Execute action on input.
-     *
-     * @return DataContainerInterface
-     */
-    public function execute(InputInterface $input)
+    public function execute(InputCollectionInterface|InputInterface|\IteratorAggregate $input)
     {
         $output = $this->getOutput();
-        
+
         $output->{$input->getName()} = $input->getLabel();
-        
+
         return $output;
     }
 
-    /**
-     * Post Execution.
-     *
-     * @return self
-     */
-    public function cleanup()
+    public function cleanup(): static
     {
         $output = $this->getOutput();
-        
-        $output->cleanup = 1;
+
+        $output->set('cleanup', 1);
 
         return parent::cleanup();
     }
-
 }

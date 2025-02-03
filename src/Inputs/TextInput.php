@@ -15,5 +15,5 @@ class TextInput extends Input implements InputInterface
     /**
      * Input type.
      */
-    protected $type = 'text';
+    protected ?string $type = 'text';
 }

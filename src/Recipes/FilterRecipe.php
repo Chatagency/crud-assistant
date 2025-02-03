@@ -5,35 +5,34 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant\Recipes;
 
 use Chatagency\CrudAssistant\Actions\FilterAction;
+use Chatagency\CrudAssistant\Concerns\isRecipe;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
-use Chatagency\CrudAssistant\RecipeBase;
-use Closure;
 
 /**
  * Filter Action Recipe.
  */
-class FilterRecipe extends RecipeBase implements RecipeInterface
+final class FilterRecipe implements RecipeInterface
 {
-    /**
-     * Filter value.
-     */
-    public bool $filter = false;
+    use isRecipe;
 
     /**
-     * Ignore if value is empty (null or empty string).
+     * @param class-string $action
      */
-    public bool $ignoreIfEmpty = false;
+    protected ?string $action = FilterAction::class;
 
-    /**
-     * Custom filter via callback.
-     */
-    public Closure $callback;
+    public function __construct(
+        public readonly bool $filter = true,
+        public readonly bool $ignoreIfEmpty = false,
+        public readonly ?\Closure $callback = null,
+    ) {
+    }
 
-    /**
-     * Recipe Action.
-     *
-     * @var string
-     */
-    protected $action = FilterAction::class;
-
+    public static function make(bool $filter = true, bool $ignoreIfEmpty = false, ?\Closure $callback = null): self
+    {
+        return new self(
+            $filter,
+            $ignoreIfEmpty,
+            $callback
+        );
+    }
 }
