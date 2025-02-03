@@ -58,7 +58,7 @@ final class FilterAction extends Action implements ActionInterface
         $data = $output->data;
 
         $name = $input->getName();
-        $recipe = $input->getRecipe(static::class);
+        $recipe = $input->getRecipe($this->getIdentifier());
         $value = $data[$name] ?? null;
         $ignoreIfEmpty = $recipe->ignoreIfEmpty ?? null;
         $callback = $recipe->callback ?? null;

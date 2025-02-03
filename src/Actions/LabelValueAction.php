@@ -38,7 +38,7 @@ final class LabelValueAction extends Action implements ActionInterface
     {
         $model = $this->model;
 
-        $recipe = $input->getRecipe(static::class);
+        $recipe = $input->getRecipe($this->getIdentifier());
 
         $output = $this->getOutput();
 

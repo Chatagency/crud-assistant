@@ -15,6 +15,9 @@ final class LabelValueRecipe implements RecipeInterface
 {
     use isRecipe;
 
+    /**
+     * @param class-string $action
+     */
     protected ?string $action = LabelValueAction::class;
 
     public function __construct(

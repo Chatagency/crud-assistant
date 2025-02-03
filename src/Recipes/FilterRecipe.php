@@ -15,6 +15,9 @@ final class FilterRecipe implements RecipeInterface
 {
     use isRecipe;
 
+    /**
+     * @param class-string $action
+     */
     protected ?string $action = FilterAction::class;
 
     public function __construct(
