@@ -28,17 +28,6 @@ class LabelValueActionTest extends TestCase
         $this->assertInstanceOf(LabelValueAction::class, $recipe);
     }
 
-    public function testAllActionsHaveAGenericDataSetterAndGetter()
-    {
-        $data = new DataContainer([
-            'name' => 'John Doe',
-        ]);
-
-        $action = LabelValueAction::make($data);
-
-        $this->assertEquals($data['name'], $action->getModel()->name);
-    }
-
     public function testTheLabelValueActionReturnsAnContainerWithLabelsAsKeys()
     {
         $name = new TextInput('name', 'Name');

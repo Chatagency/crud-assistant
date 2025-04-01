@@ -35,7 +35,7 @@ interface InputInterface
 
     public function unsetAttribute(string $key): static;
 
-    public function getSubElements(): InputCollectionInterface;
+    public function getSubElements(): ?InputCollectionInterface;
 
     public function setRecipe(RecipeInterface $recipe): static;
 
