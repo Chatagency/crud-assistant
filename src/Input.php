@@ -15,15 +15,15 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
  */
 abstract class Input implements InputInterface
 {
-    protected ?string $name;
+    protected ?string $name = null;
 
-    protected ?string $label;
+    protected ?string $label = null;
 
     protected ?int $version = 1;
 
     protected array $attributes = [];
 
-    protected InputCollectionInterface $subElements;
+    protected ?InputCollectionInterface $subElements = null;
 
     protected ?string $type = null;
 
@@ -120,7 +120,7 @@ abstract class Input implements InputInterface
         return $this;
     }
 
-    public function getSubElements(): InputCollectionInterface
+    public function getSubElements(): ?InputCollectionInterface
     {
         return $this->subElements;
     }
