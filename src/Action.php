@@ -12,4 +12,10 @@ use Chatagency\CrudAssistant\Concerns\isAction;
 abstract class Action
 {
     use isAction;
+
+    protected $controlsRecursion = false;
+
+    protected $controlsExecution = false;
+
+    protected $processInternalCollection = false;
 }
