@@ -12,12 +12,6 @@ trait isAction
 {
     protected $output;
 
-    protected $controlsRecursion = false;
-
-    protected $controlsExecution = false;
-
-    protected $processInternalCollection = false;
-
     public function initOutput()
     {
         if (!$this->output) {
@@ -58,17 +52,17 @@ trait isAction
 
     public function controlsRecursion()
     {
-        return $this->controlsRecursion;
+        return isset($this->controlsRecursion) ? $this->controlsRecursion : false;
     }
 
     public function controlsExecution()
     {
-        return $this->controlsExecution;
+        return isset($this->controlsExecution) ? $this->controlsExecution : false;
     }
 
     public function processInternalCollection()
     {
-        return $this->processInternalCollection;
+        return isset($this->processInternalCollection) ? $this->processInternalCollection : false;
     }
 
     public function isEmpty($value)
