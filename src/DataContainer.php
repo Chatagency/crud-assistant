@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant;
 
-use Chatagency\CrudAssistant\Concerns\isDataContainer;
+use Chatagency\CrudAssistant\Concerns\IsDataContainer;
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
 /**
@@ -12,5 +12,5 @@ use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
  */
 final class DataContainer implements DataContainerInterface, \IteratorAggregate, \Countable, \ArrayAccess
 {
-    use isDataContainer;
+    use IsDataContainer;
 }
