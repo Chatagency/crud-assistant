@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 use Chatagency\CrudAssistant\DataContainer;
 
-trait IsAction
+trait isAction
 {
     protected $output;
 
@@ -52,17 +52,17 @@ trait IsAction
 
     public function controlsRecursion()
     {
-        return isset($this->controlsRecursion) ? $this->controlsRecursion : false;
+        return $this->controlsRecursion ?? false;
     }
 
     public function controlsExecution()
     {
-        return isset($this->controlsExecution) ? $this->controlsExecution : false;
+        return $this->controlsExecution ?? false;
     }
 
     public function processInternalCollection()
     {
-        return isset($this->processInternalCollection) ? $this->processInternalCollection : false;
+        return $this->processInternalCollection ?? false;
     }
 
     public function isEmpty($value)
