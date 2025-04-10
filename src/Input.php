@@ -77,17 +77,17 @@ abstract class Input implements InputInterface
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getLabel(): string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
 
-    public function getVersion(): int
+    public function getVersion(): ?int
     {
         return $this->version;
     }

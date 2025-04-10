@@ -21,11 +21,11 @@ interface InputInterface
 
     public function setType(string $type): static;
 
-    public function getName(): string;
+    public function getName(): ?string;
 
-    public function getLabel(): string;
+    public function getLabel(): ?string;
 
-    public function getVersion(): int;
+    public function getVersion(): ?int;
 
     public function getType(): ?string;
 
