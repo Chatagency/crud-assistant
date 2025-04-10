@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant\Recipes;
 
 use Chatagency\CrudAssistant\Actions\LabelValueAction;
-use Chatagency\CrudAssistant\Concerns\isRecipe;
+use Chatagency\CrudAssistant\Concerns\IsRecipe;
 use Chatagency\CrudAssistant\Contracts\RecipeInterface;
 
 /**
@@ -13,7 +13,7 @@ use Chatagency\CrudAssistant\Contracts\RecipeInterface;
  */
 final class LabelValueRecipe implements RecipeInterface
 {
-    use isRecipe;
+    use IsRecipe;
 
     /**
      * @param class-string $action

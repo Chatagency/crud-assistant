@@ -6,7 +6,7 @@ namespace Chatagency\CrudAssistant\Concerns;
 
 use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 
-trait isDataContainer
+trait IsDataContainer
 {
     protected array $data = [];
 

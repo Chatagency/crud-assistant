@@ -9,7 +9,7 @@ use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 /**
  * Recipe Trait.
  */
-trait isRecipe
+trait IsRecipe
 {
     // protected ?string $action = null;
 
