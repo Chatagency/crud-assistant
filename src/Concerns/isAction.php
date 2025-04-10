@@ -8,7 +8,7 @@ use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 use Chatagency\CrudAssistant\DataContainer;
 
-trait isAction
+trait IsAction
 {
     protected $output;
 
