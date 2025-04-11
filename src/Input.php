@@ -141,6 +141,11 @@ abstract class Input implements InputInterface
         return null;
     }
 
+    public function getRecipes(): array
+    {
+        return $this->recipes;
+    }
+
     public function execute(ActionInterface $action): DataContainerInterface
     {
         return $action->execute($this);
