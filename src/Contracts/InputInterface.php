@@ -41,5 +41,7 @@ interface InputInterface
 
     public function getRecipe(string $recipe): ?RecipeInterface;
 
+    public function getRecipes(): array;
+
     public function execute(ActionInterface $action): DataContainerInterface;
 }
