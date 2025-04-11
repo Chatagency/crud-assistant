@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Chatagency\CrudAssistant\Concerns;
 
+use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
 use Chatagency\CrudAssistant\Contracts\ModifierInterface;
 use Chatagency\CrudAssistant\DataContainer;
@@ -33,7 +34,7 @@ trait IsAction
         return $this;
     }
 
-    public function setProcessInternalCollection(bool $processInternalCollection)
+    public function setProcessInternalCollection(bool $processInternalCollection): static
     {
         $this->processInternalCollection = $processInternalCollection;
 
@@ -70,7 +71,7 @@ trait IsAction
         return $value === '' || $value === null;
     }
 
-    public function getOutput(): DataContainer
+    public function getOutput(): DataContainer|DataContainerInterface
     {
         $this->initOutput();
 
