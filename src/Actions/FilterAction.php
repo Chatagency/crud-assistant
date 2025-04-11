@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chatagency\CrudAssistant\Actions;
 
 use Chatagency\CrudAssistant\Action;
+use Chatagency\CrudAssistant\Containers\FilterContainer;
 use Chatagency\CrudAssistant\Contracts\ActionInterface;
 use Chatagency\CrudAssistant\Contracts\InputCollectionInterface;
 use Chatagency\CrudAssistant\Contracts\InputInterface;
@@ -21,6 +22,7 @@ final class FilterAction extends Action implements ActionInterface
 
     public function __construct(private array $data = [])
     {
+        $this->output = new FilterContainer();
     }
 
     public static function make(array $data = []): self
@@ -30,9 +32,7 @@ final class FilterAction extends Action implements ActionInterface
 
     public function prepare(): static
     {
-        $output = $this->getOutput();
-
-        $output->data = $this->data;
+        $this->output->data = $this->data;
 
         return $this;
     }
@@ -54,7 +54,7 @@ final class FilterAction extends Action implements ActionInterface
             }
         }
 
-        $output = $this->getOutput();
+        $output = $this->output;
         $data = $output->data;
 
         $name = $input->getName();

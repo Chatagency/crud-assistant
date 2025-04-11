@@ -15,7 +15,7 @@ interface ActionInterface
 
     public static function getIdentifier();
 
-    public function setProcessInternalCollection(bool $processInternalCollection);
+    public function setProcessInternalCollection(bool $processInternalCollection): static;
 
     public function prepare(): static;
 
@@ -29,5 +29,5 @@ interface ActionInterface
 
     public function processInternalCollection();
 
-    public function getOutput();
+    public function getOutput(): DataContainerInterface;
 }
