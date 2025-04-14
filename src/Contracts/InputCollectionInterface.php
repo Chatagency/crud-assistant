@@ -7,7 +7,7 @@ namespace Chatagency\CrudAssistant\Contracts;
 /**
  * Input Collection Interface.
  */
-interface InputCollectionInterface
+interface InputCollectionInterface extends InputInterface
 {
     public function setInputs(array $inputsArray);
 
@@ -30,8 +30,6 @@ interface InputCollectionInterface
     public function getInputNames();
 
     public function getInputLabels();
-
-    public function execute(ActionInterface $action);
 
     public function executeAll(ActionInterface $action);
 }
