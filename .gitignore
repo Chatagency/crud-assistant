@@ -6,3 +6,4 @@ phpDocumentor.phar
 .phpunit.result.cache
 .php-cs-fixer.cache
 .tests_coverage
+.vscode
