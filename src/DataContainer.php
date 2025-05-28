@@ -10,6 +10,7 @@ use Chatagency\CrudAssistant\Contracts\DataContainerInterface;
 /**
  * DataContainer.
  */
+#[\AllowDynamicProperties]
 final class DataContainer implements DataContainerInterface, \IteratorAggregate, \Countable, \ArrayAccess
 {
     use IsDataContainer;
